@@ -131,7 +131,12 @@
                         {% if user.profile.is_student %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'student_dashboard' %}">
-                                    <i class="bi bi-list-check"></i> Мои задания
+                                    <i class="bi bi-book"></i> Мои курсы
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'my_grades' %}">
+                                    <i class="bi bi-table"></i> Мои оценки
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -142,16 +147,16 @@
                         {% elif user.profile.is_teacher %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'teacher_dashboard' %}">
-                                    <i class="bi bi-house-door"></i> Главная
+                                    <i class="bi bi-book"></i> Мои курсы
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'create_homework' %}">
-                                    <i class="bi bi-plus-circle"></i> Создать задание
+                                <a class="nav-link" href="{% url 'create_course' %}">
+                                    <i class="bi bi-plus-circle"></i> Создать курс
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'all_submissions' %}">
+                                <a class="nav-link" href="{% url 'teacher_all_submissions' %}">
                                     <i class="bi bi-clipboard-check"></i> Все работы
                                 </a>
                             </li>

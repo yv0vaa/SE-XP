@@ -1,0 +1,99 @@
+{% extends 'assignments/base.html' %}
+
+{% block title %}Мои оценки - HW Checker{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="text-white">
+            <i class="bi bi-table"></i> Мои оценки
+        </h1>
+        <p class="text-white-50">Таблица результатов по всем курсам</p>
+    </div>
+    <div class="col-auto">
+        <a href="{% url 'student_dashboard' %}" class="btn btn-outline-light">
+            <i class="bi bi-arrow-left"></i> К курсам
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if grades_data %}
+            {% for course_data in grades_data %}
+                <h4 class="card-title mb-3 mt-4">
+                    <i class="bi bi-book"></i> {{ course_data.course.title }}
+                </h4>
+                
+                {% if course_data.homeworks %}
+                    <div class="table-responsive mb-5">
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 40%;">Задание</th>
+                                    <th style="width: 20%;">Срок сдачи</th>
+                                    <th style="width: 20%;">Статус</th>
+                                    <th style="width: 20%;">Оценка</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for hw_data in course_data.homeworks %}
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'homework_detail' hw_data.homework.pk %}">
+                                                {{ hw_data.homework.title }}
+                                            </a>
+                                        </td>
+                                        <td>{{ hw_data.homework.due_date|date:"d.m.Y H:i" }}</td>
+                                        <td>
+                                            {% if hw_data.status == 'Оценено' %}
+                                                <span class="badge bg-success">
+                                                    <i class="bi bi-check-circle"></i> {{ hw_data.status }}
+                                                </span>
+                                            {% elif hw_data.status == 'На проверке' %}
+                                                <span class="badge bg-info">
+                                                    <i class="bi bi-clock-history"></i> {{ hw_data.status }}
+                                                </span>
+                                            {% else %}
+                                                <span class="badge bg-warning">
+                                                    <i class="bi bi-hourglass-split"></i> {{ hw_data.status }}
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-center">
+                                            {% if hw_data.grade %}
+                                                <strong class="text-success fs-5">{{ hw_data.grade }}</strong>
+                                            {% else %}
+                                                <span class="text-muted">—</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% if hw_data.submission and hw_data.submission.feedback %}
+                                        <tr class="table-light">
+                                            <td colspan="4">
+                                                <small>
+                                                    <strong><i class="bi bi-chat-left-text"></i> Отзыв преподавателя:</strong>
+                                                    {{ hw_data.submission.feedback }}
+                                                </small>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted mb-4">В этом курсе пока нет заданий</p>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <div class="text-center py-5 text-muted">
+                <i class="bi bi-inbox display-1"></i>
+                <p class="mt-3">У вас пока нет оценок</p>
+                <p class="small">Сначала запишитесь на курс и сдайте задания</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+

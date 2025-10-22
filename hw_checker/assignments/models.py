@@ -54,9 +54,39 @@ def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
 
 
+class Course(models.Model):
+    """Модель курса"""
+
+    title = models.CharField(max_length=200, verbose_name="Название курса")
+    description = models.TextField(verbose_name="Описание курса")
+    teachers = models.ManyToManyField(
+        User,
+        related_name="teaching_courses",
+        verbose_name="Преподаватели",
+        limit_choices_to={"profile__role": "teacher"},
+    )
+    students = models.ManyToManyField(
+        User,
+        related_name="enrolled_courses",
+        blank=True,
+        verbose_name="Студенты",
+        limit_choices_to={"profile__role": "student"},
+    )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+
+    class Meta:
+        verbose_name = "Курс"
+        verbose_name_plural = "Курсы"
+        ordering = ["title"]
+
+    def __str__(self):
+        return self.title
+
+
 class Homework(models.Model):
     """Модель домашнего задания"""
 
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="homeworks", verbose_name="Курс")
     title = models.CharField(max_length=200, verbose_name="Заголовок")
     description = models.TextField(verbose_name="Описание")
     due_date = models.DateTimeField(verbose_name="Срок сдачи")
@@ -68,7 +98,7 @@ class Homework(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self):
-        return self.title
+        return f"{self.course.title} - {self.title}"
 
 
 class Submission(models.Model):

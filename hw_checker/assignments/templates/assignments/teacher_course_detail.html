@@ -1,0 +1,103 @@
+{% extends 'assignments/base.html' %}
+
+{% block title %}{{ course.title }} - HW Checker{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="text-white">
+            <i class="bi bi-book"></i> {{ course.title }}
+        </h1>
+        <p class="text-white-50">{{ course.description }}</p>
+    </div>
+    <div class="col-auto">
+        <div class="btn-group">
+            <a href="{% url 'teacher_create_homework' course.pk %}" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Создать задание
+            </a>
+            <a href="{% url 'manage_students' course.pk %}" class="btn btn-info">
+                <i class="bi bi-people"></i> Студенты
+            </a>
+            <a href="{% url 'edit_course' course.pk %}" class="btn btn-warning">
+                <i class="bi bi-pencil"></i> Редактировать
+            </a>
+            <a href="{% url 'teacher_dashboard' %}" class="btn btn-outline-light">
+                <i class="bi bi-arrow-left"></i> Назад
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Статистика -->
+<div class="row mb-4">
+    <div class="col-md-4 mb-3">
+        <div class="stats-card">
+            <i class="bi bi-people"></i>
+            <h3>{{ students_count }}</h3>
+            <p>Студентов</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="stats-card">
+            <i class="bi bi-file-earmark-check"></i>
+            <h3>{{ total_submissions }}</h3>
+            <p>Всего работ</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="stats-card">
+            <i class="bi bi-hourglass-split"></i>
+            <h3>{{ pending_count }}</h3>
+            <p>На проверке</p>
+        </div>
+    </div>
+</div>
+
+<!-- Список заданий -->
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title mb-4">
+            <i class="bi bi-journal-text"></i> Домашние задания
+        </h4>
+        
+        {% if homeworks %}
+            <div class="list-group">
+                {% for hw in homeworks %}
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="flex-grow-1">
+                                <h5 class="mb-1">{{ hw.title }}</h5>
+                                <p class="mb-1 text-muted">{{ hw.description|truncatewords:20 }}</p>
+                                <small class="text-muted">
+                                    <i class="bi bi-calendar-event"></i> Срок: {{ hw.due_date|date:"d.m.Y H:i" }}
+                                </small>
+                                <br>
+                                <small class="text-muted">
+                                    <i class="bi bi-file-earmark-check"></i> Отправок: {{ hw.submissions.count }}
+                                </small>
+                            </div>
+                            <div class="btn-group">
+                                <a href="{% url 'teacher_homework_submissions' hw.pk %}" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-eye"></i> Работы
+                                </a>
+                                <a href="{% url 'teacher_edit_homework' hw.pk %}" class="btn btn-sm btn-outline-secondary">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-5 text-muted">
+                <i class="bi bi-inbox display-1"></i>
+                <p class="mt-3">Заданий пока нет</p>
+                <a href="{% url 'teacher_create_homework' course.pk %}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Создать первое задание
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+

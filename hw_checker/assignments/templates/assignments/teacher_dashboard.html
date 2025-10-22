@@ -1,39 +1,46 @@
 {% extends 'assignments/base.html' %}
 
-{% block title %}Панель преподавателя - HW Checker{% endblock %}
+{% block title %}Мои курсы - HW Checker{% endblock %}
 
 {% block content %}
 <div class="row mb-4">
     <div class="col">
         <h1 class="text-white">
-            <i class="bi bi-person-badge"></i> Панель преподавателя
+            <i class="bi bi-person-badge"></i> Привет, {{ user.first_name }}!
         </h1>
-        <p class="text-white-50">Управление заданиями и проверка работ</p>
+        <p class="text-white-50">Ваши курсы и статистика</p>
     </div>
     <div class="col-auto">
-        <a href="{% url 'create_homework' %}" class="btn btn-light">
-            <i class="bi bi-plus-circle"></i> Создать задание
+        <a href="{% url 'create_course' %}" class="btn btn-light">
+            <i class="bi bi-plus-circle"></i> Создать курс
         </a>
     </div>
 </div>
 
 <!-- Статистика -->
 <div class="row mb-4">
-    <div class="col-md-4 mb-3">
+    <div class="col-md-3 mb-3">
+        <div class="stats-card">
+            <i class="bi bi-book"></i>
+            <h3>{{ total_courses }}</h3>
+            <p>Курсов</p>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
         <div class="stats-card">
             <i class="bi bi-journal-text"></i>
             <h3>{{ total_homeworks }}</h3>
-            <p>Всего заданий</p>
+            <p>Заданий</p>
         </div>
     </div>
-    <div class="col-md-4 mb-3">
+    <div class="col-md-3 mb-3">
         <div class="stats-card">
             <i class="bi bi-file-earmark-check"></i>
             <h3>{{ total_submissions }}</h3>
             <p>Всего работ</p>
         </div>
     </div>
-    <div class="col-md-4 mb-3">
+    <div class="col-md-3 mb-3">
         <div class="stats-card">
             <i class="bi bi-hourglass-split"></i>
             <h3>{{ pending_count }}</h3>
@@ -42,37 +49,46 @@
     </div>
 </div>
 
+<!-- Список курсов -->
 <div class="row">
-    <!-- Домашние задания -->
-    <div class="col-md-8 mb-4">
+    <div class="col-12">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title mb-4">
-                    <i class="bi bi-journal-text"></i> Домашние задания
+                    <i class="bi bi-book"></i> Мои курсы
                 </h4>
                 
-                {% if homeworks %}
-                    <div class="list-group">
-                        {% for hw in homeworks %}
-                            <div class="list-group-item">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div class="flex-grow-1">
-                                        <h5 class="mb-1">{{ hw.title }}</h5>
-                                        <p class="mb-1 text-muted">{{ hw.description|truncatewords:15 }}</p>
-                                        <small class="text-muted">
-                                            <i class="bi bi-calendar-event"></i> Срок: {{ hw.due_date|date:"d.m.Y H:i" }}
-                                        </small>
-                                    </div>
-                                    <div class="btn-group">
-                                        <a href="{% url 'homework_submissions' hw.pk %}" class="btn btn-sm btn-primary">
-                                            <i class="bi bi-eye"></i> Просмотр
-                                        </a>
-                                        <a href="{% url 'edit_homework' hw.pk %}" class="btn btn-sm btn-outline-secondary">
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
-                                        <a href="{% url 'delete_homework' hw.pk %}" class="btn btn-sm btn-outline-danger">
-                                            <i class="bi bi-trash"></i>
-                                        </a>
+                {% if courses %}
+                    <div class="row">
+                        {% for course in courses %}
+                            <div class="col-md-6 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ course.title }}</h5>
+                                        <p class="card-text text-muted">{{ course.description|truncatewords:20 }}</p>
+                                        
+                                        <div class="mb-3">
+                                            <small class="text-muted">
+                                                <i class="bi bi-people"></i> 
+                                                Студентов: {{ course.students.count }}
+                                            </small>
+                                            <br>
+                                            <small class="text-muted">
+                                                <i class="bi bi-journal-text"></i> 
+                                                Заданий: {{ course.homeworks.count }}
+                                            </small>
+                                        </div>
+                                        
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="btn-group">
+                                                <a href="{% url 'teacher_course_detail' course.pk %}" class="btn btn-sm btn-primary">
+                                                    <i class="bi bi-eye"></i> Открыть
+                                                </a>
+                                                <a href="{% url 'edit_course' course.pk %}" class="btn btn-sm btn-outline-secondary">
+                                                    <i class="bi bi-pencil"></i> Редактировать
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -81,55 +97,14 @@
                 {% else %}
                     <div class="text-center py-5 text-muted">
                         <i class="bi bi-inbox display-1"></i>
-                        <p class="mt-3">Заданий пока нет</p>
-                        <a href="{% url 'create_homework' %}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle"></i> Создать первое задание
+                        <p class="mt-3">У вас пока нет курсов</p>
+                        <a href="{% url 'create_course' %}" class="btn btn-primary">
+                            <i class="bi bi-plus-circle"></i> Создать первый курс
                         </a>
                     </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-    
-    <!-- Недавние отправки -->
-    <div class="col-md-4 mb-4">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">
-                    <i class="bi bi-clock-history"></i> Недавние работы
-                </h5>
-                
-                {% if recent_submissions %}
-                    <div class="list-group list-group-flush">
-                        {% for submission in recent_submissions %}
-                            <a href="{% url 'grade_submission' submission.pk %}" class="list-group-item list-group-item-action p-2">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <small class="fw-bold">{{ submission.student.get_full_name }}</small><br>
-                                        <small class="text-muted">{{ submission.homework.title|truncatewords:3 }}</small>
-                                    </div>
-                                    {% if submission.grade %}
-                                        <span class="badge bg-success">{{ submission.grade }}</span>
-                                    {% else %}
-                                        <span class="badge bg-warning">
-                                            <i class="bi bi-exclamation-circle"></i>
-                                        </span>
-                                    {% endif %}
-                                </div>
-                            </a>
-                        {% endfor %}
-                    </div>
-                    <div class="mt-3">
-                        <a href="{% url 'all_submissions' %}" class="btn btn-sm btn-outline-primary w-100">
-                            Смотреть все
-                        </a>
-                    </div>
-                {% else %}
-                    <p class="text-muted text-center mt-3">Работ пока нет</p>
                 {% endif %}
             </div>
         </div>
     </div>
 </div>
 {% endblock %}
-

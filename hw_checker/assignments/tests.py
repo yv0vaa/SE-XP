@@ -13,7 +13,7 @@ from django.urls import reverse
 from django.utils import timezone
 
 from .forms import GradeForm, HomeworkForm, RegisterForm, SubmissionForm
-from .models import Homework, Submission, UserProfile
+from .models import Course, Homework, Submission, UserProfile
 
 # ============================================================================
 # MODEL TESTS
@@ -76,7 +76,16 @@ class HomeworkModelTest(TestCase):
 
     def setUp(self):
         """Set up test homework"""
+        # Create a teacher and course first
+        self.teacher = User.objects.create_user(username="teacher", password="test123")
+        self.teacher.profile.role = "teacher"
+        self.teacher.profile.save()
+
+        self.course = Course.objects.create(title="Test Course", description="Test course description")
+        self.course.teachers.add(self.teacher)
+
         self.homework = Homework.objects.create(
+            course=self.course,
             title="Test Assignment",
             description="This is a test assignment",
             due_date=timezone.now() + timedelta(days=7),
@@ -88,16 +97,16 @@ class HomeworkModelTest(TestCase):
         self.assertEqual(self.homework.title, "Test Assignment")
 
     def test_homework_str_representation(self):
-        """Test __str__ method returns title"""
-        self.assertEqual(str(self.homework), "Test Assignment")
+        """Test __str__ method returns course and title"""
+        self.assertEqual(str(self.homework), "Test Course - Test Assignment")
 
     def test_homework_ordering(self):
         """Test homeworks are ordered by created_at descending"""
         hw1 = Homework.objects.create(
-            title="First", description="First assignment", due_date=timezone.now() + timedelta(days=1)
+            course=self.course, title="First", description="First assignment", due_date=timezone.now() + timedelta(days=1)
         )
         hw2 = Homework.objects.create(
-            title="Second", description="Second assignment", due_date=timezone.now() + timedelta(days=2)
+            course=self.course, title="Second", description="Second assignment", due_date=timezone.now() + timedelta(days=2)
         )
         homeworks = list(Homework.objects.all())
         self.assertEqual(homeworks[0], hw2)
@@ -115,8 +124,17 @@ class SubmissionModelTest(TestCase):
     def setUp(self):
         """Set up test data"""
         self.student = User.objects.create_user(username="student", password="test123")
+
+        # Create teacher and course
+        self.teacher = User.objects.create_user(username="teacher", password="test123")
+        self.teacher.profile.role = "teacher"
+        self.teacher.profile.save()
+
+        self.course = Course.objects.create(title="Test Course", description="Test course description")
+        self.course.teachers.add(self.teacher)
+
         self.homework = Homework.objects.create(
-            title="Test HW", description="Test", due_date=timezone.now() + timedelta(days=7)
+            course=self.course, title="Test HW", description="Test", due_date=timezone.now() + timedelta(days=7)
         )
         self.file = SimpleUploadedFile("test.txt", b"file content", content_type="text/plain")
 
@@ -281,6 +299,14 @@ class HomeworkFormTest(TestCase):
 
     def test_homework_form_saves_correctly(self):
         """Test form saves homework correctly"""
+        # Create a course and teacher first
+        teacher = User.objects.create_user(username="teacher", password="test123")
+        teacher.profile.role = "teacher"
+        teacher.profile.save()
+
+        course = Course.objects.create(title="Test Course", description="Test course description")
+        course.teachers.add(teacher)
+
         form_data = {
             "title": "New Assignment",
             "description": "This is a new assignment",
@@ -288,7 +314,9 @@ class HomeworkFormTest(TestCase):
         }
         form = HomeworkForm(data=form_data)
         self.assertTrue(form.is_valid())
-        homework = form.save()
+        homework = form.save(commit=False)
+        homework.course = course
+        homework.save()
         self.assertEqual(homework.title, "New Assignment")
 
 
@@ -325,7 +353,18 @@ class GradeFormTest(TestCase):
     def test_grade_form_saves_correctly(self):
         """Test form updates submission grade"""
         student = User.objects.create_user(username="student", password="test123")
-        homework = Homework.objects.create(title="Test", description="Test", due_date=timezone.now() + timedelta(days=7))
+
+        # Create teacher and course
+        teacher = User.objects.create_user(username="teacher", password="test123")
+        teacher.profile.role = "teacher"
+        teacher.profile.save()
+
+        course = Course.objects.create(title="Test Course", description="Test course description")
+        course.teachers.add(teacher)
+
+        homework = Homework.objects.create(
+            course=course, title="Test", description="Test", due_date=timezone.now() + timedelta(days=7)
+        )
         file = SimpleUploadedFile("test.txt", b"content", content_type="text/plain")
         submission = Submission.objects.create(homework=homework, student=student, solution_file=file)
 
@@ -474,8 +513,13 @@ class StudentViewsTest(TestCase):
         self.teacher.profile.role = "teacher"
         self.teacher.profile.save()
 
+        # Create course
+        self.course = Course.objects.create(title="Test Course", description="Test course description")
+        self.course.teachers.add(self.teacher)
+        self.course.students.add(self.student)
+
         self.homework = Homework.objects.create(
-            title="Test Assignment", description="Description", due_date=timezone.now() + timedelta(days=7)
+            course=self.course, title="Test Assignment", description="Description", due_date=timezone.now() + timedelta(days=7)
         )
 
     def test_student_dashboard_requires_login(self):
@@ -496,12 +540,14 @@ class StudentViewsTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "assignments/student_dashboard.html")
 
-    def test_student_dashboard_shows_homeworks(self):
-        """Test student dashboard displays homework list"""
+    def test_student_dashboard_shows_courses(self):
+        """Test student dashboard displays course list"""
         self.client.login(username="student", password="test123")
         response = self.client.get(reverse("student_dashboard"))
-        self.assertIn("homework_status", response.context)
-        self.assertEqual(len(response.context["homework_status"]), 1)
+        self.assertIn("courses", response.context)
+        self.assertEqual(len(response.context["courses"]), 1)
+        self.assertIn("total_homeworks", response.context)
+        self.assertEqual(response.context["total_homeworks"], 1)
 
     def test_homework_detail_view_get(self):
         """Test homework detail view displays correctly"""
@@ -561,8 +607,13 @@ class TeacherViewsTest(TestCase):
         self.teacher.profile.role = "teacher"
         self.teacher.profile.save()
 
+        # Create course
+        self.course = Course.objects.create(title="Test Course", description="Test course description")
+        self.course.teachers.add(self.teacher)
+        self.course.students.add(self.student)
+
         self.homework = Homework.objects.create(
-            title="Test Assignment", description="Description", due_date=timezone.now() + timedelta(days=7)
+            course=self.course, title="Test Assignment", description="Description", due_date=timezone.now() + timedelta(days=7)
         )
 
     def test_teacher_dashboard_requires_login(self):
@@ -586,9 +637,9 @@ class TeacherViewsTest(TestCase):
     def test_create_homework_view_get(self):
         """Test create homework view displays form"""
         self.client.login(username="teacher", password="test123")
-        response = self.client.get(reverse("create_homework"))
+        response = self.client.get(reverse("teacher_create_homework", kwargs={"course_pk": self.course.pk}))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "assignments/create_homework.html")
+        self.assertTemplateUsed(response, "assignments/teacher_create_homework.html")
         self.assertIsInstance(response.context["form"], HomeworkForm)
 
     def test_create_homework_view_post(self):
@@ -599,22 +650,22 @@ class TeacherViewsTest(TestCase):
             "description": "New Description",
             "due_date": (timezone.now() + timedelta(days=7)).strftime("%Y-%m-%dT%H:%M"),
         }
-        response = self.client.post(reverse("create_homework"), data=form_data)
+        response = self.client.post(reverse("teacher_create_homework", kwargs={"course_pk": self.course.pk}), data=form_data)
         self.assertEqual(response.status_code, 302)
         self.assertTrue(Homework.objects.filter(title="New Homework").exists())
 
     def test_create_homework_requires_teacher_role(self):
         """Test create homework requires teacher role"""
         self.client.login(username="student", password="test123")
-        response = self.client.get(reverse("create_homework"))
+        response = self.client.get(reverse("teacher_create_homework", kwargs={"course_pk": self.course.pk}))
         self.assertEqual(response.status_code, 302)
 
     def test_edit_homework_view_get(self):
         """Test edit homework view displays form"""
         self.client.login(username="teacher", password="test123")
-        response = self.client.get(reverse("edit_homework", kwargs={"pk": self.homework.pk}))
+        response = self.client.get(reverse("teacher_edit_homework", kwargs={"pk": self.homework.pk}))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "assignments/edit_homework.html")
+        self.assertTemplateUsed(response, "assignments/teacher_edit_homework.html")
 
     def test_edit_homework_view_post(self):
         """Test editing homework via POST"""
@@ -624,25 +675,26 @@ class TeacherViewsTest(TestCase):
             "description": "Updated Description",
             "due_date": (timezone.now() + timedelta(days=10)).strftime("%Y-%m-%dT%H:%M"),
         }
-        response = self.client.post(reverse("edit_homework", kwargs={"pk": self.homework.pk}), data=form_data)
+        response = self.client.post(reverse("teacher_edit_homework", kwargs={"pk": self.homework.pk}), data=form_data)
         self.assertEqual(response.status_code, 302)
         self.homework.refresh_from_db()
         self.assertEqual(self.homework.title, "Updated Title")
 
-    def test_delete_homework_view_get(self):
-        """Test delete homework confirmation page"""
-        self.client.login(username="teacher", password="test123")
-        response = self.client.get(reverse("delete_homework", kwargs={"pk": self.homework.pk}))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "assignments/delete_homework.html")
+    # NOTE: Delete homework feature was removed in course-based version
+    # def test_delete_homework_view_get(self):
+    #     """Test delete homework confirmation page"""
+    #     self.client.login(username="teacher", password="test123")
+    #     response = self.client.get(reverse("delete_homework", kwargs={"pk": self.homework.pk}))
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertTemplateUsed(response, "assignments/delete_homework.html")
 
-    def test_delete_homework_view_post(self):
-        """Test deleting homework via POST"""
-        self.client.login(username="teacher", password="test123")
-        homework_pk = self.homework.pk
-        response = self.client.post(reverse("delete_homework", kwargs={"pk": homework_pk}))
-        self.assertEqual(response.status_code, 302)
-        self.assertFalse(Homework.objects.filter(pk=homework_pk).exists())
+    # def test_delete_homework_view_post(self):
+    #     """Test deleting homework via POST"""
+    #     self.client.login(username="teacher", password="test123")
+    #     homework_pk = self.homework.pk
+    #     response = self.client.post(reverse("delete_homework", kwargs={"pk": homework_pk}))
+    #     self.assertEqual(response.status_code, 302)
+    #     self.assertFalse(Homework.objects.filter(pk=homework_pk).exists())
 
     def test_homework_submissions_view(self):
         """Test homework submissions view"""
@@ -650,9 +702,9 @@ class TeacherViewsTest(TestCase):
         file = SimpleUploadedFile("solution.txt", b"solution", content_type="text/plain")
         Submission.objects.create(homework=self.homework, student=self.student, solution_file=file)
 
-        response = self.client.get(reverse("homework_submissions", kwargs={"pk": self.homework.pk}))
+        response = self.client.get(reverse("teacher_homework_submissions", kwargs={"pk": self.homework.pk}))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "assignments/homework_submissions.html")
+        self.assertTemplateUsed(response, "assignments/teacher_homework_submissions.html")
         self.assertEqual(len(response.context["submissions"]), 1)
 
     def test_grade_submission_view_get(self):
@@ -661,9 +713,9 @@ class TeacherViewsTest(TestCase):
         file = SimpleUploadedFile("solution.txt", b"solution", content_type="text/plain")
         submission = Submission.objects.create(homework=self.homework, student=self.student, solution_file=file)
 
-        response = self.client.get(reverse("grade_submission", kwargs={"pk": submission.pk}))
+        response = self.client.get(reverse("teacher_grade_submission", kwargs={"pk": submission.pk}))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "assignments/grade_submission.html")
+        self.assertTemplateUsed(response, "assignments/teacher_grade_submission.html")
 
     def test_grade_submission_view_post(self):
         """Test grading submission via POST"""
@@ -672,7 +724,7 @@ class TeacherViewsTest(TestCase):
         submission = Submission.objects.create(homework=self.homework, student=self.student, solution_file=file)
 
         form_data = {"grade": 95, "feedback": "Excellent work!"}
-        response = self.client.post(reverse("grade_submission", kwargs={"pk": submission.pk}), data=form_data)
+        response = self.client.post(reverse("teacher_grade_submission", kwargs={"pk": submission.pk}), data=form_data)
         self.assertEqual(response.status_code, 302)
         submission.refresh_from_db()
         self.assertEqual(submission.grade, 95)
@@ -684,9 +736,9 @@ class TeacherViewsTest(TestCase):
         file = SimpleUploadedFile("solution.txt", b"solution", content_type="text/plain")
         Submission.objects.create(homework=self.homework, student=self.student, solution_file=file)
 
-        response = self.client.get(reverse("all_submissions"))
+        response = self.client.get(reverse("teacher_all_submissions"))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "assignments/all_submissions.html")
+        self.assertTemplateUsed(response, "assignments/teacher_all_submissions.html")
         self.assertIn("submissions", response.context)
 
     def test_all_submissions_filter_pending(self):
@@ -695,7 +747,7 @@ class TeacherViewsTest(TestCase):
         file = SimpleUploadedFile("solution.txt", b"solution", content_type="text/plain")
         Submission.objects.create(homework=self.homework, student=self.student, solution_file=file)
 
-        response = self.client.get(reverse("all_submissions") + "?status=pending")
+        response = self.client.get(reverse("teacher_all_submissions") + "?status=pending")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context["submissions"]), 1)
 
@@ -707,7 +759,7 @@ class TeacherViewsTest(TestCase):
         submission.grade = 85
         submission.save()
 
-        response = self.client.get(reverse("all_submissions") + "?status=graded")
+        response = self.client.get(reverse("teacher_all_submissions") + "?status=graded")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context["submissions"]), 1)
 
@@ -784,12 +836,18 @@ class HomeworkWorkflowIntegrationTest(TestCase):
         """Test complete workflow: create homework, submit, grade"""
         # Teacher creates homework
         self.client.login(username="teacher", password="test123")
+
+        # Create course first
+        course = Course.objects.create(title="Integration Test Course", description="Test course")
+        course.teachers.add(self.teacher)
+        course.students.add(self.student)
+
         form_data = {
             "title": "Integration Test Homework",
             "description": "This is an integration test",
             "due_date": (timezone.now() + timedelta(days=7)).strftime("%Y-%m-%dT%H:%M"),
         }
-        response = self.client.post(reverse("create_homework"), data=form_data)
+        response = self.client.post(reverse("teacher_create_homework", kwargs={"course_pk": course.pk}), data=form_data)
         self.assertEqual(response.status_code, 302)
         homework = Homework.objects.get(title="Integration Test Homework")
 
@@ -812,7 +870,7 @@ class HomeworkWorkflowIntegrationTest(TestCase):
         self.client.logout()
         self.client.login(username="teacher", password="test123")
         form_data = {"grade": 90, "feedback": "Great job!"}
-        response = self.client.post(reverse("grade_submission", kwargs={"pk": submission.pk}), data=form_data)
+        response = self.client.post(reverse("teacher_grade_submission", kwargs={"pk": submission.pk}), data=form_data)
         self.assertEqual(response.status_code, 302)
 
         # Verify grade was saved

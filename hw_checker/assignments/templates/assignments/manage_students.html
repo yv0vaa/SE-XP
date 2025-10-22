@@ -1,0 +1,59 @@
+{% extends 'assignments/base.html' %}
+
+{% block title %}Студенты курса - HW Checker{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="text-white">
+            <i class="bi bi-people"></i> Студенты курса
+        </h1>
+        <p class="text-white-50">{{ course.title }}</p>
+    </div>
+    <div class="col-auto">
+        <a href="{% url 'teacher_course_detail' course.pk %}" class="btn btn-outline-light">
+            <i class="bi bi-arrow-left"></i> Назад к курсу
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title mb-4">Выберите студентов для записи на курс</h4>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            {% if all_students %}
+                <div class="row">
+                    {% for student in all_students %}
+                        <div class="col-md-6 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" 
+                                       name="students" value="{{ student.id }}" 
+                                       id="student_{{ student.id }}"
+                                       {% if student in current_students %}checked{% endif %}>
+                                <label class="form-check-label" for="student_{{ student.id }}">
+                                    {{ student.get_full_name|default:student.username }} ({{ student.username }})
+                                </label>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> Сохранить список студентов
+                    </button>
+                </div>
+            {% else %}
+                <div class="text-center py-5 text-muted">
+                    <i class="bi bi-inbox display-1"></i>
+                    <p class="mt-3">В системе пока нет зарегистрированных студентов</p>
+                </div>
+            {% endif %}
+        </form>
+    </div>
+</div>
+{% endblock %}
+
