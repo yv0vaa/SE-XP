@@ -1,0 +1,262 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ru" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Extreme Programming в проекте &mdash; документация HW Checker 1.0.0</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=e35015f7"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=5b699b7f"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Алфавитный указатель" href="genindex.html" />
+    <link rel="search" title="Поиск" href="search.html" />
+    <link rel="next" title="Технологический стек" href="tech_stack.html" />
+    <link rel="prev" title="Часто задаваемые вопросы" href="faq.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            HW Checker
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Поиск в документации" aria-label="Поиск в документации" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Меню навигации">
+              <p class="caption" role="heading"><span class="caption-text">Общая информация:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Обзор проекта</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Установка</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Руководство пользователя</a></li>
+<li class="toctree-l1"><a class="reference internal" href="features.html">Функциональность системы</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Часто задаваемые вопросы</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Разработка проекта:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Extreme Programming в проекте</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pair-programming">Парное программирование (Pair Programming)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#continuous-integration">Непрерывная интеграция (Continuous Integration)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#small-releases">Частые релизы (Small Releases)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Итерация 1: Инфраструктура (0-30 мин)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Итерация 2: Тесты и качество кода (30-60 мин)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Итерация 3: Курсы и основной функционал (60-90 мин)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Итерация 4: Документация и финализация (90-120 мин)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#simple-design">Простой дизайн (Simple Design)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#refactoring">Рефакторинг (Refactoring)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#collective-code-ownership">Коллективное владение кодом (Collective Code Ownership)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tdd">Тест-ориентированная разработка (TDD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">Отклонения от ТЗ (улучшения)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tech_stack.html">Технологический стек</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Руководство по разработке</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cicd.html">CI/CD Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Руководство для разработчиков</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Требования:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Requirenments.html">Техническое задание: Веб-приложение «Homework Checker» (MVP) - v1.2</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Документация:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/models.html">Модели (Models)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/views.html">Представления (Views)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/forms.html">Формы (Forms)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/decorators.html">Декораторы (Decorators)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">История изменений:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">История изменений</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html#id6">Планы на будущее</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Меню навигации для мобильных устройств" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">HW Checker</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Навигация по страницам">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Extreme Programming в проекте</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/xp_practices.rst.txt" rel="nofollow"> Просмотреть исходный код страницы</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="extreme-programming">
+<h1>Extreme Programming в проекте<a class="headerlink" href="#extreme-programming" title="Ссылка на этот заголовок"></a></h1>
+<p>Проект полностью следует принципам <strong>Extreme Programming (XP)</strong>, что отражено в процессе разработки.</p>
+<section id="pair-programming">
+<h2>Парное программирование (Pair Programming)<a class="headerlink" href="#pair-programming" title="Ссылка на этот заголовок"></a></h2>
+<p>Все члены команды работали в парах:</p>
+<ul class="simple">
+<li><p><strong>Тесты</strong>: Dmitrii, Vladimir</p></li>
+<li><p><strong>Документация</strong>: Aleksei, Dmitrii</p></li>
+<li><p><strong>Курсы</strong>: Vladimir, Aleksei</p></li>
+</ul>
+<p>Каждая фича разрабатывалась совместно через pull request’ы с code review.</p>
+</section>
+<section id="continuous-integration">
+<h2>Непрерывная интеграция (Continuous Integration)<a class="headerlink" href="#continuous-integration" title="Ссылка на этот заголовок"></a></h2>
+<p>С самого начала проекта был настроен CI/CD pipeline:</p>
+<ul class="simple">
+<li><p><strong>Коммит 1-2</strong> (<code class="docutils literal notranslate"><span class="pre">f478066</span></code>, <code class="docutils literal notranslate"><span class="pre">253a260</span></code>): Инициализация проекта</p></li>
+<li><p><strong>Коммит 3</strong> (<code class="docutils literal notranslate"><span class="pre">e68bb07</span></code>, PR #1): Добавление линтеров (flake8, black, isort, pylint)</p></li>
+<li><p><strong>Коммит 8</strong> (<code class="docutils literal notranslate"><span class="pre">ff771d4</span></code>, PR #2): Базовые тесты</p></li>
+<li><p><strong>Коммит 11</strong> (<code class="docutils literal notranslate"><span class="pre">fc26fbc</span></code>, PR #4): Автоматическая генерация документации</p></li>
+</ul>
+<p>Каждый push проверяется автоматически: тесты → линтеры → документация.</p>
+</section>
+<section id="small-releases">
+<h2>Частые релизы (Small Releases)<a class="headerlink" href="#small-releases" title="Ссылка на этот заголовок"></a></h2>
+<p>Разработка велась итеративно с маленькими, осмысленными коммитами:</p>
+<section id="id1">
+<h3>Итерация 1: Инфраструктура (0-30 мин)<a class="headerlink" href="#id1" title="Ссылка на этот заголовок"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>253a260 - initial commit (Django проект)
+9a185d2 - docs: Initial tech requirements (ТЗ)
+e68bb07 - Add linters to CI (#1)
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3>Итерация 2: Тесты и качество кода (30-60 мин)<a class="headerlink" href="#id2" title="Ссылка на этот заголовок"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ae35d59 - fix: fix failing test
+ff771d4 - Add basic tests (#2)
+29ad218 - major: add makefile for quick actions
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h3>Итерация 3: Курсы и основной функционал (60-90 мин)<a class="headerlink" href="#id3" title="Ссылка на этот заголовок"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>985a22c - create possibility to add courses
+6f0a09f - use black formatter
+93b350b - major: add courses to tests
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3>Итерация 4: Документация и финализация (90-120 мин)<a class="headerlink" href="#id4" title="Ссылка на этот заголовок"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>3aef5d2 - docs: auto docs from pr
+dcbb97b - feat: update documentation uptodate
+8f0118c - feat: docs refactor
+</pre></div>
+</div>
+</section>
+</section>
+<section id="simple-design">
+<h2>Простой дизайн (Simple Design)<a class="headerlink" href="#simple-design" title="Ссылка на этот заголовок"></a></h2>
+<p>Архитектура строилась по принципу YAGNI (You Aren’t Gonna Need It):</p>
+<ul class="simple">
+<li><p>Использование стандартной Django ORM (без лишних абстракций)</p></li>
+<li><p>SQLite для простоты развертывания</p></li>
+<li><p>Bootstrap 5 через CDN (без сложных сборщиков)</p></li>
+<li><p>Минимальная, но достаточная функциональность (MVP)</p></li>
+</ul>
+</section>
+<section id="refactoring">
+<h2>Рефакторинг (Refactoring)<a class="headerlink" href="#refactoring" title="Ссылка на этот заголовок"></a></h2>
+<p>История показывает постоянное улучшение кода:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>6f0f162 - fix: formatting
+1f4b3a1 - fix: linter errors
+c9fcd7f - fix: black and doc tests
+725ff53 - fix: 3 hours instead of 4
+</pre></div>
+</div>
+</section>
+<section id="collective-code-ownership">
+<h2>Коллективное владение кодом (Collective Code Ownership)<a class="headerlink" href="#collective-code-ownership" title="Ссылка на этот заголовок"></a></h2>
+<p>История коммитов показывает активное участие всех членов команды:</p>
+<ul class="simple">
+<li><p><strong>Vladimir Zakharov</strong> - базовая архитектура и функционал курсов</p></li>
+<li><p><strong>Dmitrii Deruzhinskii</strong> - тестирование и интеграция</p></li>
+<li><p><strong>Aleksei Tokarev</strong> - документация и CI/CD</p></li>
+</ul>
+</section>
+<section id="tdd">
+<h2>Тест-ориентированная разработка (TDD)<a class="headerlink" href="#tdd" title="Ссылка на этот заголовок"></a></h2>
+<p>Тесты были добавлены на ранней стадии (PR #2) и дополнялись с каждой новой фичей:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Тесты безопасности</span>
+<span class="o">-</span> <span class="n">Разграничение</span> <span class="n">доступа</span> <span class="n">по</span> <span class="n">ролям</span>
+<span class="o">-</span> <span class="n">Изоляция</span> <span class="n">данных</span> <span class="p">(</span><span class="n">студент</span> <span class="n">видит</span> <span class="n">только</span> <span class="n">свои</span> <span class="n">курсы</span><span class="p">)</span>
+<span class="o">-</span> <span class="n">Защита</span> <span class="n">от</span> <span class="n">несанкционированного</span> <span class="n">доступа</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h2>Отклонения от ТЗ (улучшения)<a class="headerlink" href="#id5" title="Ссылка на этот заголовок"></a></h2>
+<p><strong>ТЗ</strong>: Преподаватели работают через админку Django</p>
+<p><strong>Реализовано</strong>: Преподаватели работают через отдельный веб-интерфейс (улучшение UX)</p>
+<p><strong>Обоснование</strong>:</p>
+<ul class="simple">
+<li><p>Админка Django предназначена для администраторов</p></li>
+<li><p>Отдельный интерфейс более интуитивен и безопасен</p></li>
+<li><p>Следует XP принципу: «Делай самое простое, что может сработать, но для пользователя»</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Нижняя область">
+        <a href="faq.html" class="btn btn-neutral float-left" title="Часто задаваемые вопросы" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Предыдущая</a>
+        <a href="tech_stack.html" class="btn btn-neutral float-right" title="Технологический стек" accesskey="n" rel="next">Следующая <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Авторские права 2025, SE-XP Team. </p>
+  </div>
+
+  Собрано при помощи <a href="https://www.sphinx-doc.org/">Sphinx</a> с использованием
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">темы,</a>
+    предоставленной <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

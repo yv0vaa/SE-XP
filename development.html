@@ -1,0 +1,358 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ru" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Руководство по разработке &mdash; документация HW Checker 1.0.0</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=e35015f7"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=5b699b7f"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Алфавитный указатель" href="genindex.html" />
+    <link rel="search" title="Поиск" href="search.html" />
+    <link rel="next" title="CI/CD Pipeline" href="cicd.html" />
+    <link rel="prev" title="Технологический стек" href="tech_stack.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            HW Checker
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Поиск в документации" aria-label="Поиск в документации" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Меню навигации">
+              <p class="caption" role="heading"><span class="caption-text">Общая информация:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Обзор проекта</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Установка</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Руководство пользователя</a></li>
+<li class="toctree-l1"><a class="reference internal" href="features.html">Функциональность системы</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Часто задаваемые вопросы</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Разработка проекта:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="xp_practices.html">Extreme Programming в проекте</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tech_stack.html">Технологический стек</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Руководство по разработке</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">Структура проекта</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">Команды разработки</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Установка зависимостей</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">Работа с базой данных</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">Запуск сервера</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">Тестирование</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">Линтинг и форматирование</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">Сборка документации</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">Очистка</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">Помощь</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id12">Создание новых фич</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id13">1. Создайте ветку</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tdd">2. Напишите тесты (TDD)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">3. Напишите код</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id15">4. Проверьте качество</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pull-request">5. Создайте Pull Request</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id16">Стандарты кодирования</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#django">Полезные команды Django</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id17">Создание суперпользователя</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id18">Создание новых миграций</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id19">Запуск интерактивной оболочки</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id20">Сборка статических файлов</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id21">Проверка настроек</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cicd.html">CI/CD Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Руководство для разработчиков</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Требования:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Requirenments.html">Техническое задание: Веб-приложение «Homework Checker» (MVP) - v1.2</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Документация:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/models.html">Модели (Models)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/views.html">Представления (Views)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/forms.html">Формы (Forms)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/decorators.html">Декораторы (Decorators)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">История изменений:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">История изменений</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html#id6">Планы на будущее</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Меню навигации для мобильных устройств" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">HW Checker</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Навигация по страницам">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Руководство по разработке</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/development.rst.txt" rel="nofollow"> Просмотреть исходный код страницы</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>Руководство по разработке<a class="headerlink" href="#id1" title="Ссылка на этот заголовок"></a></h1>
+<section id="id2">
+<h2>Структура проекта<a class="headerlink" href="#id2" title="Ссылка на этот заголовок"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>SE-XP/
+├── hw_checker/           # Django приложение (продукт)
+│   ├── assignments/      # Основное приложение
+│   │   ├── models.py    # Модели: Course, Homework, Submission
+│   │   ├── views.py     # Views для студентов и преподавателей
+│   │   ├── forms.py     # Формы
+│   │   ├── tests.py     # Тесты
+│   │   ├── decorators.py # Декораторы доступа
+│   │   └── templates/   # HTML шаблоны
+│   └── hw_checker/      # Настройки Django
+├── docs/                # Sphinx документация
+├── requirements.txt     # Зависимости продакшена
+├── requirements-dev.txt # Зависимости разработки
+├── Makefile            # Команды для разработки
+└── .github/workflows/  # CI/CD
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h2>Команды разработки<a class="headerlink" href="#id3" title="Ссылка на этот заголовок"></a></h2>
+<p>Makefile предоставляет удобные команды для разработки:</p>
+<section id="id4">
+<h3>Установка зависимостей<a class="headerlink" href="#id4" title="Ссылка на этот заголовок"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>install<span class="w">    </span><span class="c1"># Установить все зависимости</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3>Работа с базой данных<a class="headerlink" href="#id5" title="Ссылка на этот заголовок"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>migrate<span class="w">    </span><span class="c1"># Применить миграции</span>
+make<span class="w"> </span>makemigrations<span class="w">  </span><span class="c1"># Создать новые миграции</span>
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h3>Запуск сервера<a class="headerlink" href="#id6" title="Ссылка на этот заголовок"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>run<span class="w">        </span><span class="c1"># Запустить сервер разработки</span>
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h3>Тестирование<a class="headerlink" href="#id7" title="Ссылка на этот заголовок"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span><span class="nb">test</span><span class="w">       </span><span class="c1"># Запустить все тесты</span>
+</pre></div>
+</div>
+<p>Или вручную:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>hw_checker
+python<span class="w"> </span>manage.py<span class="w"> </span><span class="nb">test</span>
+
+<span class="c1"># С подробным выводом</span>
+python<span class="w"> </span>manage.py<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--verbosity<span class="o">=</span><span class="m">2</span>
+
+<span class="c1"># Конкретное приложение</span>
+python<span class="w"> </span>manage.py<span class="w"> </span><span class="nb">test</span><span class="w"> </span>assignments
+</pre></div>
+</div>
+<p>Текущее покрытие: <strong>базовые тесты безопасности и функциональности</strong></p>
+</section>
+<section id="id8">
+<h3>Линтинг и форматирование<a class="headerlink" href="#id8" title="Ссылка на этот заголовок"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Автоформатирование (запускайте перед коммитом)</span>
+make<span class="w"> </span>format
+
+<span class="c1"># Или вручную:</span>
+<span class="nb">cd</span><span class="w"> </span>hw_checker
+black<span class="w"> </span>.
+isort<span class="w"> </span>--profile<span class="w"> </span>black<span class="w"> </span>.
+
+<span class="c1"># Проверка стиля</span>
+make<span class="w"> </span>lint
+
+<span class="c1"># Или вручную:</span>
+flake8<span class="w"> </span>hw_checker/
+pylint<span class="w"> </span>hw_checker/assignments/
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Предупреждение</p>
+<p>CI проверяет все автоматически. Pull request не будет смержен, если есть ошибки линтера.</p>
+</div>
+</section>
+<section id="id9">
+<h3>Сборка документации<a class="headerlink" href="#id9" title="Ссылка на этот заголовок"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Локальная сборка</span>
+<span class="nb">cd</span><span class="w"> </span>docs
+make<span class="w"> </span>html
+open<span class="w"> </span>_build/html/index.html<span class="w">  </span><span class="c1"># macOS</span>
+<span class="c1"># или</span>
+xdg-open<span class="w"> </span>_build/html/index.html<span class="w">  </span><span class="c1"># Linux</span>
+
+<span class="c1"># Онлайн-документация автоматически публикуется</span>
+<span class="c1"># на GitHub Pages при коммите в main</span>
+</pre></div>
+</div>
+</section>
+<section id="id10">
+<h3>Очистка<a class="headerlink" href="#id10" title="Ссылка на этот заголовок"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>clean<span class="w">      </span><span class="c1"># Очистить временные файлы</span>
+</pre></div>
+</div>
+</section>
+<section id="id11">
+<h3>Помощь<a class="headerlink" href="#id11" title="Ссылка на этот заголовок"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span><span class="nb">help</span><span class="w">       </span><span class="c1"># Список всех команд</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id12">
+<h2>Создание новых фич<a class="headerlink" href="#id12" title="Ссылка на этот заголовок"></a></h2>
+<section id="id13">
+<h3>1. Создайте ветку<a class="headerlink" href="#id13" title="Ссылка на этот заголовок"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>feature/amazing-feature
+</pre></div>
+</div>
+</section>
+<section id="tdd">
+<h3>2. Напишите тесты (TDD)<a class="headerlink" href="#tdd" title="Ссылка на этот заголовок"></a></h3>
+<ul class="simple">
+<li><p>Сначала пишем failing test</p></li>
+<li><p>Потом реализуем функционал</p></li>
+<li><p>Проверяем, что тест проходит</p></li>
+</ul>
+</section>
+<section id="id14">
+<h3>3. Напишите код<a class="headerlink" href="#id14" title="Ссылка на этот заголовок"></a></h3>
+<ul class="simple">
+<li><p>Следуйте PEP 8</p></li>
+<li><p>Добавьте docstrings (Google Style)</p></li>
+<li><p>Простой дизайн (YAGNI)</p></li>
+</ul>
+</section>
+<section id="id15">
+<h3>4. Проверьте качество<a class="headerlink" href="#id15" title="Ссылка на этот заголовок"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>format<span class="w">  </span><span class="c1"># Автоформатирование</span>
+make<span class="w"> </span>lint<span class="w">    </span><span class="c1"># Проверка стиля</span>
+make<span class="w"> </span><span class="nb">test</span><span class="w">    </span><span class="c1"># Запуск тестов</span>
+</pre></div>
+</div>
+</section>
+<section id="pull-request">
+<h3>5. Создайте Pull Request<a class="headerlink" href="#pull-request" title="Ссылка на этот заголовок"></a></h3>
+<ul class="simple">
+<li><p>Опишите изменения</p></li>
+<li><p>Ссылка на issue (если есть)</p></li>
+<li><p>Дождитесь code review</p></li>
+<li><p>CI должен пройти успешно</p></li>
+</ul>
+</section>
+</section>
+<section id="id16">
+<h2>Стандарты кодирования<a class="headerlink" href="#id16" title="Ссылка на этот заголовок"></a></h2>
+<p>Смотрите раздел <a class="reference internal" href="contributing.html"><span class="doc">Руководство для разработчиков</span></a> для подробных стандартов кодирования.</p>
+</section>
+<section id="django">
+<h2>Полезные команды Django<a class="headerlink" href="#django" title="Ссылка на этот заголовок"></a></h2>
+<section id="id17">
+<h3>Создание суперпользователя<a class="headerlink" href="#id17" title="Ссылка на этот заголовок"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>createsuperuser
+</pre></div>
+</div>
+</section>
+<section id="id18">
+<h3>Создание новых миграций<a class="headerlink" href="#id18" title="Ссылка на этот заголовок"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>makemigrations
+</pre></div>
+</div>
+</section>
+<section id="id19">
+<h3>Запуск интерактивной оболочки<a class="headerlink" href="#id19" title="Ссылка на этот заголовок"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>shell
+</pre></div>
+</div>
+</section>
+<section id="id20">
+<h3>Сборка статических файлов<a class="headerlink" href="#id20" title="Ссылка на этот заголовок"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>collectstatic
+</pre></div>
+</div>
+</section>
+<section id="id21">
+<h3>Проверка настроек<a class="headerlink" href="#id21" title="Ссылка на этот заголовок"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>check
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Нижняя область">
+        <a href="tech_stack.html" class="btn btn-neutral float-left" title="Технологический стек" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Предыдущая</a>
+        <a href="cicd.html" class="btn btn-neutral float-right" title="CI/CD Pipeline" accesskey="n" rel="next">Следующая <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Авторские права 2025, SE-XP Team. </p>
+  </div>
+
+  Собрано при помощи <a href="https://www.sphinx-doc.org/">Sphinx</a> с использованием
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">темы,</a>
+    предоставленной <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

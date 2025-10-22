@@ -1,0 +1,279 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ru" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Технологический стек &mdash; документация HW Checker 1.0.0</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=e35015f7"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=5b699b7f"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Алфавитный указатель" href="genindex.html" />
+    <link rel="search" title="Поиск" href="search.html" />
+    <link rel="next" title="Руководство по разработке" href="development.html" />
+    <link rel="prev" title="Extreme Programming в проекте" href="xp_practices.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            HW Checker
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Поиск в документации" aria-label="Поиск в документации" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Меню навигации">
+              <p class="caption" role="heading"><span class="caption-text">Общая информация:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Обзор проекта</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Установка</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Руководство пользователя</a></li>
+<li class="toctree-l1"><a class="reference internal" href="features.html">Функциональность системы</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Часто задаваемые вопросы</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Разработка проекта:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="xp_practices.html">Extreme Programming в проекте</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Технологический стек</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#backend-django-5-2-7-python-3-9">Backend: Django 5.2.7 + Python 3.9+</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#django">Почему Django?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#database-sqlite">Database: SQLite</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sqlite">Почему SQLite?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#frontend-django-templates-bootstrap-5">Frontend: Django Templates + Bootstrap 5</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#spa">Почему не SPA?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">Линтеры и форматтеры</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Почему эти инструменты?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#sphinx-google-style-docstrings">Документация: Sphinx + Google Style Docstrings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sphinx">Почему Sphinx?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docstring-google-style">Пример docstring в Google Style</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Руководство по разработке</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cicd.html">CI/CD Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Руководство для разработчиков</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Требования:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Requirenments.html">Техническое задание: Веб-приложение «Homework Checker» (MVP) - v1.2</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Документация:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/models.html">Модели (Models)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/views.html">Представления (Views)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/forms.html">Формы (Forms)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/decorators.html">Декораторы (Decorators)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">История изменений:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">История изменений</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html#id6">Планы на будущее</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Меню навигации для мобильных устройств" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">HW Checker</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Навигация по страницам">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Технологический стек</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tech_stack.rst.txt" rel="nofollow"> Просмотреть исходный код страницы</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>Технологический стек<a class="headerlink" href="#id1" title="Ссылка на этот заголовок"></a></h1>
+<p>Обоснование выбора технологий для проекта.</p>
+<section id="backend-django-5-2-7-python-3-9">
+<h2>Backend: Django 5.2.7 + Python 3.9+<a class="headerlink" href="#backend-django-5-2-7-python-3-9" title="Ссылка на этот заголовок"></a></h2>
+<section id="django">
+<h3>Почему Django?<a class="headerlink" href="#django" title="Ссылка на этот заголовок"></a></h3>
+<dl class="simple">
+<dt>✅ <strong>Скорость разработки</strong></dt><dd><p>Admin panel из коробки, ORM, встроенная аутентификация</p>
+</dd>
+<dt>✅ <strong>Безопасность</strong></dt><dd><p>Защита от SQL-инъекций, XSS, CSRF по умолчанию</p>
+</dd>
+<dt>✅ <strong>XP-friendly</strong></dt><dd><p>Идеально подходит для быстрых итераций и малых релизов</p>
+</dd>
+<dt>✅ <strong>Документация</strong></dt><dd><p>Отличная документация для быстрого старта</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="database-sqlite">
+<h2>Database: SQLite<a class="headerlink" href="#database-sqlite" title="Ссылка на этот заголовок"></a></h2>
+<section id="sqlite">
+<h3>Почему SQLite?<a class="headerlink" href="#sqlite" title="Ссылка на этот заголовок"></a></h3>
+<dl class="simple">
+<dt>✅ <strong>Нулевая настройка</strong></dt><dd><p>Файловая БД, не требует установки сервера</p>
+</dd>
+<dt>✅ <strong>Достаточно для MVP</strong></dt><dd><p>Подходит для демонстрации и разработки</p>
+</dd>
+<dt>✅ <strong>Легко мигрировать</strong></dt><dd><p>При масштабировании легко переключиться на PostgreSQL</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="frontend-django-templates-bootstrap-5">
+<h2>Frontend: Django Templates + Bootstrap 5<a class="headerlink" href="#frontend-django-templates-bootstrap-5" title="Ссылка на этот заголовок"></a></h2>
+<section id="spa">
+<h3>Почему не SPA?<a class="headerlink" href="#spa" title="Ссылка на этот заголовок"></a></h3>
+<dl class="simple">
+<dt>✅ <strong>Простота</strong></dt><dd><p>Server-side rendering без сложной инфраструктуры</p>
+</dd>
+<dt>✅ <strong>Скорость разработки</strong></dt><dd><p>Не нужна сборка, API, состояние на клиенте</p>
+</dd>
+<dt>✅ <strong>XP принцип</strong></dt><dd><p>Самое простое решение, которое работает</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="id2">
+<h2>Линтеры и форматтеры<a class="headerlink" href="#id2" title="Ссылка на этот заголовок"></a></h2>
+<p>Инструменты качества кода:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>flake8==7.1.1         # PEP 8 проверки
+black==24.10.0        # Автоформатирование
+isort==5.13.2         # Сортировка импортов
+pylint==3.3.1         # Глубокий анализ кода
+pylint-django==2.5.5  # Django-специфичные правила
+</pre></div>
+</div>
+<section id="id3">
+<h3>Почему эти инструменты?<a class="headerlink" href="#id3" title="Ссылка на этот заголовок"></a></h3>
+<ul class="simple">
+<li><p>Обеспечивают единый стиль кода (важно для коллективного владения)</p></li>
+<li><p>Автоматизируют code review (находят ошибки до ревьюера)</p></li>
+<li><p>Интегрируются в CI/CD</p></li>
+</ul>
+</section>
+</section>
+<section id="sphinx-google-style-docstrings">
+<h2>Документация: Sphinx + Google Style Docstrings<a class="headerlink" href="#sphinx-google-style-docstrings" title="Ссылка на этот заголовок"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Sphinx==8.1.3                    # Генератор документации
+sphinx-rtd-theme==3.0.2          # Тема ReadTheDocs
+sphinx-autodoc-typehints==2.5.0  # Автодокументация
+</pre></div>
+</div>
+<section id="sphinx">
+<h3>Почему Sphinx?<a class="headerlink" href="#sphinx" title="Ссылка на этот заголовок"></a></h3>
+<dl class="simple">
+<dt>✅ <strong>Генерирует документацию из docstrings</strong></dt><dd><p>DRY принцип - документация из кода</p>
+</dd>
+<dt>✅ <strong>Автоматическое обновление</strong></dt><dd><p>Через GitHub Actions</p>
+</dd>
+<dt>✅ <strong>Профессиональный вид</strong></dt><dd><p>ReadTheDocs тема</p>
+</dd>
+</dl>
+</section>
+<section id="docstring-google-style">
+<h3>Пример docstring в Google Style<a class="headerlink" href="#docstring-google-style" title="Ссылка на этот заголовок"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_course</span><span class="p">(</span><span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">teacher</span><span class="p">:</span> <span class="n">User</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Course</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Создает новый курс с указанным преподавателем.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        title: Название курса.</span>
+<span class="sd">        description: Описание курса.</span>
+<span class="sd">        teacher: Пользователь с ролью преподавателя.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Созданный объект Course.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: Если teacher не является преподавателем.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; teacher = User.objects.get(username=&#39;teacher1&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; course = create_course(&#39;Python&#39;, &#39;Основы Python&#39;, teacher)</span>
+<span class="sd">        &gt;&gt;&gt; print(course.title)</span>
+<span class="sd">        Python</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">teacher</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">is_teacher</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;User must be a teacher&quot;</span><span class="p">)</span>
+
+    <span class="n">course</span> <span class="o">=</span> <span class="n">Course</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="n">description</span>
+    <span class="p">)</span>
+    <span class="n">course</span><span class="o">.</span><span class="n">teachers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">teacher</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">course</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Нижняя область">
+        <a href="xp_practices.html" class="btn btn-neutral float-left" title="Extreme Programming в проекте" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Предыдущая</a>
+        <a href="development.html" class="btn btn-neutral float-right" title="Руководство по разработке" accesskey="n" rel="next">Следующая <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Авторские права 2025, SE-XP Team. </p>
+  </div>
+
+  Собрано при помощи <a href="https://www.sphinx-doc.org/">Sphinx</a> с использованием
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">темы,</a>
+    предоставленной <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

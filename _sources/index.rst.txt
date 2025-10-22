@@ -20,6 +20,24 @@ HW Checker - это веб-приложение на Django для управл�
    overview
    installation
    usage
+   features
+   faq
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Разработка проекта:
+
+   xp_practices
+   tech_stack
+   development
+   cicd
+   contributing
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Требования:
+
+   Requirenments
 
 .. toctree::
    :maxdepth: 2
@@ -32,10 +50,9 @@ HW Checker - это веб-приложение на Django для управл�
 
 .. toctree::
    :maxdepth: 2
-   :caption: Дополнительно:
+   :caption: История изменений:
 
    changelog
-   contributing
 
 
 Быстрый старт

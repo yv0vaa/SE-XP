@@ -1,0 +1,455 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ru" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Функциональность системы &mdash; документация HW Checker 1.0.0</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=e35015f7"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=5b699b7f"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Алфавитный указатель" href="genindex.html" />
+    <link rel="search" title="Поиск" href="search.html" />
+    <link rel="next" title="Часто задаваемые вопросы" href="faq.html" />
+    <link rel="prev" title="Руководство пользователя" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            HW Checker
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Поиск в документации" aria-label="Поиск в документации" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Меню навигации">
+              <p class="caption" role="heading"><span class="caption-text">Общая информация:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Обзор проекта</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Установка</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Руководство пользователя</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Функциональность системы</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">Для студентов</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Мои курсы</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Домашние задания</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">Отправка работ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">Просмотр результатов</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">Для преподавателей</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id8">Управление курсами</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">Создание заданий</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">Проверка работ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">Статистика и отчеты</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id12">Для администраторов</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id13">Полное управление системой</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id14">Безопасность</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id15">Разграничение доступа</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id16">Защита данных</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id17">Статусы и индикаторы</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id18">Статусы домашних заданий (для студента)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id19">Фильтры работ (для преподавателя)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id20">Поддерживаемые форматы файлов</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id21">Загружаемые файлы</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#mvp">Известные ограничения MVP</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id22">Что НЕ реализовано</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id23">Что ЕСТЬ сейчас</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Часто задаваемые вопросы</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Разработка проекта:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="xp_practices.html">Extreme Programming в проекте</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tech_stack.html">Технологический стек</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Руководство по разработке</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cicd.html">CI/CD Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Руководство для разработчиков</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Требования:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Requirenments.html">Техническое задание: Веб-приложение «Homework Checker» (MVP) - v1.2</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Документация:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/models.html">Модели (Models)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/views.html">Представления (Views)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/forms.html">Формы (Forms)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/decorators.html">Декораторы (Decorators)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">История изменений:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">История изменений</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html#id6">Планы на будущее</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Меню навигации для мобильных устройств" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">HW Checker</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Навигация по страницам">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Функциональность системы</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/features.rst.txt" rel="nofollow"> Просмотреть исходный код страницы</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>Функциональность системы<a class="headerlink" href="#id1" title="Ссылка на этот заголовок"></a></h1>
+<section id="id2">
+<h2>Для студентов<a class="headerlink" href="#id2" title="Ссылка на этот заголовок"></a></h2>
+<section id="id3">
+<h3>Мои курсы<a class="headerlink" href="#id3" title="Ссылка на этот заголовок"></a></h3>
+<p>📚 <strong>Список всех курсов</strong></p>
+<ul class="simple">
+<li><p>Отображаются курсы, на которые студент записан</p></li>
+<li><p>Красивые карточки с описанием и статусом</p></li>
+<li><p>Быстрый доступ к заданиям</p></li>
+</ul>
+</section>
+<section id="id4">
+<h3>Домашние задания<a class="headerlink" href="#id4" title="Ссылка на этот заголовок"></a></h3>
+<p>📝 <strong>Управление заданиями</strong></p>
+<ul class="simple">
+<li><p>Список заданий по каждому курсу</p></li>
+<li><p>Срок сдачи для каждого задания</p></li>
+<li><p>Статусы: «Не сдано» / «Сдано» / «Оценено»</p></li>
+<li><p>Детальное описание задания</p></li>
+</ul>
+</section>
+<section id="id5">
+<h3>Отправка работ<a class="headerlink" href="#id5" title="Ссылка на этот заголовок"></a></h3>
+<p>📤 <strong>Сдача решений</strong></p>
+<ul class="simple">
+<li><p>Загрузка файлов с решениями (PDF, ZIP, DOCX и др.)</p></li>
+<li><p>Возможность пересдачи (новый файл заменяет старый)</p></li>
+<li><p>Подтверждение успешной отправки</p></li>
+</ul>
+</section>
+<section id="id6">
+<h3>Просмотр результатов<a class="headerlink" href="#id6" title="Ссылка на этот заголовок"></a></h3>
+<p>⭐ <strong>Оценки и обратная связь</strong></p>
+<ul class="simple">
+<li><p>Оценки от преподавателя</p></li>
+<li><p>Текстовые отзывы и рекомендации</p></li>
+<li><p>Таблица оценок по всем курсам</p></li>
+<li><p>История всех отправок</p></li>
+</ul>
+</section>
+</section>
+<section id="id7">
+<h2>Для преподавателей<a class="headerlink" href="#id7" title="Ссылка на этот заголовок"></a></h2>
+<section id="id8">
+<h3>Управление курсами<a class="headerlink" href="#id8" title="Ссылка на этот заголовок"></a></h3>
+<p>➕ <strong>CRUD операции</strong></p>
+<ul class="simple">
+<li><p>Создание новых курсов через удобный веб-интерфейс</p></li>
+<li><p>Редактирование названия и описания</p></li>
+<li><p>Удаление неактуальных курсов</p></li>
+<li><p>Запись студентов на курс (через интерфейс)</p></li>
+</ul>
+</section>
+<section id="id9">
+<h3>Создание заданий<a class="headerlink" href="#id9" title="Ссылка на этот заголовок"></a></h3>
+<p>📝 <strong>Домашние задания</strong></p>
+<ul class="simple">
+<li><p>Создание заданий в рамках курса</p></li>
+<li><p>Установка сроков сдачи</p></li>
+<li><p>Редактирование описания заданий</p></li>
+<li><p>Удаление заданий</p></li>
+</ul>
+</section>
+<section id="id10">
+<h3>Проверка работ<a class="headerlink" href="#id10" title="Ссылка на этот заголовок"></a></h3>
+<p>📥 <strong>Оценивание студентов</strong></p>
+<ul class="simple">
+<li><p>Просмотр всех отправленных работ</p></li>
+<li><p>Скачивание файлов для проверки</p></li>
+<li><p>Выставление оценок (числовая оценка)</p></li>
+<li><p>Написание текстовых отзывов</p></li>
+<li><p>Фильтрация: «Все» / «Непроверенные» / «Проверенные»</p></li>
+</ul>
+</section>
+<section id="id11">
+<h3>Статистика и отчеты<a class="headerlink" href="#id11" title="Ссылка на этот заголовок"></a></h3>
+<p>📊 <strong>Аналитика</strong></p>
+<ul class="simple">
+<li><p>Количество сданных работ по каждому заданию</p></li>
+<li><p>Список студентов на курсе</p></li>
+<li><p>Статус проверки работ</p></li>
+</ul>
+</section>
+</section>
+<section id="id12">
+<h2>Для администраторов<a class="headerlink" href="#id12" title="Ссылка на этот заголовок"></a></h2>
+<section id="id13">
+<h3>Полное управление системой<a class="headerlink" href="#id13" title="Ссылка на этот заголовок"></a></h3>
+<p>🛠️ <strong>Админ-панель Django</strong></p>
+<ul class="simple">
+<li><p>Полный доступ к админ-панели Django</p></li>
+<li><p>Создание и управление пользователями</p></li>
+<li><p>Назначение ролей (Студент / Преподаватель)</p></li>
+<li><p>Управление всеми курсами и заданиями</p></li>
+<li><p>Просмотр всех отправок в системе</p></li>
+</ul>
+</section>
+</section>
+<section id="id14">
+<h2>Безопасность<a class="headerlink" href="#id14" title="Ссылка на этот заголовок"></a></h2>
+<section id="id15">
+<h3>Разграничение доступа<a class="headerlink" href="#id15" title="Ссылка на этот заголовок"></a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Действие</p></th>
+<th class="head"><p>Студент</p></th>
+<th class="head"><p>Преподаватель</p></th>
+<th class="head"><p>Администратор</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Просмотр своих курсов</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Просмотр чужих курсов</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>Сдача работ</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-odd"><td><p>Просмотр чужих работ</p></td>
+<td><p>❌</p></td>
+<td><p>❌ (только свои курсы)</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>Создание курсов</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Запись студентов</p></td>
+<td><p>❌</p></td>
+<td><p>✅ (свои курсы)</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>Проверка работ</p></td>
+<td><p>❌</p></td>
+<td><p>✅ (свои курсы)</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Доступ в /admin</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id16">
+<h3>Защита данных<a class="headerlink" href="#id16" title="Ссылка на этот заголовок"></a></h3>
+<p>🔐 <strong>Механизмы безопасности</strong></p>
+<ul class="simple">
+<li><p><strong>Аутентификация</strong>: Все защищенные страницы требуют входа</p></li>
+<li><p><strong>Авторизация</strong>: Каждый видит только свои данные</p></li>
+<li><p><strong>Защита от атак</strong>: SQL-инъекции, XSS, CSRF блокируются Django</p></li>
+<li><p><strong>Изоляция</strong>: Студент А не может видеть работы студента Б</p></li>
+<li><p><strong>Изоляция курсов</strong>: Преподаватель А не может управлять курсами преподавателя Б</p></li>
+</ul>
+</section>
+</section>
+<section id="id17">
+<h2>Статусы и индикаторы<a class="headerlink" href="#id17" title="Ссылка на этот заголовок"></a></h2>
+<section id="id18">
+<h3>Статусы домашних заданий (для студента)<a class="headerlink" href="#id18" title="Ссылка на этот заголовок"></a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 62.5%" />
+<col style="width: 18.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Статус</p></th>
+<th class="head"><p>Описание</p></th>
+<th class="head"><p>Цвет</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>🔴 Не сдано</p></td>
+<td><p>Работа еще не загружена</p></td>
+<td><p>Красный</p></td>
+</tr>
+<tr class="row-odd"><td><p>🟡 Сдано</p></td>
+<td><p>Работа загружена, ждет проверки</p></td>
+<td><p>Желтый</p></td>
+</tr>
+<tr class="row-even"><td><p>🟢 Оценено</p></td>
+<td><p>Работа проверена, есть оценка</p></td>
+<td><p>Зеленый</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id19">
+<h3>Фильтры работ (для преподавателя)<a class="headerlink" href="#id19" title="Ссылка на этот заголовок"></a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Фильтр</p></th>
+<th class="head"><p>Описание</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Все работы</p></td>
+<td><p>Показать все отправки</p></td>
+</tr>
+<tr class="row-odd"><td><p>Непроверенные</p></td>
+<td><p>Работы без оценки (требуют проверки)</p></td>
+</tr>
+<tr class="row-even"><td><p>Проверенные</p></td>
+<td><p>Работы с оценкой</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id20">
+<h2>Поддерживаемые форматы файлов<a class="headerlink" href="#id20" title="Ссылка на этот заголовок"></a></h2>
+<section id="id21">
+<h3>Загружаемые файлы<a class="headerlink" href="#id21" title="Ссылка на этот заголовок"></a></h3>
+<p><strong>Поддерживаемые форматы:</strong></p>
+<ul class="simple">
+<li><p>📄 PDF (<code class="docutils literal notranslate"><span class="pre">.pdf</span></code>)</p></li>
+<li><p>📦 Архивы (<code class="docutils literal notranslate"><span class="pre">.zip</span></code>, <code class="docutils literal notranslate"><span class="pre">.rar</span></code>, <code class="docutils literal notranslate"><span class="pre">.7z</span></code>)</p></li>
+<li><p>📝 Документы (<code class="docutils literal notranslate"><span class="pre">.doc</span></code>, <code class="docutils literal notranslate"><span class="pre">.docx</span></code>, <code class="docutils literal notranslate"><span class="pre">.txt</span></code>)</p></li>
+<li><p>📊 Таблицы (<code class="docutils literal notranslate"><span class="pre">.xls</span></code>, <code class="docutils literal notranslate"><span class="pre">.xlsx</span></code>)</p></li>
+<li><p>🖼️ Изображения (<code class="docutils literal notranslate"><span class="pre">.jpg</span></code>, <code class="docutils literal notranslate"><span class="pre">.png</span></code>, <code class="docutils literal notranslate"><span class="pre">.gif</span></code>)</p></li>
+<li><p>💻 Код (<code class="docutils literal notranslate"><span class="pre">.py</span></code>, <code class="docutils literal notranslate"><span class="pre">.java</span></code>, <code class="docutils literal notranslate"><span class="pre">.cpp</span></code>, и др.)</p></li>
+</ul>
+<p><strong>Ограничения:</strong></p>
+<ul class="simple">
+<li><p>Максимальный размер файла определяется настройками Django</p></li>
+<li><p>Один файл на одно задание (новая загрузка заменяет старую)</p></li>
+</ul>
+</section>
+</section>
+<section id="mvp">
+<h2>Известные ограничения MVP<a class="headerlink" href="#mvp" title="Ссылка на этот заголовок"></a></h2>
+<p>Текущая версия является MVP (Minimum Viable Product)</p>
+<section id="id22">
+<h3>Что НЕ реализовано<a class="headerlink" href="#id22" title="Ссылка на этот заголовок"></a></h3>
+<p>(может быть добавлено в будущем):</p>
+<ul class="simple">
+<li><p>❌ Восстановление пароля</p></li>
+<li><p>❌ Email-уведомления о новых заданиях/оценках</p></li>
+<li><p>❌ Групповые работы (несколько студентов на одно задание)</p></li>
+<li><p>❌ Автоматическая проверка кода (автотесты)</p></li>
+<li><p>❌ Экспорт оценок в Excel/CSV</p></li>
+<li><p>❌ Статистика и аналитика (графики прогресса)</p></li>
+<li><p>❌ Комментарии к конкретным строкам кода</p></li>
+<li><p>❌ Интеграция с LMS (Moodle, Canvas)</p></li>
+</ul>
+</section>
+<section id="id23">
+<h3>Что ЕСТЬ сейчас<a class="headerlink" href="#id23" title="Ссылка на этот заголовок"></a></h3>
+<ul class="simple">
+<li><p>✅ Полный цикл: создание курсов → задания → сдача → проверка → оценки</p></li>
+<li><p>✅ Разграничение прав (студент/преподаватель/администратор)</p></li>
+<li><p>✅ Удобный веб-интерфейс</p></li>
+<li><p>✅ Адаптивный дизайн</p></li>
+<li><p>✅ Безопасность данных</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Нижняя область">
+        <a href="usage.html" class="btn btn-neutral float-left" title="Руководство пользователя" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Предыдущая</a>
+        <a href="faq.html" class="btn btn-neutral float-right" title="Часто задаваемые вопросы" accesskey="n" rel="next">Следующая <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Авторские права 2025, SE-XP Team. </p>
+  </div>
+
+  Собрано при помощи <a href="https://www.sphinx-doc.org/">Sphinx</a> с использованием
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">темы,</a>
+    предоставленной <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
