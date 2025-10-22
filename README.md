@@ -1,6 +1,7 @@
 # SE-XP
 
 [![Tests/Flake/Black/isort](https://github.com/yv0vaa/SE-XP/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/yv0vaa/SE-XP/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/yv0vaa/SE-XP/branch/main/graph/badge.svg)](https://codecov.io/gh/yv0vaa/SE-XP)
 [![Documentation Status](https://github.com/yv0vaa/SE-XP/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/yv0vaa/SE-XP/actions/workflows/docs.yml)
 
 ## Система проверки домашних заданий

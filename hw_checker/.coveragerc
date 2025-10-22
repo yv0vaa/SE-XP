@@ -1,0 +1,32 @@
+[run]
+source = assignments
+omit = 
+    */migrations/*
+    */tests/*
+    */test_*.py
+    */__pycache__/*
+    */site-packages/*
+    manage.py
+    hw_checker/wsgi.py
+    hw_checker/asgi.py
+    create_admin.py
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    def __str__
+    raise AssertionError
+    raise NotImplementedError
+    if __name__ == .__main__.:
+    if settings.DEBUG
+    if TYPE_CHECKING:
+    @(abc\.)?abstractmethod
+
+precision = 2
+show_missing = True
+skip_covered = False
+
+[html]
+directory = htmlcov
+

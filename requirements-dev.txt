@@ -5,3 +5,9 @@ isort==5.13.2
 pylint==3.3.1
 pylint-django==2.5.5
 
+# Testing and coverage
+pytest==8.3.3
+pytest-django==4.9.0
+pytest-cov==6.0.0
+coverage==7.6.7
+

@@ -1,0 +1,40 @@
+codecov:
+  require_ci_to_pass: yes
+  notify:
+    wait_for_ci: yes
+
+coverage:
+  precision: 2
+  round: down
+  range: "70...100"
+
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 1%
+        if_ci_failed: error
+
+    patch:
+      default:
+        target: auto
+        threshold: 1%
+        if_ci_failed: error
+
+comment:
+  layout: "reach,diff,flags,tree"
+  behavior: default
+  require_changes: no
+
+ignore:
+  - "hw_checker/*/migrations/**"
+  - "hw_checker/*/tests/**"
+  - "hw_checker/manage.py"
+  - "hw_checker/hw_checker/wsgi.py"
+  - "hw_checker/hw_checker/asgi.py"
+  - "hw_checker/create_admin.py"
+  - "**/test_*.py"
+  - "**/tests.py"
+  - "venv/**"
+  - "*/site-packages/**"
+
