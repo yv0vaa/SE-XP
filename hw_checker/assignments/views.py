@@ -3,8 +3,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
-from django.http import HttpResponseForbidden
-from .models import Homework, Submission, UserProfile
+from .models import Homework, Submission
 from .forms import RegisterForm, HomeworkForm, SubmissionForm, GradeForm
 from .decorators import student_required, teacher_required
 
@@ -15,7 +14,7 @@ def register_view(request):
     """Регистрация нового пользователя"""
     if request.user.is_authenticated:
         return redirect('dashboard')
-    
+
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
@@ -25,7 +24,7 @@ def register_view(request):
             return redirect('dashboard')
     else:
         form = RegisterForm()
-    
+
     return render(request, 'assignments/register.html', {'form': form})
 
 
@@ -33,19 +32,19 @@ def login_view(request):
     """Вход в систему"""
     if request.user.is_authenticated:
         return redirect('dashboard')
-    
+
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
-        
+
         if user is not None:
             login(request, user)
             messages.success(request, f'Добро пожаловать, {user.first_name}!')
             return redirect('dashboard')
         else:
             messages.error(request, 'Неверный логин или пароль')
-    
+
     return render(request, 'assignments/login.html')
 
 
@@ -78,7 +77,7 @@ def student_dashboard(request):
     """Dashboard студента"""
     homeworks = Homework.objects.all().order_by('-created_at')
     my_submissions = Submission.objects.filter(student=request.user)
-    
+
     # Добавляем информацию о том, сдал ли студент каждое ДЗ
     homework_status = []
     for hw in homeworks:
@@ -88,14 +87,14 @@ def student_dashboard(request):
             'submission': submission,
             'is_overdue': hw.due_date < timezone.now(),
         })
-    
+
     context = {
         'homework_status': homework_status,
         'total_homeworks': homeworks.count(),
         'submitted_count': my_submissions.count(),
         'graded_count': my_submissions.filter(grade__isnull=False).count(),
     }
-    
+
     return render(request, 'assignments/student_dashboard.html', context)
 
 
@@ -105,12 +104,12 @@ def homework_detail(request, pk):
     """Детальная страница задания для студента"""
     homework = get_object_or_404(Homework, pk=pk)
     submission = Submission.objects.filter(homework=homework, student=request.user).first()
-    
+
     if request.method == 'POST':
         if submission:
             messages.warning(request, 'Вы уже отправили работу по этому заданию')
             return redirect('homework_detail', pk=pk)
-        
+
         form = SubmissionForm(request.POST, request.FILES)
         if form.is_valid():
             submission = form.save(commit=False)
@@ -121,14 +120,14 @@ def homework_detail(request, pk):
             return redirect('student_dashboard')
     else:
         form = SubmissionForm()
-    
+
     context = {
         'homework': homework,
         'submission': submission,
         'form': form,
         'is_overdue': homework.due_date < timezone.now(),
     }
-    
+
     return render(request, 'assignments/homework_detail.html', context)
 
 
@@ -137,11 +136,11 @@ def homework_detail(request, pk):
 def my_submissions(request):
     """Список всех отправленных работ студента"""
     submissions = Submission.objects.filter(student=request.user).order_by('-submitted_at')
-    
+
     context = {
         'submissions': submissions,
     }
-    
+
     return render(request, 'assignments/my_submissions.html', context)
 
 
@@ -154,7 +153,7 @@ def teacher_dashboard(request):
     homeworks = Homework.objects.all().order_by('-created_at')
     all_submissions = Submission.objects.all().order_by('-submitted_at')
     pending_submissions = all_submissions.filter(grade__isnull=True)
-    
+
     context = {
         'homeworks': homeworks,
         'recent_submissions': all_submissions[:10],
@@ -162,7 +161,7 @@ def teacher_dashboard(request):
         'total_homeworks': homeworks.count(),
         'total_submissions': all_submissions.count(),
     }
-    
+
     return render(request, 'assignments/teacher_dashboard.html', context)
 
 
@@ -178,7 +177,7 @@ def create_homework(request):
             return redirect('teacher_dashboard')
     else:
         form = HomeworkForm()
-    
+
     return render(request, 'assignments/create_homework.html', {'form': form})
 
 
@@ -187,7 +186,7 @@ def create_homework(request):
 def edit_homework(request, pk):
     """Редактирование домашнего задания"""
     homework = get_object_or_404(Homework, pk=pk)
-    
+
     if request.method == 'POST':
         form = HomeworkForm(request.POST, instance=homework)
         if form.is_valid():
@@ -196,7 +195,7 @@ def edit_homework(request, pk):
             return redirect('homework_submissions', pk=pk)
     else:
         form = HomeworkForm(instance=homework)
-    
+
     return render(request, 'assignments/edit_homework.html', {'form': form, 'homework': homework})
 
 
@@ -205,13 +204,13 @@ def edit_homework(request, pk):
 def delete_homework(request, pk):
     """Удаление домашнего задания"""
     homework = get_object_or_404(Homework, pk=pk)
-    
+
     if request.method == 'POST':
         title = homework.title
         homework.delete()
         messages.success(request, f'Задание "{title}" удалено')
         return redirect('teacher_dashboard')
-    
+
     return render(request, 'assignments/delete_homework.html', {'homework': homework})
 
 
@@ -221,7 +220,7 @@ def homework_submissions(request, pk):
     """Список всех отправок по конкретному заданию"""
     homework = get_object_or_404(Homework, pk=pk)
     submissions = Submission.objects.filter(homework=homework).order_by('-submitted_at')
-    
+
     context = {
         'homework': homework,
         'submissions': submissions,
@@ -229,7 +228,7 @@ def homework_submissions(request, pk):
         'graded_count': submissions.filter(grade__isnull=False).count(),
         'pending_count': submissions.filter(grade__isnull=True).count(),
     }
-    
+
     return render(request, 'assignments/homework_submissions.html', context)
 
 
@@ -238,7 +237,7 @@ def homework_submissions(request, pk):
 def grade_submission(request, pk):
     """Проверка и выставление оценки за работу"""
     submission = get_object_or_404(Submission, pk=pk)
-    
+
     if request.method == 'POST':
         form = GradeForm(request.POST, instance=submission)
         if form.is_valid():
@@ -247,12 +246,12 @@ def grade_submission(request, pk):
             return redirect('homework_submissions', pk=submission.homework.pk)
     else:
         form = GradeForm(instance=submission)
-    
+
     context = {
         'submission': submission,
         'form': form,
     }
-    
+
     return render(request, 'assignments/grade_submission.html', context)
 
 
@@ -261,19 +260,19 @@ def grade_submission(request, pk):
 def all_submissions(request):
     """Все отправленные работы (для преподавателя)"""
     submissions = Submission.objects.all().order_by('-submitted_at')
-    
+
     # Фильтрация
     status_filter = request.GET.get('status', 'all')
     if status_filter == 'pending':
         submissions = submissions.filter(grade__isnull=True)
     elif status_filter == 'graded':
         submissions = submissions.filter(grade__isnull=False)
-    
+
     context = {
         'submissions': submissions,
         'status_filter': status_filter,
     }
-    
+
     return render(request, 'assignments/all_submissions.html', context)
 
 

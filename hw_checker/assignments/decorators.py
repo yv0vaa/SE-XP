@@ -38,14 +38,13 @@ def role_required(role):
         def wrapped_view(request, *args, **kwargs):
             if not request.user.is_authenticated:
                 return redirect('login')
-            
+
             if not hasattr(request.user, 'profile'):
                 return redirect('login')
-            
+
             if request.user.profile.role != role:
                 return redirect('dashboard')
-            
+
             return view_func(request, *args, **kwargs)
         return wrapped_view
     return decorator
-

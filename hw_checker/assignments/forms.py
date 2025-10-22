@@ -26,7 +26,7 @@ class RegisterForm(UserCreationForm):
         self.fields['username'].label = 'Логин'
         self.fields['password1'].label = 'Пароль'
         self.fields['password2'].label = 'Подтверждение пароля'
-        
+
         # Добавляем Bootstrap классы
         for field_name, field in self.fields.items():
             if field_name != 'role':
@@ -39,19 +39,20 @@ class RegisterForm(UserCreationForm):
         user.email = self.cleaned_data['email']
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
-        
+
         if commit:
             user.save()
             # Устанавливаем роль в профиле
             user.profile.role = self.cleaned_data['role']
             user.profile.save()
-        
+
         return user
+
 
 
 class HomeworkForm(forms.ModelForm):
     """Форма создания домашнего задания"""
-    
+
     class Meta:
         model = Homework
         fields = ['title', 'description', 'due_date']
@@ -77,9 +78,10 @@ class HomeworkForm(forms.ModelForm):
         }
 
 
+
 class SubmissionForm(forms.ModelForm):
     """Форма отправки работы студентом"""
-    
+
     class Meta:
         model = Submission
         fields = ['solution_file']
@@ -94,9 +96,10 @@ class SubmissionForm(forms.ModelForm):
         }
 
 
+
 class GradeForm(forms.ModelForm):
     """Форма для выставления оценки и отзыва"""
-    
+
     class Meta:
         model = Submission
         fields = ['grade', 'feedback']
@@ -117,4 +120,3 @@ class GradeForm(forms.ModelForm):
             'grade': 'Оценка',
             'feedback': 'Отзыв',
         }
-

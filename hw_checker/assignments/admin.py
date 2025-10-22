@@ -36,7 +36,7 @@ class SubmissionAdmin(admin.ModelAdmin):
     search_fields = ['student__username', 'homework__title']
     ordering = ['-submitted_at']
     readonly_fields = ['submitted_at']
-    
+
     fieldsets = (
         ('Информация о работе', {
             'fields': ('homework', 'student', 'solution_file', 'submitted_at')
