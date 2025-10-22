@@ -192,10 +192,18 @@
         <span class="n">model</span> <span class="o">=</span> <span class="n">Submission</span>
         <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;solution_file&quot;</span><span class="p">]</span>
         <span class="n">widgets</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;solution_file&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">FileInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control&quot;</span><span class="p">,</span> <span class="s2">&quot;accept&quot;</span><span class="p">:</span> <span class="s2">&quot;.pdf,.doc,.docx,.txt,.py,.zip&quot;</span><span class="p">}),</span>
+            <span class="s2">&quot;solution_file&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">FileInput</span><span class="p">(</span>
+                <span class="n">attrs</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;accept&quot;</span><span class="p">:</span> <span class="s2">&quot;.pdf,.doc,.docx,.txt,.py,.zip,.jpg,.jpeg,.png&quot;</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">),</span>
         <span class="p">}</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;solution_file&quot;</span><span class="p">:</span> <span class="s2">&quot;Файл с решением&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;solution_file&quot;</span><span class="p">:</span> <span class="s2">&quot;Файл с решением (макс. 10МБ)&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">help_texts</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;solution_file&quot;</span><span class="p">:</span> <span class="s2">&quot;Разрешенные форматы: PDF, DOC, DOCX, TXT, PY, ZIP, JPG, JPEG, PNG. Максимальный размер: 10МБ&quot;</span><span class="p">,</span>
         <span class="p">}</span></div>
 </div>
 

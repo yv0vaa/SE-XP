@@ -52,6 +52,8 @@
 <p class="caption" role="heading"><span class="caption-text">API Документация:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Модели (Models)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.models.validate_file_size"><code class="docutils literal notranslate"><span class="pre">validate_file_size()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.models.validate_file_extension"><code class="docutils literal notranslate"><span class="pre">validate_file_extension()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#assignments.models.UserProfile"><code class="docutils literal notranslate"><span class="pre">UserProfile</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#assignments.models.UserProfile.ROLE_CHOICES"><code class="docutils literal notranslate"><span class="pre">UserProfile.ROLE_CHOICES</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#assignments.models.UserProfile.user"><code class="docutils literal notranslate"><span class="pre">UserProfile.user</span></code></a></li>
@@ -168,6 +170,34 @@
 - Профилей пользователей (студенты и преподаватели)
 - Домашних заданий
 - Отправленных работ студентов</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.models.validate_file_size">
+<span class="sig-prename descclassname"><span class="pre">assignments.models.</span></span><span class="sig-name descname"><span class="pre">validate_file_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/models.html#validate_file_size"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.models.validate_file_size" title="Ссылка на это определение"></a></dt>
+<dd><p>Валидатор размера файла (максимум 10 МБ).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> – Загружаемый файл</p>
+</dd>
+<dt class="field-even">Исключение<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValidationError</strong> – Если размер файла превышает лимит</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.models.validate_file_extension">
+<span class="sig-prename descclassname"><span class="pre">assignments.models.</span></span><span class="sig-name descname"><span class="pre">validate_file_extension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/models.html#validate_file_extension"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.models.validate_file_extension" title="Ссылка на это определение"></a></dt>
+<dd><p>Валидатор расширения файла.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> – Загружаемый файл</p>
+</dd>
+<dt class="field-even">Исключение<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValidationError</strong> – Если расширение файла не разрешено</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="assignments.models.UserProfile">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">assignments.models.</span></span><span class="sig-name descname"><span class="pre">UserProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/models.html#UserProfile"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.models.UserProfile" title="Ссылка на это определение"></a></dt>
