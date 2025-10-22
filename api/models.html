@@ -119,6 +119,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#userprofile">UserProfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#course">Course</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#homework">Homework</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#submission">Submission</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id1">Сигналы</a></li>
@@ -679,6 +680,133 @@ object the first time, the query is executed.</p>
 </dd></dl>
 
 </section>
+<section id="course">
+<h2>Course<a class="headerlink" href="#course" title="Ссылка на этот заголовок"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">assignments.models.</span></span><span class="sig-name descname"><span class="pre">Course</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/models.html#Course"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Базовые классы: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Модель курса</p>
+<p>Модель курса. Курсы содержат домашние задания и связывают преподавателей со студентами.</p>
+<p><strong>Поля:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">title</span></code> - название курса</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">description</span></code> - описание курса</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">teachers</span></code> - преподаватели курса (ManyToMany с User)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">students</span></code> - студенты, записанные на курс (ManyToMany с User)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">created_at</span></code> - дата создания (автоматически)</p></li>
+</ul>
+<p><strong>Связи:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">teaching_courses</span></code> - обратная связь от User к курсам, которые он преподает</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">enrolled_courses</span></code> - обратная связь от User к курсам, на которые он записан</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">homeworks</span></code> - все домашние задания этого курса</p></li>
+</ul>
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">title</span></span></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">description</span></span></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">teachers</span></span></dt>
+<dd><p>Accessor to the related objects manager on the forward and reverse sides of
+a many-to-many relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">toppings</span> <span class="o">=</span> <span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Topping</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;pizzas&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Pizza.toppings</span></code> and <code class="docutils literal notranslate"><span class="pre">Topping.pizzas</span></code> are <code class="docutils literal notranslate"><span class="pre">ManyToManyDescriptor</span></code>
+instances.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">students</span></span></dt>
+<dd><p>Accessor to the related objects manager on the forward and reverse sides of
+a many-to-many relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">toppings</span> <span class="o">=</span> <span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Topping</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;pizzas&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Pizza.toppings</span></code> and <code class="docutils literal notranslate"><span class="pre">Topping.pizzas</span></code> are <code class="docutils literal notranslate"><span class="pre">ManyToManyDescriptor</span></code>
+instances.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">created_at</span></span></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span></dt>
+<dd><p>Базовые классы: <a class="reference external" href="https://docs.djangoproject.com/en/5.0/ref/exceptions/#django.core.exceptions.ObjectDoesNotExist" title="(в Django v5.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span></dt>
+<dd><p>Базовые классы: <a class="reference external" href="https://docs.djangoproject.com/en/5.0/ref/exceptions/#django.core.exceptions.MultipleObjectsReturned" title="(в Django v5.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">get_next_by_created_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">get_previous_by_created_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">homeworks</span></span></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">id</span></span></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="homework">
 <h2>Homework<a class="headerlink" href="#homework" title="Ссылка на этот заголовок"></a></h2>
 <dl class="py class">
@@ -686,13 +814,18 @@ object the first time, the query is executed.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">assignments.models.</span></span><span class="sig-name descname"><span class="pre">Homework</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/models.html#Homework"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
 <dd><p>Базовые классы: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
 <p>Модель домашнего задания</p>
-<p>Модель домашнего задания.</p>
+<p>Модель домашнего задания. Каждое задание принадлежит конкретному курсу.</p>
 <p><strong>Поля:</strong></p>
 <ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">course</span></code> - курс, к которому относится задание (ForeignKey)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">title</span></code> - заголовок задания</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">description</span></code> - описание задания</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">due_date</span></code> - срок сдачи</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">created_at</span></code> - дата создания (автоматически)</p></li>
+</ul>
+<p><strong>Связи:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">submissions</span></code> - все отправленные работы по этому заданию</p></li>
 </ul>
 <dl class="py attribute">
 <dt class="sig sig-object py">

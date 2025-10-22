@@ -52,7 +52,8 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#id5">Архитектура</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id6">Технологии</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">Организация курсов</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">Технологии</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Установка</a></li>
@@ -104,19 +105,25 @@
 <section id="id3">
 <h3>Для студентов<a class="headerlink" href="#id3" title="Ссылка на этот заголовок"></a></h3>
 <ul class="simple">
-<li><p>Просмотр списка домашних заданий</p></li>
-<li><p>Отправка решений</p></li>
+<li><p>Просмотр списка курсов, на которые записан</p></li>
+<li><p>Просмотр домашних заданий по каждому курсу</p></li>
+<li><p>Отправка решений (файлы)</p></li>
 <li><p>Просмотр оценок и комментариев преподавателя</p></li>
 <li><p>Отслеживание статуса выполнения заданий</p></li>
+<li><p>Таблица оценок по всем курсам</p></li>
 </ul>
 </section>
 <section id="id4">
 <h3>Для преподавателей<a class="headerlink" href="#id4" title="Ссылка на этот заголовок"></a></h3>
 <ul class="simple">
-<li><p>Создание домашних заданий</p></li>
+<li><p>Создание и управление курсами</p></li>
+<li><p>Запись студентов на курсы</p></li>
+<li><p>Создание домашних заданий в рамках курса</p></li>
+<li><p>Редактирование заданий и курсов</p></li>
 <li><p>Просмотр всех отправленных работ</p></li>
 <li><p>Выставление оценок</p></li>
 <li><p>Добавление комментариев к работам студентов</p></li>
+<li><p>Фильтрация работ по статусу (все/непроверенные/проверенные)</p></li>
 </ul>
 </section>
 </section>
@@ -125,34 +132,66 @@
 <p>Проект состоит из следующих компонентов:</p>
 <dl class="simple">
 <dt><strong>Models (Модели)</strong></dt><dd><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">UserProfile</span></code> - профили пользователей с ролями</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Homework</span></code> - домашние задания</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Submission</span></code> - отправленные работы</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">UserProfile</span></code> - профили пользователей с ролями (студент/преподаватель)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Course</span></code> - курсы с преподавателями и студентами</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Homework</span></code> - домашние задания в рамках курса</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Submission</span></code> - отправленные работы студентов</p></li>
 </ul>
 </dd>
 <dt><strong>Views (Представления)</strong></dt><dd><ul class="simple">
 <li><p>Представления для авторизации</p></li>
-<li><p>Dashboard для студентов</p></li>
-<li><p>Dashboard для преподавателей</p></li>
-<li><p>CRUD операции для заданий и работ</p></li>
+<li><p>Dashboard для студентов (список курсов)</p></li>
+<li><p>Dashboard для преподавателей (список своих курсов)</p></li>
+<li><p>CRUD операции для курсов</p></li>
+<li><p>CRUD операции для заданий</p></li>
+<li><p>Управление студентами курса</p></li>
+<li><p>Отправка и проверка работ</p></li>
 </ul>
 </dd>
 <dt><strong>Forms (Формы)</strong></dt><dd><ul class="simple">
-<li><p>Регистрация пользователей</p></li>
-<li><p>Создание заданий</p></li>
-<li><p>Отправка решений</p></li>
-<li><p>Выставление оценок</p></li>
+<li><p>Регистрация пользователей с выбором роли</p></li>
+<li><p>Создание и редактирование домашних заданий</p></li>
+<li><p>Отправка решений (файловая загрузка)</p></li>
+<li><p>Выставление оценок и отзывов</p></li>
 </ul>
 </dd>
 <dt><strong>Decorators (Декораторы)</strong></dt><dd><ul class="simple">
-<li><p>Проверка роли пользователя</p></li>
-<li><p>Контроль доступа</p></li>
+<li><p>Проверка роли пользователя (<code class="docutils literal notranslate"><span class="pre">student_required</span></code>, <code class="docutils literal notranslate"><span class="pre">teacher_required</span></code>)</p></li>
+<li><p>Контроль доступа к курсам и заданиям</p></li>
 </ul>
 </dd>
 </dl>
 </section>
 <section id="id6">
-<h2>Технологии<a class="headerlink" href="#id6" title="Ссылка на этот заголовок"></a></h2>
+<h2>Организация курсов<a class="headerlink" href="#id6" title="Ссылка на этот заголовок"></a></h2>
+<p>Система построена на курсовой модели:</p>
+<ol class="arabic simple">
+<li><p><strong>Преподаватель</strong> создает курс и может:</p>
+<ul class="simple">
+<li><p>Управлять описанием курса</p></li>
+<li><p>Записывать студентов на курс</p></li>
+<li><p>Создавать домашние задания в рамках курса</p></li>
+<li><p>Видеть только свои курсы</p></li>
+</ul>
+</li>
+<li><p><strong>Студенты</strong> видят только те курсы, на которые они записаны:</p>
+<ul class="simple">
+<li><p>Список заданий отображается по курсам</p></li>
+<li><p>Каждое задание связано с конкретным курсом</p></li>
+<li><p>Таблица оценок организована по курсам</p></li>
+</ul>
+</li>
+<li><p><strong>Домашние задания</strong> всегда принадлежат курсу:</p>
+<ul class="simple">
+<li><p>При создании задания указывается курс</p></li>
+<li><p>Студенты могут отправить работу только один раз</p></li>
+<li><p>Преподаватель может проверить все работы по заданию</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="id7">
+<h2>Технологии<a class="headerlink" href="#id7" title="Ссылка на этот заголовок"></a></h2>
 <ul class="simple">
 <li><p><strong>Django 5.2</strong> - основной фреймворк</p></li>
 <li><p><strong>SQLite</strong> - база данных (по умолчанию)</p></li>

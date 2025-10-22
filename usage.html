@@ -54,17 +54,19 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#id5">Работа для студентов</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id6">Просмотр заданий</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">Просмотр курсов и заданий</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id7">Отправка решения</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id8">Просмотр результатов</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#id9">Работа для преподавателей</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id10">Создание домашнего задания</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id11">Просмотр работ студентов</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id12">Проверка и выставление оценки</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id13">Редактирование задания</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id14">Удаление задания</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">Создание курса</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">Запись студентов на курс</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">Создание домашнего задания</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">Просмотр работ студентов</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">Проверка и выставление оценки</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id15">Редактирование курса</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id16">Редактирование задания</a></li>
 </ul>
 </li>
 </ul>
@@ -142,23 +144,33 @@
 <section id="id5">
 <h2>Работа для студентов<a class="headerlink" href="#id5" title="Ссылка на этот заголовок"></a></h2>
 <section id="id6">
-<h3>Просмотр заданий<a class="headerlink" href="#id6" title="Ссылка на этот заголовок"></a></h3>
-<p>На главной странице студента отображаются:</p>
+<h3>Просмотр курсов и заданий<a class="headerlink" href="#id6" title="Ссылка на этот заголовок"></a></h3>
+<p>На главной странице студента (Dashboard) отображаются:</p>
 <ul class="simple">
-<li><p>Все доступные домашние задания</p></li>
+<li><p>Все курсы, на которые студент записан</p></li>
+<li><p>Статистика по всем курсам</p></li>
+</ul>
+<p>При переходе в конкретный курс отображаются:</p>
+<ul class="simple">
+<li><p>Все домашние задания курса</p></li>
 <li><p>Статус сдачи каждого задания</p></li>
 <li><p>Просроченные задания (отмечены красным)</p></li>
 <li><p>Оценки за проверенные работы</p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Примечание</p>
+<p>Студент видит только те курсы, на которые его записал преподаватель!</p>
+</div>
 </section>
 <section id="id7">
 <h3>Отправка решения<a class="headerlink" href="#id7" title="Ссылка на этот заголовок"></a></h3>
 <ol class="arabic simple">
+<li><p>Откройте курс из списка «Мои курсы»</p></li>
 <li><p>Выберите домашнее задание из списка</p></li>
 <li><p>Нажмите на название задания</p></li>
 <li><p>Прочитайте описание и требования</p></li>
 <li><p>Загрузите файл с решением</p></li>
-<li><p>Нажмите «Отправить»</p></li>
+<li><p>Нажмите «Отправить работу»</p></li>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Примечание</p>
@@ -167,81 +179,125 @@
 </section>
 <section id="id8">
 <h3>Просмотр результатов<a class="headerlink" href="#id8" title="Ссылка на этот заголовок"></a></h3>
-<p>В разделе «Мои работы» вы можете:</p>
+<p><strong>Мои работы</strong> (<code class="docutils literal notranslate"><span class="pre">/student/submissions/</span></code>):</p>
 <ul class="simple">
-<li><p>Просмотреть все отправленные работы</p></li>
-<li><p>Увидеть полученные оценки</p></li>
-<li><p>Прочитать комментарии преподавателя</p></li>
+<li><p>Список всех отправленных работ</p></li>
+<li><p>Статус проверки каждой работы</p></li>
+<li><p>Полученные оценки и комментарии</p></li>
+</ul>
+<p><strong>Мои оценки</strong> (<code class="docutils literal notranslate"><span class="pre">/student/grades/</span></code>):</p>
+<ul class="simple">
+<li><p>Таблица оценок по всем курсам</p></li>
+<li><p>Оценки организованы по курсам и заданиям</p></li>
+<li><p>Видно, какие задания не сданы, на проверке или оценены</p></li>
 </ul>
 </section>
 </section>
 <section id="id9">
 <h2>Работа для преподавателей<a class="headerlink" href="#id9" title="Ссылка на этот заголовок"></a></h2>
 <section id="id10">
-<h3>Создание домашнего задания<a class="headerlink" href="#id10" title="Ссылка на этот заголовок"></a></h3>
+<h3>Создание курса<a class="headerlink" href="#id10" title="Ссылка на этот заголовок"></a></h3>
 <ol class="arabic simple">
-<li><p>На главной странице нажмите «Создать задание»</p></li>
+<li><p>На главной странице (Dashboard) нажмите «Создать курс»</p></li>
 <li><p>Заполните форму:</p>
 <ul class="simple">
-<li><p>Заголовок</p></li>
-<li><p>Описание задания</p></li>
-<li><p>Срок сдачи</p></li>
+<li><p>Название курса</p></li>
+<li><p>Описание курса</p></li>
 </ul>
 </li>
-<li><p>Нажмите «Создать»</p></li>
+<li><p>Нажмите «Создать курс»</p></li>
 </ol>
+<div class="admonition note">
+<p class="admonition-title">Примечание</p>
+<p>После создания курса вы будете автоматически назначены его преподавателем.</p>
+</div>
 </section>
 <section id="id11">
-<h3>Просмотр работ студентов<a class="headerlink" href="#id11" title="Ссылка на этот заголовок"></a></h3>
-<p>Есть два способа просмотра работ:</p>
-<p><strong>По конкретному заданию:</strong></p>
+<h3>Запись студентов на курс<a class="headerlink" href="#id11" title="Ссылка на этот заголовок"></a></h3>
 <ol class="arabic simple">
-<li><p>Выберите задание из списка</p></li>
-<li><p>Нажмите «Просмотреть работы»</p></li>
-<li><p>Увидите список всех отправленных работ по этому заданию</p></li>
-</ol>
-<p><strong>Все работы:</strong></p>
-<ol class="arabic simple">
-<li><p>Нажмите «Все работы» в меню</p></li>
-<li><p>Можно отфильтровать:</p>
-<ul class="simple">
-<li><p>Все работы</p></li>
-<li><p>Непроверенные</p></li>
-<li><p>Проверенные</p></li>
-</ul>
-</li>
+<li><p>Откройте курс из списка «Мои курсы»</p></li>
+<li><p>Нажмите кнопку «Студенты»</p></li>
+<li><p>Отметьте студентов, которых хотите записать на курс</p></li>
+<li><p>Нажмите «Сохранить список студентов»</p></li>
 </ol>
 </section>
 <section id="id12">
-<h3>Проверка и выставление оценки<a class="headerlink" href="#id12" title="Ссылка на этот заголовок"></a></h3>
+<h3>Создание домашнего задания<a class="headerlink" href="#id12" title="Ссылка на этот заголовок"></a></h3>
 <ol class="arabic simple">
-<li><p>Выберите работу студента</p></li>
-<li><p>Нажмите «Проверить»</p></li>
-<li><p>Скачайте и просмотрите файл с решением</p></li>
-<li><p>Введите оценку (число)</p></li>
-<li><p>Добавьте комментарий (опционально)</p></li>
-<li><p>Нажмите «Сохранить»</p></li>
+<li><p>Откройте курс из списка «Мои курсы»</p></li>
+<li><p>Нажмите «Создать задание»</p></li>
+<li><p>Заполните форму:</p>
+<ul class="simple">
+<li><p>Название задания</p></li>
+<li><p>Описание задания</p></li>
+<li><p>Срок сдачи (дата и время)</p></li>
+</ul>
+</li>
+<li><p>Нажмите «Создать задание»</p></li>
 </ol>
+<div class="admonition note">
+<p class="admonition-title">Примечание</p>
+<p>Задание будет доступно только студентам, записанным на этот курс.</p>
+</div>
 </section>
 <section id="id13">
-<h3>Редактирование задания<a class="headerlink" href="#id13" title="Ссылка на этот заголовок"></a></h3>
+<h3>Просмотр работ студентов<a class="headerlink" href="#id13" title="Ссылка на этот заголовок"></a></h3>
+<p>Есть два способа просмотра работ:</p>
+<p><strong>По конкретному заданию:</strong></p>
 <ol class="arabic simple">
-<li><p>Выберите задание</p></li>
-<li><p>Нажмите «Редактировать»</p></li>
-<li><p>Внесите изменения</p></li>
-<li><p>Нажмите «Сохранить»</p></li>
+<li><p>Откройте курс из списка «Мои курсы»</p></li>
+<li><p>Выберите задание из списка</p></li>
+<li><p>Нажмите «Работы»</p></li>
+<li><p>Увидите список всех отправленных работ по этому заданию</p></li>
+</ol>
+<p><strong>Все работы по всем курсам:</strong></p>
+<ol class="arabic simple">
+<li><p>В навигационном меню нажмите «Все работы» (<code class="docutils literal notranslate"><span class="pre">/teacher/submissions/</span></code>)</p></li>
+<li><p>Можно отфильтровать по статусу:</p>
+<ul class="simple">
+<li><p>Все работы</p></li>
+<li><p>Непроверенные (<code class="docutils literal notranslate"><span class="pre">?status=pending</span></code>)</p></li>
+<li><p>Проверенные (<code class="docutils literal notranslate"><span class="pre">?status=graded</span></code>)</p></li>
+</ul>
+</li>
 </ol>
 </section>
 <section id="id14">
-<h3>Удаление задания<a class="headerlink" href="#id14" title="Ссылка на этот заголовок"></a></h3>
+<h3>Проверка и выставление оценки<a class="headerlink" href="#id14" title="Ссылка на этот заголовок"></a></h3>
 <ol class="arabic simple">
-<li><p>Выберите задание</p></li>
-<li><p>Нажмите «Удалить»</p></li>
-<li><p>Подтвердите удаление</p></li>
+<li><p>Выберите работу студента из списка работ</p></li>
+<li><p>Нажмите «Проверить»</p></li>
+<li><p>Скачайте и просмотрите файл с решением (кнопка «Скачать файл»)</p></li>
+<li><p>Введите оценку (число от 0 до 100)</p></li>
+<li><p>Добавьте отзыв/комментарий (опционально)</p></li>
+<li><p>Нажмите «Сохранить оценку»</p></li>
 </ol>
+</section>
+<section id="id15">
+<h3>Редактирование курса<a class="headerlink" href="#id15" title="Ссылка на этот заголовок"></a></h3>
+<ol class="arabic simple">
+<li><p>Откройте курс из списка «Мои курсы»</p></li>
+<li><p>Нажмите «Редактировать курс»</p></li>
+<li><p>Внесите изменения в название или описание</p></li>
+<li><p>Нажмите «Сохранить изменения»</p></li>
+</ol>
+</section>
+<section id="id16">
+<h3>Редактирование задания<a class="headerlink" href="#id16" title="Ссылка на этот заголовок"></a></h3>
+<ol class="arabic simple">
+<li><p>Откройте курс из списка «Мои курсы»</p></li>
+<li><p>Найдите задание в списке</p></li>
+<li><p>Нажмите «Редактировать» рядом с заданием</p></li>
+<li><p>Внесите изменения</p></li>
+<li><p>Нажмите «Сохранить изменения»</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Примечание</p>
+<p>Преподаватель может управлять только своими курсами и заданиями.</p>
+</div>
 <div class="admonition warning">
 <p class="admonition-title">Предупреждение</p>
-<p>При удалении задания будут удалены все связанные с ним работы студентов!</p>
+<p>При удалении курса через админ-панель будут удалены все связанные с ним задания и работы студентов!</p>
 </div>
 </section>
 </section>

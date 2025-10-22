@@ -90,7 +90,9 @@
 <h1>Документация проекта HW Checker<a class="headerlink" href="#hw-checker" title="Ссылка на этот заголовок"></a></h1>
 <p>Добро пожаловать в документацию системы проверки домашних заданий!</p>
 <p>HW Checker - это веб-приложение на Django для управления домашними заданиями,
-их сдачи студентами и проверки преподавателями.</p>
+организованными по курсам. Преподаватели создают курсы, записывают на них студентов
+и создают домашние задания. Студенты сдают работы, а преподаватели проверяют их
+и выставляют оценки.</p>
 <section id="id1">
 <h2>Содержание<a class="headerlink" href="#id1" title="Ссылка на этот заголовок"></a></h2>
 <div class="toctree-wrapper compound">
@@ -99,7 +101,8 @@
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Обзор проекта</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="overview.html#id2">Основные возможности</a></li>
 <li class="toctree-l2"><a class="reference internal" href="overview.html#id5">Архитектура</a></li>
-<li class="toctree-l2"><a class="reference internal" href="overview.html#id6">Технологии</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#id6">Организация курсов</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#id7">Технологии</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Установка</a><ul>
@@ -127,6 +130,7 @@
 <li class="toctree-l2"><a class="reference internal" href="api/models.html#assignments.models.Homework"><code class="docutils literal notranslate"><span class="pre">Homework</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/models.html#assignments.models.Submission"><code class="docutils literal notranslate"><span class="pre">Submission</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/models.html#userprofile">UserProfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models.html#course">Course</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/models.html#homework">Homework</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/models.html#submission">Submission</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/models.html#id1">Сигналы</a></li>
@@ -225,9 +229,13 @@ python<span class="w"> </span>manage.py<span class="w"> </span>runserver
 <h2>Использование<a class="headerlink" href="#id4" title="Ссылка на этот заголовок"></a></h2>
 <ol class="arabic simple">
 <li><p>Зарегистрируйтесь как студент или преподаватель</p></li>
-<li><p>Преподаватель создает домашние задания</p></li>
-<li><p>Студенты отправляют решения</p></li>
-<li><p>Преподаватель проверяет и выставляет оценки</p></li>
+<li><p>Преподаватель создает курс</p></li>
+<li><p>Преподаватель записывает студентов на курс</p></li>
+<li><p>Преподаватель создает домашние задания в рамках курса</p></li>
+<li><p>Студенты видят свои курсы и задания</p></li>
+<li><p>Студенты отправляют решения (файлы)</p></li>
+<li><p>Преподаватель проверяет работы и выставляет оценки</p></li>
+<li><p>Студенты видят оценки и отзывы в таблице оценок</p></li>
 </ol>
 </section>
 </section>
