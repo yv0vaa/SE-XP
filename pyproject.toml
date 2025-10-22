@@ -1,0 +1,36 @@
+[tool.black]
+line-length = 127
+target-version = ['py310', 'py311', 'py312']
+extend-exclude = '''
+/(
+  | migrations
+  | __pycache__
+  | .venv
+  | .env
+  | venv
+  | env
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 127
+skip_glob = ["*/migrations/*", "*/__pycache__/*"]
+known_django = ["django"]
+sections = ["FUTURE", "STDLIB", "DJANGO", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+
+[tool.pylint.main]
+load-plugins = ["pylint_django"]
+django-settings-module = "hw_checker.settings"
+
+[tool.pylint.messages_control]
+disable = [
+    "C0114",  # missing-module-docstring
+    "C0115",  # missing-class-docstring
+    "C0116",  # missing-function-docstring
+    "R0903",  # too-few-public-methods
+]
+
+[tool.pylint.format]
+max-line-length = 127
+
