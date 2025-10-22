@@ -118,8 +118,6 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/views.html#assignments.views.all_submissions">all_submissions() (в модуле assignments.views)</a>
-</li>
       <li>
     assignments.decorators
 
@@ -172,14 +170,30 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/views.html#assignments.views.create_homework">create_homework() (в модуле assignments.views)</a>
+      <li><a href="api/models.html#assignments.models.Homework.course">course (атрибут assignments.models.Homework)</a>
+</li>
+      <li><a href="api/models.html#assignments.models.Course">Course (класс в assignments.models)</a>
+</li>
+      <li><a href="api/models.html#assignments.models.Course.DoesNotExist">Course.DoesNotExist</a>
+</li>
+      <li><a href="api/models.html#assignments.models.Course.MultipleObjectsReturned">Course.MultipleObjectsReturned</a>
+</li>
+      <li><a href="api/views.html#assignments.views.course_detail">course_detail() (в модуле assignments.views)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/models.html#assignments.models.Homework.course_id">course_id (атрибут assignments.models.Homework)</a>
+</li>
+      <li><a href="api/views.html#assignments.views.create_course">create_course() (в модуле assignments.views)</a>
+</li>
       <li><a href="api/models.html#assignments.models.create_user_profile">create_user_profile() (в модуле assignments.models)</a>
 </li>
-      <li><a href="api/models.html#assignments.models.Homework.created_at">created_at (атрибут assignments.models.Homework)</a>
+      <li><a href="api/models.html#assignments.models.Course.created_at">created_at (атрибут assignments.models.Course)</a>
+
+      <ul>
+        <li><a href="api/models.html#assignments.models.Homework.created_at">(атрибут assignments.models.Homework)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -200,10 +214,12 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/views.html#assignments.views.delete_homework">delete_homework() (в модуле assignments.views)</a>
+      <li><a href="api/models.html#assignments.models.Course.description">description (атрибут assignments.models.Course)</a>
+
+      <ul>
+        <li><a href="api/models.html#assignments.models.Homework.description">(атрибут assignments.models.Homework)</a>
 </li>
-      <li><a href="api/models.html#assignments.models.Homework.description">description (атрибут assignments.models.Homework)</a>
-</li>
+      </ul></li>
       <li><a href="api/models.html#assignments.models.Homework.due_date">due_date (атрибут assignments.models.Homework)</a>
 </li>
   </ul></td>
@@ -212,7 +228,7 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/views.html#assignments.views.edit_homework">edit_homework() (в модуле assignments.views)</a>
+      <li><a href="api/views.html#assignments.views.edit_course">edit_course() (в модуле assignments.views)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -238,25 +254,31 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/models.html#assignments.models.Homework.get_next_by_created_at">get_next_by_created_at() (метод assignments.models.Homework)</a>
+      <li><a href="api/models.html#assignments.models.Course.get_next_by_created_at">get_next_by_created_at() (метод assignments.models.Course)</a>
+
+      <ul>
+        <li><a href="api/models.html#assignments.models.Homework.get_next_by_created_at">(метод assignments.models.Homework)</a>
 </li>
+      </ul></li>
       <li><a href="api/models.html#assignments.models.Homework.get_next_by_due_date">get_next_by_due_date() (метод assignments.models.Homework)</a>
 </li>
       <li><a href="api/models.html#assignments.models.Submission.get_next_by_submitted_at">get_next_by_submitted_at() (метод assignments.models.Submission)</a>
 </li>
-      <li><a href="api/models.html#assignments.models.Homework.get_previous_by_created_at">get_previous_by_created_at() (метод assignments.models.Homework)</a>
+      <li><a href="api/models.html#assignments.models.Course.get_previous_by_created_at">get_previous_by_created_at() (метод assignments.models.Course)</a>
+
+      <ul>
+        <li><a href="api/models.html#assignments.models.Homework.get_previous_by_created_at">(метод assignments.models.Homework)</a>
 </li>
-      <li><a href="api/models.html#assignments.models.Homework.get_previous_by_due_date">get_previous_by_due_date() (метод assignments.models.Homework)</a>
-</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/models.html#assignments.models.Homework.get_previous_by_due_date">get_previous_by_due_date() (метод assignments.models.Homework)</a>
+</li>
       <li><a href="api/models.html#assignments.models.Submission.get_previous_by_submitted_at">get_previous_by_submitted_at() (метод assignments.models.Submission)</a>
 </li>
       <li><a href="api/models.html#assignments.models.UserProfile.get_role_display">get_role_display() (метод assignments.models.UserProfile)</a>
 </li>
       <li><a href="api/models.html#assignments.models.Submission.grade">grade (атрибут assignments.models.Submission)</a>
-</li>
-      <li><a href="api/views.html#assignments.views.grade_submission">grade_submission() (в модуле assignments.views)</a>
 </li>
       <li><a href="api/forms.html#assignments.forms.GradeForm">GradeForm (класс в assignments.forms)</a>
 </li>
@@ -284,11 +306,11 @@
 </li>
       <li><a href="api/models.html#assignments.models.Submission.homework_id">homework_id (атрибут assignments.models.Submission)</a>
 </li>
-      <li><a href="api/views.html#assignments.views.homework_submissions">homework_submissions() (в модуле assignments.views)</a>
-</li>
       <li><a href="api/forms.html#assignments.forms.HomeworkForm">HomeworkForm (класс в assignments.forms)</a>
 </li>
       <li><a href="api/forms.html#assignments.forms.HomeworkForm.Meta">HomeworkForm.Meta (класс в assignments.forms)</a>
+</li>
+      <li><a href="api/models.html#assignments.models.Course.homeworks">homeworks (атрибут assignments.models.Course)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -296,9 +318,11 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/models.html#assignments.models.Homework.id">id (атрибут assignments.models.Homework)</a>
+      <li><a href="api/models.html#assignments.models.Course.id">id (атрибут assignments.models.Course)</a>
 
       <ul>
+        <li><a href="api/models.html#assignments.models.Homework.id">(атрибут assignments.models.Homework)</a>
+</li>
         <li><a href="api/models.html#assignments.models.Submission.id">(атрибут assignments.models.Submission)</a>
 </li>
         <li><a href="api/models.html#assignments.models.UserProfile.id">(атрибут assignments.models.UserProfile)</a>
@@ -336,6 +360,8 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/views.html#assignments.views.manage_students">manage_students() (в модуле assignments.views)</a>
+</li>
       <li><a href="api/forms.html#assignments.forms.GradeForm.media">media (свойство assignments.forms.GradeForm)</a>
 
       <ul>
@@ -371,6 +397,8 @@
         <li><a href="api/views.html#module-assignments.views">assignments.views</a>
 </li>
       </ul></li>
+      <li><a href="api/views.html#assignments.views.my_grades">my_grades() (в модуле assignments.views)</a>
+</li>
       <li><a href="api/views.html#assignments.views.my_submissions">my_submissions() (в модуле assignments.views)</a>
 </li>
   </ul></td>
@@ -379,9 +407,11 @@
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/models.html#assignments.models.Homework.objects">objects (атрибут assignments.models.Homework)</a>
+      <li><a href="api/models.html#assignments.models.Course.objects">objects (атрибут assignments.models.Course)</a>
 
       <ul>
+        <li><a href="api/models.html#assignments.models.Homework.objects">(атрибут assignments.models.Homework)</a>
+</li>
         <li><a href="api/models.html#assignments.models.Submission.objects">(атрибут assignments.models.Submission)</a>
 </li>
         <li><a href="api/models.html#assignments.models.UserProfile.objects">(атрибут assignments.models.UserProfile)</a>
@@ -429,6 +459,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/models.html#assignments.models.Course.students">students (атрибут assignments.models.Course)</a>
+</li>
       <li><a href="api/models.html#assignments.models.Submission">Submission (класс в assignments.models)</a>
 </li>
       <li><a href="api/models.html#assignments.models.Submission.DoesNotExist">Submission.DoesNotExist</a>
@@ -449,14 +481,32 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/views.html#assignments.views.teacher_all_submissions">teacher_all_submissions() (в модуле assignments.views)</a>
+</li>
+      <li><a href="api/views.html#assignments.views.teacher_course_detail">teacher_course_detail() (в модуле assignments.views)</a>
+</li>
+      <li><a href="api/views.html#assignments.views.teacher_create_homework">teacher_create_homework() (в модуле assignments.views)</a>
+</li>
       <li><a href="api/views.html#assignments.views.teacher_dashboard">teacher_dashboard() (в модуле assignments.views)</a>
+</li>
+      <li><a href="api/views.html#assignments.views.teacher_edit_homework">teacher_edit_homework() (в модуле assignments.views)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/views.html#assignments.views.teacher_grade_submission">teacher_grade_submission() (в модуле assignments.views)</a>
+</li>
+      <li><a href="api/views.html#assignments.views.teacher_homework_submissions">teacher_homework_submissions() (в модуле assignments.views)</a>
+</li>
       <li><a href="api/decorators.html#assignments.decorators.teacher_required">teacher_required() (в модуле assignments.decorators)</a>
 </li>
-      <li><a href="api/models.html#assignments.models.Homework.title">title (атрибут assignments.models.Homework)</a>
+      <li><a href="api/models.html#assignments.models.Course.teachers">teachers (атрибут assignments.models.Course)</a>
 </li>
+      <li><a href="api/models.html#assignments.models.Course.title">title (атрибут assignments.models.Course)</a>
+
+      <ul>
+        <li><a href="api/models.html#assignments.models.Homework.title">(атрибут assignments.models.Homework)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 

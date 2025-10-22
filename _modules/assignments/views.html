@@ -103,7 +103,7 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">student_required</span><span class="p">,</span> <span class="n">teacher_required</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.forms</span><span class="w"> </span><span class="kn">import</span> <span class="n">GradeForm</span><span class="p">,</span> <span class="n">HomeworkForm</span><span class="p">,</span> <span class="n">RegisterForm</span><span class="p">,</span> <span class="n">SubmissionForm</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Homework</span><span class="p">,</span> <span class="n">Submission</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Course</span><span class="p">,</span> <span class="n">Homework</span><span class="p">,</span> <span class="n">Submission</span>
 
 <span class="c1"># ============= Авторизация =============</span>
 
@@ -188,9 +188,40 @@
 <span class="nd">@login_required</span>
 <span class="nd">@student_required</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">student_dashboard</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dashboard студента&quot;&quot;&quot;</span>
-    <span class="n">homeworks</span> <span class="o">=</span> <span class="n">Homework</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-created_at&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dashboard студента - список курсов&quot;&quot;&quot;</span>
+    <span class="n">courses</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">enrolled_courses</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+    <span class="c1"># Статистика по всем курсам</span>
+    <span class="n">all_homeworks</span> <span class="o">=</span> <span class="n">Homework</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">course__in</span><span class="o">=</span><span class="n">courses</span><span class="p">)</span>
     <span class="n">my_submissions</span> <span class="o">=</span> <span class="n">Submission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">student</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;courses&quot;</span><span class="p">:</span> <span class="n">courses</span><span class="p">,</span>
+        <span class="s2">&quot;total_courses&quot;</span><span class="p">:</span> <span class="n">courses</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
+        <span class="s2">&quot;total_homeworks&quot;</span><span class="p">:</span> <span class="n">all_homeworks</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
+        <span class="s2">&quot;submitted_count&quot;</span><span class="p">:</span> <span class="n">my_submissions</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
+        <span class="s2">&quot;graded_count&quot;</span><span class="p">:</span> <span class="n">my_submissions</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">grade__isnull</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/student_dashboard.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="course_detail">
+<a class="viewcode-back" href="../../api/views.html#assignments.views.course_detail">[документация]</a>
+<span class="nd">@login_required</span>
+<span class="nd">@student_required</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">course_detail</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Детальная страница курса для студента&quot;&quot;&quot;</span>
+    <span class="n">course</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Course</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+
+    <span class="c1"># Проверка доступа - студент должен быть записан на курс</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">course</span><span class="o">.</span><span class="n">students</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;У вас нет доступа к этому курсу&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;student_dashboard&quot;</span><span class="p">)</span>
+
+    <span class="n">homeworks</span> <span class="o">=</span> <span class="n">course</span><span class="o">.</span><span class="n">homeworks</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-created_at&quot;</span><span class="p">)</span>
+    <span class="n">my_submissions</span> <span class="o">=</span> <span class="n">Submission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">student</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">homework__course</span><span class="o">=</span><span class="n">course</span><span class="p">)</span>
 
     <span class="c1"># Добавляем информацию о том, сдал ли студент каждое ДЗ</span>
     <span class="n">homework_status</span> <span class="o">=</span> <span class="p">[]</span>
@@ -205,13 +236,13 @@
         <span class="p">)</span>
 
     <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;course&quot;</span><span class="p">:</span> <span class="n">course</span><span class="p">,</span>
         <span class="s2">&quot;homework_status&quot;</span><span class="p">:</span> <span class="n">homework_status</span><span class="p">,</span>
         <span class="s2">&quot;total_homeworks&quot;</span><span class="p">:</span> <span class="n">homeworks</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
         <span class="s2">&quot;submitted_count&quot;</span><span class="p">:</span> <span class="n">my_submissions</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
-        <span class="s2">&quot;graded_count&quot;</span><span class="p">:</span> <span class="n">my_submissions</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">grade__isnull</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
     <span class="p">}</span>
 
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/student_dashboard.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/course_detail.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 
 
 
@@ -222,6 +253,12 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">homework_detail</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Детальная страница задания для студента&quot;&quot;&quot;</span>
     <span class="n">homework</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Homework</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+
+    <span class="c1"># Проверка доступа - студент должен быть записан на курс</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">homework</span><span class="o">.</span><span class="n">course</span><span class="o">.</span><span class="n">students</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;У вас нет доступа к этому заданию&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;student_dashboard&quot;</span><span class="p">)</span>
+
     <span class="n">submission</span> <span class="o">=</span> <span class="n">Submission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">homework</span><span class="o">=</span><span class="n">homework</span><span class="p">,</span> <span class="n">student</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
@@ -236,7 +273,7 @@
             <span class="n">submission</span><span class="o">.</span><span class="n">student</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
             <span class="n">submission</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
             <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Работа успешно отправлена!&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;student_dashboard&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;course_detail&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">homework</span><span class="o">.</span><span class="n">course</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">form</span> <span class="o">=</span> <span class="n">SubmissionForm</span><span class="p">()</span>
 
@@ -267,6 +304,40 @@
 
 
 
+<div class="viewcode-block" id="my_grades">
+<a class="viewcode-back" href="../../api/views.html#assignments.views.my_grades">[документация]</a>
+<span class="nd">@login_required</span>
+<span class="nd">@student_required</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">my_grades</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Таблица оценок студента по всем курсам&quot;&quot;&quot;</span>
+    <span class="n">courses</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">enrolled_courses</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+    <span class="n">grades_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">course</span> <span class="ow">in</span> <span class="n">courses</span><span class="p">:</span>
+        <span class="n">homeworks</span> <span class="o">=</span> <span class="n">course</span><span class="o">.</span><span class="n">homeworks</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;due_date&quot;</span><span class="p">)</span>
+        <span class="n">course_grades</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;course&quot;</span><span class="p">:</span> <span class="n">course</span><span class="p">,</span> <span class="s2">&quot;homeworks&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+
+        <span class="k">for</span> <span class="n">hw</span> <span class="ow">in</span> <span class="n">homeworks</span><span class="p">:</span>
+            <span class="n">submission</span> <span class="o">=</span> <span class="n">Submission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">homework</span><span class="o">=</span><span class="n">hw</span><span class="p">,</span> <span class="n">student</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+            <span class="n">course_grades</span><span class="p">[</span><span class="s2">&quot;homeworks&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;homework&quot;</span><span class="p">:</span> <span class="n">hw</span><span class="p">,</span>
+                    <span class="s2">&quot;submission&quot;</span><span class="p">:</span> <span class="n">submission</span><span class="p">,</span>
+                    <span class="s2">&quot;grade&quot;</span><span class="p">:</span> <span class="n">submission</span><span class="o">.</span><span class="n">grade</span> <span class="k">if</span> <span class="n">submission</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;Оценено&quot;</span> <span class="k">if</span> <span class="n">submission</span> <span class="ow">and</span> <span class="n">submission</span><span class="o">.</span><span class="n">grade</span> <span class="k">else</span> <span class="s2">&quot;На проверке&quot;</span> <span class="k">if</span> <span class="n">submission</span> <span class="k">else</span> <span class="s2">&quot;Не сдано&quot;</span><span class="p">),</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+
+        <span class="n">grades_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">course_grades</span><span class="p">)</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;grades_data&quot;</span><span class="p">:</span> <span class="n">grades_data</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/my_grades.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+
 <span class="c1"># ============= Преподаватель =============</span>
 
 
@@ -275,116 +346,236 @@
 <span class="nd">@login_required</span>
 <span class="nd">@teacher_required</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">teacher_dashboard</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dashboard преподавателя&quot;&quot;&quot;</span>
-    <span class="n">homeworks</span> <span class="o">=</span> <span class="n">Homework</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-created_at&quot;</span><span class="p">)</span>
-    <span class="n">all_submissions</span> <span class="o">=</span> <span class="n">Submission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-submitted_at&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dashboard преподавателя - список его курсов&quot;&quot;&quot;</span>
+    <span class="n">courses</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">teaching_courses</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+    <span class="c1"># Статистика</span>
+    <span class="n">all_homeworks</span> <span class="o">=</span> <span class="n">Homework</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">course__in</span><span class="o">=</span><span class="n">courses</span><span class="p">)</span>
+    <span class="n">all_submissions</span> <span class="o">=</span> <span class="n">Submission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">homework__in</span><span class="o">=</span><span class="n">all_homeworks</span><span class="p">)</span>
     <span class="n">pending_submissions</span> <span class="o">=</span> <span class="n">all_submissions</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">grade__isnull</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;homeworks&quot;</span><span class="p">:</span> <span class="n">homeworks</span><span class="p">,</span>
-        <span class="s2">&quot;recent_submissions&quot;</span><span class="p">:</span> <span class="n">all_submissions</span><span class="p">[:</span><span class="mi">10</span><span class="p">],</span>
-        <span class="s2">&quot;pending_count&quot;</span><span class="p">:</span> <span class="n">pending_submissions</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
-        <span class="s2">&quot;total_homeworks&quot;</span><span class="p">:</span> <span class="n">homeworks</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
+        <span class="s2">&quot;courses&quot;</span><span class="p">:</span> <span class="n">courses</span><span class="p">,</span>
+        <span class="s2">&quot;total_courses&quot;</span><span class="p">:</span> <span class="n">courses</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
+        <span class="s2">&quot;total_homeworks&quot;</span><span class="p">:</span> <span class="n">all_homeworks</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
         <span class="s2">&quot;total_submissions&quot;</span><span class="p">:</span> <span class="n">all_submissions</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
+        <span class="s2">&quot;pending_count&quot;</span><span class="p">:</span> <span class="n">pending_submissions</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
     <span class="p">}</span>
 
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/teacher_dashboard.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 
 
 
-<div class="viewcode-block" id="create_homework">
-<a class="viewcode-back" href="../../api/views.html#assignments.views.create_homework">[документация]</a>
+<div class="viewcode-block" id="teacher_course_detail">
+<a class="viewcode-back" href="../../api/views.html#assignments.views.teacher_course_detail">[документация]</a>
 <span class="nd">@login_required</span>
 <span class="nd">@teacher_required</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">create_homework</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Создание нового домашнего задания&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">teacher_course_detail</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Детальная страница курса для преподавателя&quot;&quot;&quot;</span>
+    <span class="n">course</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Course</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+
+    <span class="c1"># Проверка доступа</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">course</span><span class="o">.</span><span class="n">teachers</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;У вас нет доступа к этому курсу&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;teacher_dashboard&quot;</span><span class="p">)</span>
+
+    <span class="n">homeworks</span> <span class="o">=</span> <span class="n">course</span><span class="o">.</span><span class="n">homeworks</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-created_at&quot;</span><span class="p">)</span>
+    <span class="n">all_submissions</span> <span class="o">=</span> <span class="n">Submission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">homework__course</span><span class="o">=</span><span class="n">course</span><span class="p">)</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;course&quot;</span><span class="p">:</span> <span class="n">course</span><span class="p">,</span>
+        <span class="s2">&quot;homeworks&quot;</span><span class="p">:</span> <span class="n">homeworks</span><span class="p">,</span>
+        <span class="s2">&quot;students_count&quot;</span><span class="p">:</span> <span class="n">course</span><span class="o">.</span><span class="n">students</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
+        <span class="s2">&quot;total_submissions&quot;</span><span class="p">:</span> <span class="n">all_submissions</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
+        <span class="s2">&quot;pending_count&quot;</span><span class="p">:</span> <span class="n">all_submissions</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">grade__isnull</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/teacher_course_detail.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="create_course">
+<a class="viewcode-back" href="../../api/views.html#assignments.views.create_course">[документация]</a>
+<span class="nd">@login_required</span>
+<span class="nd">@teacher_required</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_course</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Создание нового курса&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">)</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;description&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">title</span> <span class="ow">and</span> <span class="n">description</span><span class="p">:</span>
+            <span class="n">course</span> <span class="o">=</span> <span class="n">Course</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">)</span>
+            <span class="n">course</span><span class="o">.</span><span class="n">teachers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Курс &quot;</span><span class="si">{</span><span class="n">course</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s1">&quot; успешно создан!&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;teacher_course_detail&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">course</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Заполните все обязательные поля&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/create_course.html&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="edit_course">
+<a class="viewcode-back" href="../../api/views.html#assignments.views.edit_course">[документация]</a>
+<span class="nd">@login_required</span>
+<span class="nd">@teacher_required</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">edit_course</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Редактирование курса&quot;&quot;&quot;</span>
+    <span class="n">course</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Course</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+
+    <span class="c1"># Проверка доступа</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">course</span><span class="o">.</span><span class="n">teachers</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;У вас нет доступа к этому курсу&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;teacher_dashboard&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">course</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="n">course</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+        <span class="n">course</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="n">course</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+        <span class="n">course</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Курс успешно обновлен!&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;teacher_course_detail&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">course</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;course&quot;</span><span class="p">:</span> <span class="n">course</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/edit_course.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="manage_students">
+<a class="viewcode-back" href="../../api/views.html#assignments.views.manage_students">[документация]</a>
+<span class="nd">@login_required</span>
+<span class="nd">@teacher_required</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">manage_students</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Управление студентами курса&quot;&quot;&quot;</span>
+    <span class="n">course</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Course</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+
+    <span class="c1"># Проверка доступа</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">course</span><span class="o">.</span><span class="n">teachers</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;У вас нет доступа к этому курсу&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;teacher_dashboard&quot;</span><span class="p">)</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.auth.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">User</span>
+
+    <span class="n">all_students</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">profile__role</span><span class="o">=</span><span class="s2">&quot;student&quot;</span><span class="p">)</span>
+    <span class="n">current_students</span> <span class="o">=</span> <span class="n">course</span><span class="o">.</span><span class="n">students</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">student_ids</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s2">&quot;students&quot;</span><span class="p">)</span>
+        <span class="n">course</span><span class="o">.</span><span class="n">students</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">id__in</span><span class="o">=</span><span class="n">student_ids</span><span class="p">))</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Список студентов обновлен!&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;teacher_course_detail&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">course</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;course&quot;</span><span class="p">:</span> <span class="n">course</span><span class="p">,</span>
+        <span class="s2">&quot;all_students&quot;</span><span class="p">:</span> <span class="n">all_students</span><span class="p">,</span>
+        <span class="s2">&quot;current_students&quot;</span><span class="p">:</span> <span class="n">current_students</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/manage_students.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="teacher_create_homework">
+<a class="viewcode-back" href="../../api/views.html#assignments.views.teacher_create_homework">[документация]</a>
+<span class="nd">@login_required</span>
+<span class="nd">@teacher_required</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">teacher_create_homework</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">course_pk</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Создание домашнего задания&quot;&quot;&quot;</span>
+    <span class="n">course</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Course</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">course_pk</span><span class="p">)</span>
+
+    <span class="c1"># Проверка доступа</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">course</span><span class="o">.</span><span class="n">teachers</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;У вас нет доступа к этому курсу&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;teacher_dashboard&quot;</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
         <span class="n">form</span> <span class="o">=</span> <span class="n">HomeworkForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
-            <span class="n">homework</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Задание &quot;</span><span class="si">{</span><span class="n">homework</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s1">&quot; успешно создано!&#39;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;teacher_dashboard&quot;</span><span class="p">)</span>
+            <span class="n">homework</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">homework</span><span class="o">.</span><span class="n">course</span> <span class="o">=</span> <span class="n">course</span>
+            <span class="n">homework</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Задание &quot;</span><span class="si">{</span><span class="n">homework</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s1">&quot; создано!&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;teacher_course_detail&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">course</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">form</span> <span class="o">=</span> <span class="n">HomeworkForm</span><span class="p">()</span>
 
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/create_homework.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span></div>
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span> <span class="s2">&quot;course&quot;</span><span class="p">:</span> <span class="n">course</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/teacher_create_homework.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 
 
 
-<div class="viewcode-block" id="edit_homework">
-<a class="viewcode-back" href="../../api/views.html#assignments.views.edit_homework">[документация]</a>
+<div class="viewcode-block" id="teacher_edit_homework">
+<a class="viewcode-back" href="../../api/views.html#assignments.views.teacher_edit_homework">[документация]</a>
 <span class="nd">@login_required</span>
 <span class="nd">@teacher_required</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">edit_homework</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">teacher_edit_homework</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Редактирование домашнего задания&quot;&quot;&quot;</span>
     <span class="n">homework</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Homework</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+
+    <span class="c1"># Проверка доступа</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">homework</span><span class="o">.</span><span class="n">course</span><span class="o">.</span><span class="n">teachers</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;У вас нет доступа к этому заданию&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;teacher_dashboard&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
         <span class="n">form</span> <span class="o">=</span> <span class="n">HomeworkForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">homework</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
             <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
             <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Задание успешно обновлено!&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;homework_submissions&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;teacher_course_detail&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">homework</span><span class="o">.</span><span class="n">course</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">form</span> <span class="o">=</span> <span class="n">HomeworkForm</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">homework</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/edit_homework.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span> <span class="s2">&quot;homework&quot;</span><span class="p">:</span> <span class="n">homework</span><span class="p">})</span></div>
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span> <span class="s2">&quot;homework&quot;</span><span class="p">:</span> <span class="n">homework</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/teacher_edit_homework.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 
 
 
-<div class="viewcode-block" id="delete_homework">
-<a class="viewcode-back" href="../../api/views.html#assignments.views.delete_homework">[документация]</a>
+<div class="viewcode-block" id="teacher_homework_submissions">
+<a class="viewcode-back" href="../../api/views.html#assignments.views.teacher_homework_submissions">[документация]</a>
 <span class="nd">@login_required</span>
 <span class="nd">@teacher_required</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">delete_homework</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Удаление домашнего задания&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">teacher_homework_submissions</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Список отправок по домашнему заданию&quot;&quot;&quot;</span>
     <span class="n">homework</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Homework</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
-        <span class="n">title</span> <span class="o">=</span> <span class="n">homework</span><span class="o">.</span><span class="n">title</span>
-        <span class="n">homework</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
-        <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Задание &quot;</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s1">&quot; удалено&#39;</span><span class="p">)</span>
+    <span class="c1"># Проверка доступа</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">homework</span><span class="o">.</span><span class="n">course</span><span class="o">.</span><span class="n">teachers</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;У вас нет доступа к этому заданию&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;teacher_dashboard&quot;</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/delete_homework.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;homework&quot;</span><span class="p">:</span> <span class="n">homework</span><span class="p">})</span></div>
-
-
-
-<div class="viewcode-block" id="homework_submissions">
-<a class="viewcode-back" href="../../api/views.html#assignments.views.homework_submissions">[документация]</a>
-<span class="nd">@login_required</span>
-<span class="nd">@teacher_required</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">homework_submissions</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Список всех отправок по конкретному заданию&quot;&quot;&quot;</span>
-    <span class="n">homework</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Homework</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
-    <span class="n">submissions</span> <span class="o">=</span> <span class="n">Submission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">homework</span><span class="o">=</span><span class="n">homework</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-submitted_at&quot;</span><span class="p">)</span>
+    <span class="n">submissions</span> <span class="o">=</span> <span class="n">homework</span><span class="o">.</span><span class="n">submissions</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-submitted_at&quot;</span><span class="p">)</span>
 
     <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;homework&quot;</span><span class="p">:</span> <span class="n">homework</span><span class="p">,</span>
         <span class="s2">&quot;submissions&quot;</span><span class="p">:</span> <span class="n">submissions</span><span class="p">,</span>
-        <span class="s2">&quot;total_submissions&quot;</span><span class="p">:</span> <span class="n">submissions</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
+        <span class="s2">&quot;total_count&quot;</span><span class="p">:</span> <span class="n">submissions</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
         <span class="s2">&quot;graded_count&quot;</span><span class="p">:</span> <span class="n">submissions</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">grade__isnull</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
         <span class="s2">&quot;pending_count&quot;</span><span class="p">:</span> <span class="n">submissions</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">grade__isnull</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
     <span class="p">}</span>
 
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/homework_submissions.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/teacher_homework_submissions.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 
 
 
-<div class="viewcode-block" id="grade_submission">
-<a class="viewcode-back" href="../../api/views.html#assignments.views.grade_submission">[документация]</a>
+<div class="viewcode-block" id="teacher_grade_submission">
+<a class="viewcode-back" href="../../api/views.html#assignments.views.teacher_grade_submission">[документация]</a>
 <span class="nd">@login_required</span>
 <span class="nd">@teacher_required</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">grade_submission</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Проверка и выставление оценки за работу&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">teacher_grade_submission</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Проверка и выставление оценки&quot;&quot;&quot;</span>
     <span class="n">submission</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Submission</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+
+    <span class="c1"># Проверка доступа</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">submission</span><span class="o">.</span><span class="n">homework</span><span class="o">.</span><span class="n">course</span><span class="o">.</span><span class="n">teachers</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;У вас нет доступа к этой работе&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;teacher_dashboard&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
         <span class="n">form</span> <span class="o">=</span> <span class="n">GradeForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">submission</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
             <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
             <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Оценка для </span><span class="si">{</span><span class="n">submission</span><span class="o">.</span><span class="n">student</span><span class="o">.</span><span class="n">get_full_name</span><span class="p">()</span><span class="si">}</span><span class="s2"> выставлена!&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;homework_submissions&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">submission</span><span class="o">.</span><span class="n">homework</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;teacher_homework_submissions&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">submission</span><span class="o">.</span><span class="n">homework</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">form</span> <span class="o">=</span> <span class="n">GradeForm</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">submission</span><span class="p">)</span>
 
@@ -393,17 +584,18 @@
         <span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>
     <span class="p">}</span>
 
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/grade_submission.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/teacher_grade_submission.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 
 
 
-<div class="viewcode-block" id="all_submissions">
-<a class="viewcode-back" href="../../api/views.html#assignments.views.all_submissions">[документация]</a>
+<div class="viewcode-block" id="teacher_all_submissions">
+<a class="viewcode-back" href="../../api/views.html#assignments.views.teacher_all_submissions">[документация]</a>
 <span class="nd">@login_required</span>
 <span class="nd">@teacher_required</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">all_submissions</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Все отправленные работы (для преподавателя)&quot;&quot;&quot;</span>
-    <span class="n">submissions</span> <span class="o">=</span> <span class="n">Submission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-submitted_at&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">teacher_all_submissions</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Все отправки преподавателя&quot;&quot;&quot;</span>
+    <span class="n">courses</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">teaching_courses</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">submissions</span> <span class="o">=</span> <span class="n">Submission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">homework__course__in</span><span class="o">=</span><span class="n">courses</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-submitted_at&quot;</span><span class="p">)</span>
 
     <span class="c1"># Фильтрация</span>
     <span class="n">status_filter</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;all&quot;</span><span class="p">)</span>
@@ -417,7 +609,7 @@
         <span class="s2">&quot;status_filter&quot;</span><span class="p">:</span> <span class="n">status_filter</span><span class="p">,</span>
     <span class="p">}</span>
 
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/all_submissions.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/teacher_all_submissions.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 
 
 

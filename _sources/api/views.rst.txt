@@ -55,6 +55,13 @@ Dashboard
    * Просроченные задания
    * Полученные оценки
 
+.. autofunction:: assignments.views.course_detail
+   :no-index:
+
+   Детальная страница курса для студента.
+   
+   * **GET**: Показывает список домашних заданий курса и статусы их выполнения
+
 .. autofunction:: assignments.views.homework_detail
    :no-index:
 
@@ -67,6 +74,11 @@ Dashboard
    :no-index:
 
    Список всех отправленных работ текущего студента.
+
+.. autofunction:: assignments.views.my_grades
+   :no-index:
+
+   Таблица оценок студента по всем курсам.
 
 Представления для преподавателей
 --------------------------------
@@ -83,7 +95,38 @@ Dashboard
    * Количество непроверенных работ
    * Общую статистику
 
-.. autofunction:: assignments.views.create_homework
+.. autofunction:: assignments.views.teacher_course_detail
+   :no-index:
+
+   Детальная страница курса для преподавателя.
+   
+   * **GET**: Отображает список домашних заданий и статистику по курсу
+
+.. autofunction:: assignments.views.create_course
+   :no-index:
+
+   Создание нового курса.
+   
+   * **GET**: Отображает форму создания курса
+   * **POST**: Сохраняет новый курс
+
+.. autofunction:: assignments.views.edit_course
+   :no-index:
+
+   Редактирование существующего курса.
+   
+   * **GET**: Отображает форму редактирования
+   * **POST**: Сохраняет изменения
+
+.. autofunction:: assignments.views.manage_students
+   :no-index:
+
+   Управление студентами курса.
+   
+   * **GET**: Отображает список всех студентов с возможностью выбора
+   * **POST**: Обновляет список студентов курса
+
+.. autofunction:: assignments.views.teacher_create_homework
    :no-index:
 
    Создание нового домашнего задания.
@@ -91,7 +134,7 @@ Dashboard
    * **GET**: Отображает форму создания
    * **POST**: Сохраняет новое задание
 
-.. autofunction:: assignments.views.edit_homework
+.. autofunction:: assignments.views.teacher_edit_homework
    :no-index:
 
    Редактирование существующего домашнего задания.
@@ -99,20 +142,12 @@ Dashboard
    * **GET**: Отображает форму редактирования
    * **POST**: Сохраняет изменения
 
-.. autofunction:: assignments.views.delete_homework
-   :no-index:
-
-   Удаление домашнего задания.
-   
-   * **GET**: Показывает страницу подтверждения
-   * **POST**: Удаляет задание
-
-.. autofunction:: assignments.views.homework_submissions
+.. autofunction:: assignments.views.teacher_homework_submissions
    :no-index:
 
    Список всех отправленных работ по конкретному заданию.
 
-.. autofunction:: assignments.views.grade_submission
+.. autofunction:: assignments.views.teacher_grade_submission
    :no-index:
 
    Проверка и выставление оценки за работу студента.
@@ -120,7 +155,7 @@ Dashboard
    * **GET**: Отображает форму оценивания
    * **POST**: Сохраняет оценку и комментарий
 
-.. autofunction:: assignments.views.all_submissions
+.. autofunction:: assignments.views.teacher_all_submissions
    :no-index:
 
    Список всех отправленных работ с возможностью фильтрации.

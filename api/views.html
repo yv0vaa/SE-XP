@@ -58,15 +58,20 @@
 <li class="toctree-l2"><a class="reference internal" href="#assignments.views.logout_view"><code class="docutils literal notranslate"><span class="pre">logout_view()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#assignments.views.dashboard_view"><code class="docutils literal notranslate"><span class="pre">dashboard_view()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#assignments.views.student_dashboard"><code class="docutils literal notranslate"><span class="pre">student_dashboard()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.course_detail"><code class="docutils literal notranslate"><span class="pre">course_detail()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#assignments.views.homework_detail"><code class="docutils literal notranslate"><span class="pre">homework_detail()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#assignments.views.my_submissions"><code class="docutils literal notranslate"><span class="pre">my_submissions()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.my_grades"><code class="docutils literal notranslate"><span class="pre">my_grades()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#assignments.views.teacher_dashboard"><code class="docutils literal notranslate"><span class="pre">teacher_dashboard()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#assignments.views.create_homework"><code class="docutils literal notranslate"><span class="pre">create_homework()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#assignments.views.edit_homework"><code class="docutils literal notranslate"><span class="pre">edit_homework()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#assignments.views.delete_homework"><code class="docutils literal notranslate"><span class="pre">delete_homework()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#assignments.views.homework_submissions"><code class="docutils literal notranslate"><span class="pre">homework_submissions()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#assignments.views.grade_submission"><code class="docutils literal notranslate"><span class="pre">grade_submission()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#assignments.views.all_submissions"><code class="docutils literal notranslate"><span class="pre">all_submissions()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.teacher_course_detail"><code class="docutils literal notranslate"><span class="pre">teacher_course_detail()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.create_course"><code class="docutils literal notranslate"><span class="pre">create_course()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.edit_course"><code class="docutils literal notranslate"><span class="pre">edit_course()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.manage_students"><code class="docutils literal notranslate"><span class="pre">manage_students()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.teacher_create_homework"><code class="docutils literal notranslate"><span class="pre">teacher_create_homework()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.teacher_edit_homework"><code class="docutils literal notranslate"><span class="pre">teacher_edit_homework()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.teacher_homework_submissions"><code class="docutils literal notranslate"><span class="pre">teacher_homework_submissions()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.teacher_grade_submission"><code class="docutils literal notranslate"><span class="pre">teacher_grade_submission()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.teacher_all_submissions"><code class="docutils literal notranslate"><span class="pre">teacher_all_submissions()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#assignments.views.home_view"><code class="docutils literal notranslate"><span class="pre">home_view()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id1">Авторизация</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#dashboard">Dashboard</a></li>
@@ -145,7 +150,13 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="assignments.views.student_dashboard">
 <span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">student_dashboard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#student_dashboard"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.student_dashboard" title="Ссылка на это определение"></a></dt>
-<dd><p>Dashboard студента</p>
+<dd><p>Dashboard студента - список курсов</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.course_detail">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">course_detail</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#course_detail"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.course_detail" title="Ссылка на это определение"></a></dt>
+<dd><p>Детальная страница курса для студента</p>
 </dd></dl>
 
 <dl class="py function">
@@ -161,45 +172,69 @@
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.my_grades">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">my_grades</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#my_grades"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.my_grades" title="Ссылка на это определение"></a></dt>
+<dd><p>Таблица оценок студента по всем курсам</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="assignments.views.teacher_dashboard">
 <span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">teacher_dashboard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#teacher_dashboard"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.teacher_dashboard" title="Ссылка на это определение"></a></dt>
-<dd><p>Dashboard преподавателя</p>
+<dd><p>Dashboard преподавателя - список его курсов</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="assignments.views.create_homework">
-<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">create_homework</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#create_homework"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.create_homework" title="Ссылка на это определение"></a></dt>
-<dd><p>Создание нового домашнего задания</p>
+<dt class="sig sig-object py" id="assignments.views.teacher_course_detail">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">teacher_course_detail</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#teacher_course_detail"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.teacher_course_detail" title="Ссылка на это определение"></a></dt>
+<dd><p>Детальная страница курса для преподавателя</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="assignments.views.edit_homework">
-<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">edit_homework</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#edit_homework"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.edit_homework" title="Ссылка на это определение"></a></dt>
+<dt class="sig sig-object py" id="assignments.views.create_course">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">create_course</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#create_course"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.create_course" title="Ссылка на это определение"></a></dt>
+<dd><p>Создание нового курса</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.edit_course">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">edit_course</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#edit_course"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.edit_course" title="Ссылка на это определение"></a></dt>
+<dd><p>Редактирование курса</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.manage_students">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">manage_students</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#manage_students"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.manage_students" title="Ссылка на это определение"></a></dt>
+<dd><p>Управление студентами курса</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.teacher_create_homework">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">teacher_create_homework</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">course_pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#teacher_create_homework"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.teacher_create_homework" title="Ссылка на это определение"></a></dt>
+<dd><p>Создание домашнего задания</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.teacher_edit_homework">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">teacher_edit_homework</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#teacher_edit_homework"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.teacher_edit_homework" title="Ссылка на это определение"></a></dt>
 <dd><p>Редактирование домашнего задания</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="assignments.views.delete_homework">
-<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">delete_homework</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#delete_homework"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.delete_homework" title="Ссылка на это определение"></a></dt>
-<dd><p>Удаление домашнего задания</p>
+<dt class="sig sig-object py" id="assignments.views.teacher_homework_submissions">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">teacher_homework_submissions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#teacher_homework_submissions"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.teacher_homework_submissions" title="Ссылка на это определение"></a></dt>
+<dd><p>Список отправок по домашнему заданию</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="assignments.views.homework_submissions">
-<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">homework_submissions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#homework_submissions"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.homework_submissions" title="Ссылка на это определение"></a></dt>
-<dd><p>Список всех отправок по конкретному заданию</p>
+<dt class="sig sig-object py" id="assignments.views.teacher_grade_submission">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">teacher_grade_submission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#teacher_grade_submission"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.teacher_grade_submission" title="Ссылка на это определение"></a></dt>
+<dd><p>Проверка и выставление оценки</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="assignments.views.grade_submission">
-<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">grade_submission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#grade_submission"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.grade_submission" title="Ссылка на это определение"></a></dt>
-<dd><p>Проверка и выставление оценки за работу</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="assignments.views.all_submissions">
-<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">all_submissions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#all_submissions"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.all_submissions" title="Ссылка на это определение"></a></dt>
-<dd><p>Все отправленные работы (для преподавателя)</p>
+<dt class="sig sig-object py" id="assignments.views.teacher_all_submissions">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">teacher_all_submissions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#teacher_all_submissions"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.teacher_all_submissions" title="Ссылка на это определение"></a></dt>
+<dd><p>Все отправки преподавателя</p>
 </dd></dl>
 
 <dl class="py function">
@@ -255,7 +290,7 @@
 <dl class="py function">
 <dt class="sig sig-object py">
 <span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">student_dashboard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#student_dashboard"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
-<dd><p>Dashboard студента</p>
+<dd><p>Dashboard студента - список курсов</p>
 <p>Dashboard студента с списком всех домашних заданий и статусом их выполнения.</p>
 <p>Показывает:</p>
 <ul class="simple">
@@ -263,6 +298,16 @@
 <li><p>Статус сдачи каждого задания</p></li>
 <li><p>Просроченные задания</p></li>
 <li><p>Полученные оценки</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">course_detail</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#course_detail"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Детальная страница курса для студента</p>
+<p>Детальная страница курса для студента.</p>
+<ul class="simple">
+<li><p><strong>GET</strong>: Показывает список домашних заданий курса и статусы их выполнения</p></li>
 </ul>
 </dd></dl>
 
@@ -284,13 +329,20 @@
 <p>Список всех отправленных работ текущего студента.</p>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">my_grades</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#my_grades"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Таблица оценок студента по всем курсам</p>
+<p>Таблица оценок студента по всем курсам.</p>
+</dd></dl>
+
 </section>
 <section id="id3">
 <h2>Представления для преподавателей<a class="headerlink" href="#id3" title="Ссылка на этот заголовок"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py">
 <span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">teacher_dashboard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#teacher_dashboard"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
-<dd><p>Dashboard преподавателя</p>
+<dd><p>Dashboard преподавателя - список его курсов</p>
 <p>Dashboard преподавателя с общей статистикой и последними работами.</p>
 <p>Показывает:</p>
 <ul class="simple">
@@ -303,8 +355,51 @@
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">create_homework</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#create_homework"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
-<dd><p>Создание нового домашнего задания</p>
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">teacher_course_detail</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#teacher_course_detail"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Детальная страница курса для преподавателя</p>
+<p>Детальная страница курса для преподавателя.</p>
+<ul class="simple">
+<li><p><strong>GET</strong>: Отображает список домашних заданий и статистику по курсу</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">create_course</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#create_course"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Создание нового курса</p>
+<p>Создание нового курса.</p>
+<ul class="simple">
+<li><p><strong>GET</strong>: Отображает форму создания курса</p></li>
+<li><p><strong>POST</strong>: Сохраняет новый курс</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">edit_course</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#edit_course"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Редактирование курса</p>
+<p>Редактирование существующего курса.</p>
+<ul class="simple">
+<li><p><strong>GET</strong>: Отображает форму редактирования</p></li>
+<li><p><strong>POST</strong>: Сохраняет изменения</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">manage_students</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#manage_students"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Управление студентами курса</p>
+<p>Управление студентами курса.</p>
+<ul class="simple">
+<li><p><strong>GET</strong>: Отображает список всех студентов с возможностью выбора</p></li>
+<li><p><strong>POST</strong>: Обновляет список студентов курса</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">teacher_create_homework</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">course_pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#teacher_create_homework"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Создание домашнего задания</p>
 <p>Создание нового домашнего задания.</p>
 <ul class="simple">
 <li><p><strong>GET</strong>: Отображает форму создания</p></li>
@@ -314,7 +409,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">edit_homework</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#edit_homework"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">teacher_edit_homework</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#teacher_edit_homework"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
 <dd><p>Редактирование домашнего задания</p>
 <p>Редактирование существующего домашнего задания.</p>
 <ul class="simple">
@@ -325,26 +420,15 @@
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">delete_homework</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#delete_homework"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
-<dd><p>Удаление домашнего задания</p>
-<p>Удаление домашнего задания.</p>
-<ul class="simple">
-<li><p><strong>GET</strong>: Показывает страницу подтверждения</p></li>
-<li><p><strong>POST</strong>: Удаляет задание</p></li>
-</ul>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">homework_submissions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#homework_submissions"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
-<dd><p>Список всех отправок по конкретному заданию</p>
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">teacher_homework_submissions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#teacher_homework_submissions"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Список отправок по домашнему заданию</p>
 <p>Список всех отправленных работ по конкретному заданию.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">grade_submission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#grade_submission"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
-<dd><p>Проверка и выставление оценки за работу</p>
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">teacher_grade_submission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#teacher_grade_submission"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Проверка и выставление оценки</p>
 <p>Проверка и выставление оценки за работу студента.</p>
 <ul class="simple">
 <li><p><strong>GET</strong>: Отображает форму оценивания</p></li>
@@ -354,8 +438,8 @@
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">all_submissions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#all_submissions"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
-<dd><p>Все отправленные работы (для преподавателя)</p>
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">teacher_all_submissions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#teacher_all_submissions"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Все отправки преподавателя</p>
 <p>Список всех отправленных работ с возможностью фильтрации.</p>
 <p>Поддерживает фильтры:</p>
 <ul class="simple">
