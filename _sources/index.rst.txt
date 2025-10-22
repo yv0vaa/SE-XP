@@ -37,7 +37,7 @@ HW Checker - это веб-приложение на Django для управл�
    :maxdepth: 2
    :caption: Требования:
 
-   Requirenments
+   Requirements
 
 .. toctree::
    :maxdepth: 2
