@@ -7,7 +7,7 @@ from .models import Homework, Submission, UserProfile
 class UserProfileInline(admin.StackedInline):
     model = UserProfile
     can_delete = False
-    verbose_name_plural = 'Профиль'
+    verbose_name_plural = "Профиль"
 
 
 class UserAdmin(BaseUserAdmin):
@@ -22,26 +22,24 @@ admin.site.register(User, UserAdmin)
 @admin.register(Homework)
 class HomeworkAdmin(admin.ModelAdmin):
     """Админка для домашних заданий"""
-    list_display = ['title', 'due_date', 'created_at']
-    list_filter = ['created_at', 'due_date']
-    search_fields = ['title', 'description']
-    ordering = ['-created_at']
+
+    list_display = ["title", "due_date", "created_at"]
+    list_filter = ["created_at", "due_date"]
+    search_fields = ["title", "description"]
+    ordering = ["-created_at"]
 
 
 @admin.register(Submission)
 class SubmissionAdmin(admin.ModelAdmin):
     """Админка для отправок работ"""
-    list_display = ['homework', 'student', 'submitted_at', 'grade']
-    list_filter = ['submitted_at', 'grade', 'homework']
-    search_fields = ['student__username', 'homework__title']
-    ordering = ['-submitted_at']
-    readonly_fields = ['submitted_at']
+
+    list_display = ["homework", "student", "submitted_at", "grade"]
+    list_filter = ["submitted_at", "grade", "homework"]
+    search_fields = ["student__username", "homework__title"]
+    ordering = ["-submitted_at"]
+    readonly_fields = ["submitted_at"]
 
     fieldsets = (
-        ('Информация о работе', {
-            'fields': ('homework', 'student', 'solution_file', 'submitted_at')
-        }),
-        ('Проверка', {
-            'fields': ('grade', 'feedback')
-        }),
+        ("Информация о работе", {"fields": ("homework", "student", "solution_file", "submitted_at")}),
+        ("Проверка", {"fields": ("grade", "feedback")}),
     )
