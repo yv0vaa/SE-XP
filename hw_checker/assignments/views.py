@@ -1,12 +1,12 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
-from .models import Homework, Submission
-from .forms import RegisterForm, HomeworkForm, SubmissionForm, GradeForm
-from .decorators import student_required, teacher_required
 
+from .decorators import student_required, teacher_required
+from .forms import GradeForm, HomeworkForm, RegisterForm, SubmissionForm
+from .models import Homework, Submission
 
 # ============= Авторизация =============
 

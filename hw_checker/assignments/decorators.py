@@ -1,6 +1,7 @@
+from functools import wraps
+
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import redirect
-from functools import wraps
 
 
 def student_required(function=None, redirect_url="/"):
