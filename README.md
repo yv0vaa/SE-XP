@@ -1,6 +1,8 @@
 # SE-XP
 
 [![Tests/Flake/Black/isort](https://github.com/yv0vaa/SE-XP/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/yv0vaa/SE-XP/actions/workflows/ci.yml)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/c59fa8ac6324456bb3db35cf35055c2c)](https://app.codacy.com/gh/yv0vaa/SE-XP/dashboard)
+[![Codacy Coverage](https://app.codacy.com/project/badge/Coverage/c59fa8ac6324456bb3db35cf35055c2c)](https://app.codacy.com/gh/yv0vaa/SE-XP/dashboard)
 [![Documentation Status](https://github.com/yv0vaa/SE-XP/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/yv0vaa/SE-XP/actions/workflows/docs.yml)
 
 ## Система проверки домашних заданий

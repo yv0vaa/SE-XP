@@ -35,9 +35,13 @@ ENV/
 
 # Тестирование
 .coverage
+.coverage.*
 htmlcov/
+coverage.xml
 .pytest_cache/
 .tox/
+*.cover
+.hypothesis/
 
 # Миграции (опционально, раскомментируйте если не хотите коммитить)
 # */migrations/*.py
