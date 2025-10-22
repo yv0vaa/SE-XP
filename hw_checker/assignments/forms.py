@@ -49,7 +49,6 @@ class RegisterForm(UserCreationForm):
         return user
 
 
-
 class HomeworkForm(forms.ModelForm):
     """Форма создания домашнего задания"""
 
@@ -78,7 +77,6 @@ class HomeworkForm(forms.ModelForm):
         }
 
 
-
 class SubmissionForm(forms.ModelForm):
     """Форма отправки работы студентом"""
 
@@ -94,7 +92,6 @@ class SubmissionForm(forms.ModelForm):
         labels = {
             'solution_file': 'Файл с решением',
         }
-
 
 
 class GradeForm(forms.ModelForm):
