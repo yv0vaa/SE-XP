@@ -162,9 +162,10 @@ def homework_detail(request, pk):
             if form.is_valid():
                 # Удаляем старый файл перед сохранением нового
                 import os
+
                 if submission.solution_file and os.path.isfile(submission.solution_file.path):
                     os.remove(submission.solution_file.path)
-                
+
                 submission = form.save(commit=False)
                 # Сбрасываем оценку при переотправке
                 submission.grade = None
@@ -472,12 +473,12 @@ def teacher_all_submissions(request):
     # Фильтрация
     status_filter = request.GET.get("status", "all")
     course_filter = request.GET.get("course", "all")
-    
+
     if status_filter == "pending":
         submissions = submissions.filter(grade__isnull=True)
     elif status_filter == "graded":
         submissions = submissions.filter(grade__isnull=False)
-    
+
     if course_filter != "all":
         submissions = submissions.filter(homework__course_id=course_filter)
 
@@ -557,29 +558,31 @@ def teacher_grades_table(request, course_pk):
             "average": 0,
             "completed": 0,
         }
-        
+
         total_grade = 0
         graded_count = 0
-        
+
         for hw in homeworks:
             submission = Submission.objects.filter(homework=hw, student=student).first()
             grade_info = {
                 "homework": hw,
                 "submission": submission,
                 "grade": submission.grade if submission else None,
-                "status": "graded" if submission and submission.grade is not None else "submitted" if submission else "missing",
+                "status": (
+                    "graded" if submission and submission.grade is not None else "submitted" if submission else "missing"
+                ),
             }
             student_row["grades"].append(grade_info)
-            
+
             if submission and submission.grade is not None:
                 total_grade += submission.grade
                 graded_count += 1
-        
+
         if graded_count > 0:
             student_row["average"] = round(total_grade / graded_count, 1)
         student_row["completed"] = graded_count
         student_row["total"] = total_grade
-        
+
         grades_table.append(student_row)
 
     context = {
