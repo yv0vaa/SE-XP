@@ -575,7 +575,7 @@ class StudentViewsTest(TestCase):
         response = self.client.post(reverse("homework_detail", kwargs={"pk": self.homework.pk}), {"solution_file": file2})
         self.assertEqual(Submission.objects.filter(homework=self.homework, student=self.student).count(), 1)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, reverse("homework_detail", kwargs={"pk": self.homework.pk}))
+        self.assertEqual(response.url, reverse("course_detail", kwargs={"pk": self.homework.course.pk}))
 
     def test_my_submissions_view(self):
         """Test my submissions view shows student's submissions"""
