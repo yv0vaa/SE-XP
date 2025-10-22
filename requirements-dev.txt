@@ -1,0 +1,7 @@
+# Development dependencies for linting and code quality
+flake8==7.1.1
+black==24.10.0
+isort==5.13.2
+pylint==3.3.1
+pylint-django==2.5.5
+
