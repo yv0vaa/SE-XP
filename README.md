@@ -1,5 +1,6 @@
 # SE-XP
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9ce3c0f45d4741a8999ba0da89f1807a)](https://app.codacy.com/gh/yv0vaa/SE-XP?utm_source=github.com&utm_medium=referral&utm_content=yv0vaa/SE-XP&utm_campaign=Badge_Grade)
 [![Tests/Flake/Black/isort](https://github.com/yv0vaa/SE-XP/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/yv0vaa/SE-XP/actions/workflows/ci.yml)
 [![Documentation Status](https://github.com/yv0vaa/SE-XP/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/yv0vaa/SE-XP/actions/workflows/docs.yml)
 
