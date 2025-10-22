@@ -17,10 +17,10 @@ from django.dispatch import receiver
 def validate_file_size(file):
     """
     Валидатор размера файла (максимум 10 МБ).
-    
+
     Args:
         file: Загружаемый файл
-        
+
     Raises:
         ValidationError: Если размер файла превышает лимит
     """
@@ -32,16 +32,17 @@ def validate_file_size(file):
 def validate_file_extension(file):
     """
     Валидатор расширения файла.
-    
+
     Args:
         file: Загружаемый файл
-        
+
     Raises:
         ValidationError: Если расширение файла не разрешено
     """
     import os
+
     ext = os.path.splitext(file.name)[1].lower()
-    valid_extensions = ['.pdf', '.doc', '.docx', '.txt', '.py', '.zip', '.jpg', '.jpeg', '.png']
+    valid_extensions = [".pdf", ".doc", ".docx", ".txt", ".py", ".zip", ".jpg", ".jpeg", ".png"]
     if ext not in valid_extensions:
         raise ValidationError(f"Неподдерживаемый формат файла. Разрешены: {', '.join(valid_extensions)}")
 
