@@ -77,14 +77,14 @@ class UserProfile(models.Model):
 
 
 @receiver(post_save, sender=User)
-def create_user_profile(_sender, instance, created, **kwargs):
+def create_user_profile(sender, instance, created, **kwargs):
     """Автоматически создаем профиль при создании пользователя"""
     if created:
         UserProfile.objects.create(user=instance)
 
 
 @receiver(post_save, sender=User)
-def save_user_profile(_sender, instance, **kwargs):
+def save_user_profile(sender, instance, **kwargs):
     """Сохраняем профиль при сохранении пользователя"""
     if hasattr(instance, "profile"):
         instance.profile.save()
