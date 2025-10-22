@@ -1,0 +1,30 @@
+---
+engines:
+  duplication:
+    enabled: true
+    exclude_paths:
+      - "hw_checker/*/migrations/**"
+      - "hw_checker/*/tests/**"
+      - "**/test_*.py"
+  
+  coverage:
+    enabled: true
+    exclude_paths:
+      - "hw_checker/*/migrations/**"
+      - "hw_checker/*/tests/**"
+      - "hw_checker/manage.py"
+      - "hw_checker/hw_checker/wsgi.py"
+      - "hw_checker/hw_checker/asgi.py"
+      - "hw_checker/create_admin.py"
+      - "**/test_*.py"
+      - "**/tests.py"
+
+exclude_paths:
+  - "venv/**"
+  - "**/migrations/**"
+  - "**/tests/**"
+  - "**/__pycache__/**"
+  - "**/site-packages/**"
+  - "docs/**"
+  - "*.md"
+
