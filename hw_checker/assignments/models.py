@@ -7,11 +7,15 @@
 - Отправленных работ студентов
 """
 
-from django.contrib.auth.models import User
+import os
+
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
+User = get_user_model()
 
 
 def validate_file_size(file):
@@ -39,8 +43,6 @@ def validate_file_extension(file):
     Raises:
         ValidationError: Если расширение файла не разрешено
     """
-    import os
-
     ext = os.path.splitext(file.name)[1].lower()
     valid_extensions = [".pdf", ".doc", ".docx", ".txt", ".py", ".zip", ".jpg", ".jpeg", ".png"]
     if ext not in valid_extensions:
@@ -159,3 +161,57 @@ class Submission(models.Model):
 
     def __str__(self):
         return f"{self.student.username} - {self.homework.title}"
+
+
+class CourseEnrollmentRequest(models.Model):
+    """Модель заявки студента на зачисление на курс"""
+
+    STATUS_CHOICES = [
+        ("pending", "На рассмотрении"),
+        ("approved", "Одобрена"),
+        ("rejected", "Отклонена"),
+    ]
+
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        related_name="enrollment_requests",
+        verbose_name="Курс",
+    )
+    student = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="course_requests",
+        verbose_name="Студент",
+        limit_choices_to={"profile__role": "student"},
+    )
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default="pending",
+        verbose_name="Статус",
+    )
+    message = models.TextField(
+        blank=True,
+        verbose_name="Сообщение от студента",
+        help_text="Опциональное сообщение преподавателю",
+    )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата подачи")
+    processed_at = models.DateTimeField(null=True, blank=True, verbose_name="Дата обработки")
+    processed_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="processed_requests",
+        verbose_name="Обработал",
+    )
+
+    class Meta:
+        verbose_name = "Заявка на курс"
+        verbose_name_plural = "Заявки на курсы"
+        ordering = ["-created_at"]
+        unique_together = ["course", "student"]
+
+    def __str__(self):
+        return f"{self.student.username} → {self.course.title} ({self.get_status_display()})"

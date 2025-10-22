@@ -1,0 +1,74 @@
+{% extends 'assignments/base.html' %}
+
+{% block title %}Подать заявку - {{ course.title }} - HW Checker{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">
+                    <i class="bi bi-send"></i> Подать заявку на курс
+                </h4>
+                
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i>
+                    Вы подаете заявку на курс <strong>{{ course.title }}</strong>
+                </div>
+                
+                <div class="mb-4">
+                    <h5>О курсе</h5>
+                    <p class="text-muted">{{ course.description }}</p>
+                    
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <small class="text-muted">
+                                <i class="bi bi-person-badge"></i> 
+                                <strong>Преподаватели:</strong><br>
+                                {% for teacher in course.teachers.all %}
+                                    {{ teacher.get_full_name|default:teacher.username }}<br>
+                                {% endfor %}
+                            </small>
+                        </div>
+                        <div class="col-md-6">
+                            <small class="text-muted">
+                                <i class="bi bi-people"></i> 
+                                <strong>Студентов:</strong> {{ course.students.count }}<br>
+                                <i class="bi bi-list-check"></i> 
+                                <strong>Заданий:</strong> {{ course.homeworks.count }}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-4">
+                        <label for="message" class="form-label">
+                            Сообщение преподавателю (необязательно)
+                        </label>
+                        <textarea class="form-control" id="message" name="message" rows="4" 
+                                  placeholder="Расскажите, почему вы хотите записаться на этот курс"></textarea>
+                        <small class="text-muted">
+                            Вы можете написать преподавателю, почему вас интересует этот курс
+                        </small>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'available_courses' %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Назад
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-send"></i> Отправить заявку
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
