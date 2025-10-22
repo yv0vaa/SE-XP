@@ -30,7 +30,7 @@ lint:
 	@echo "Running isort (check mode)..."
 	isort --check-only --profile black hw_checker/
 	@echo "Running pylint..."
-	pylint hw_checker/assignments/ --disable=C0114,C0115,C0116,R0903 --max-line-length=127
+	pylint hw_checker/assignments/ --disable=C0114,C0115,C0116,R0903 --max-line-length=127 --ignore=migrations
 	@echo "✓ All linters passed!"
 
 test:

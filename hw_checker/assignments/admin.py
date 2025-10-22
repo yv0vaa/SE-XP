@@ -5,10 +5,12 @@
 """
 
 from django.contrib import admin
+from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.models import User
 
-from .models import Course, Homework, Submission, UserProfile
+from .models import Course, CourseEnrollmentRequest, Homework, Submission, UserProfile
+
+User = get_user_model()
 
 
 class UserProfileInline(admin.StackedInline):
@@ -130,4 +132,27 @@ class SubmissionAdmin(admin.ModelAdmin):
         # Если пользователь - преподаватель (не суперюзер), показываем только отправки по его курсам
         if not request.user.is_superuser and request.user.is_staff:
             qs = qs.filter(homework__course__teachers=request.user)
+        return qs
+
+
+@admin.register(CourseEnrollmentRequest)
+class CourseEnrollmentRequestAdmin(admin.ModelAdmin):
+    """Админка для заявок на зачисление на курс"""
+
+    list_display = ["student", "course", "status", "created_at", "processed_at", "processed_by"]
+    list_filter = ["status", "created_at", "processed_at", "course"]
+    search_fields = ["student__username", "student__first_name", "student__last_name", "course__title"]
+    ordering = ["-created_at"]
+    readonly_fields = ["created_at", "processed_at"]
+
+    fieldsets = (
+        ("Информация о заявке", {"fields": ("course", "student", "message", "created_at")}),
+        ("Обработка", {"fields": ("status", "processed_at", "processed_by")}),
+    )
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        # Если пользователь - преподаватель (не суперюзер), показываем только заявки на его курсы
+        if not request.user.is_superuser and request.user.is_staff:
+            qs = qs.filter(course__teachers=request.user)
         return qs

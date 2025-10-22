@@ -17,43 +17,189 @@
     </div>
 </div>
 
-<div class="card">
+<!-- Заявки на рассмотрении -->
+{% if pending_requests %}
+<div class="card mb-4">
     <div class="card-body">
-        <h4 class="card-title mb-4">Выберите студентов для записи на курс</h4>
+        <h4 class="card-title mb-4">
+            <i class="bi bi-clock-history"></i> Заявки на рассмотрении
+            <span class="badge bg-warning text-dark">{{ pending_count }}</span>
+        </h4>
         
-        <form method="post">
-            {% csrf_token %}
-            
-            {% if all_students %}
-                <div class="row">
-                    {% for student in all_students %}
-                        <div class="col-md-6 mb-2">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" 
-                                       name="students" value="{{ student.id }}" 
-                                       id="student_{{ student.id }}"
-                                       {% if student in current_students %}checked{% endif %}>
-                                <label class="form-check-label" for="student_{{ student.id }}">
-                                    {{ student.get_full_name|default:student.username }} ({{ student.username }})
-                                </label>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Студент</th>
+                        <th>Email</th>
+                        <th>Дата подачи</th>
+                        <th>Сообщение</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in pending_requests %}
+                    <tr>
+                        <td>
+                            <strong>{{ request.student.get_full_name|default:request.student.username }}</strong><br>
+                            <small class="text-muted">@{{ request.student.username }}</small>
+                        </td>
+                        <td>{{ request.student.email }}</td>
+                        <td>{{ request.created_at|date:"d.m.Y H:i" }}</td>
+                        <td>
+                            {% if request.message %}
+                                <small>{{ request.message|truncatewords:10 }}</small>
+                                {% if request.message|wordcount > 10 %}
+                                    <button type="button" class="btn btn-sm btn-link p-0" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#messageModal{{ request.id }}">
+                                        Читать полностью
+                                    </button>
+                                    
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="messageModal{{ request.id }}" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Сообщение от студента</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p><strong>От:</strong> {{ request.student.get_full_name }}</p>
+                                                    <p>{{ request.message }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                <small class="text-muted">—</small>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <form method="post" action="{% url 'approve_enrollment_request' request.id %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-success" 
+                                            title="Принять заявку">
+                                        <i class="bi bi-check-circle"></i>
+                                    </button>
+                                </form>
+                                <form method="post" action="{% url 'reject_enrollment_request' request.id %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-danger" 
+                                            title="Отклонить заявку"
+                                            onclick="return confirm('Вы уверены, что хотите отклонить эту заявку?')">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+                                </form>
                             </div>
-                        </div>
+                        </td>
+                    </tr>
                     {% endfor %}
-                </div>
-                
-                <div class="mt-4">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-check-circle"></i> Сохранить список студентов
-                    </button>
-                </div>
-            {% else %}
-                <div class="text-center py-5 text-muted">
-                    <i class="bi bi-inbox display-1"></i>
-                    <p class="mt-3">В системе пока нет зарегистрированных студентов</p>
-                </div>
-            {% endif %}
-        </form>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
-{% endblock %}
+{% endif %}
 
+<!-- Текущие студенты -->
+<div class="card mb-4">
+    <div class="card-body">
+        <h4 class="card-title mb-4">
+            <i class="bi bi-people-fill"></i> Зачисленные студенты
+            <span class="badge bg-primary">{{ current_students.count }}</span>
+        </h4>
+        
+        {% if current_students %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Студент</th>
+                            <th>Email</th>
+                            <th>Username</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in current_students %}
+                        <tr>
+                            <td>
+                                <strong>{{ student.get_full_name|default:student.username }}</strong>
+                            </td>
+                            <td>{{ student.email }}</td>
+                            <td>@{{ student.username }}</td>
+                            <td>
+                                <form method="post" action="{% url 'remove_student_from_course' course.pk student.pk %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" 
+                                            title="Удалить с курса"
+                                            onclick="return confirm('Вы уверены, что хотите удалить этого студента с курса?')">
+                                        <i class="bi bi-person-dash"></i> Удалить
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="text-center py-5 text-muted">
+                <i class="bi bi-inbox display-1"></i>
+                <p class="mt-3">На курсе пока нет студентов</p>
+                <p class="small">Студенты смогут подавать заявки на зачисление</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- История заявок -->
+{% if processed_requests %}
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title mb-4">
+            <i class="bi bi-archive"></i> История заявок (последние 20)
+        </h4>
+        
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Студент</th>
+                        <th>Дата подачи</th>
+                        <th>Дата обработки</th>
+                        <th>Обработал</th>
+                        <th>Статус</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in processed_requests %}
+                    <tr>
+                        <td>{{ request.student.get_full_name|default:request.student.username }}</td>
+                        <td>{{ request.created_at|date:"d.m.Y H:i" }}</td>
+                        <td>{{ request.processed_at|date:"d.m.Y H:i" }}</td>
+                        <td>{{ request.processed_by.get_full_name|default:request.processed_by.username }}</td>
+                        <td>
+                            {% if request.status == 'approved' %}
+                                <span class="badge bg-success">
+                                    <i class="bi bi-check-circle"></i> Одобрена
+                                </span>
+                            {% else %}
+                                <span class="badge bg-danger">
+                                    <i class="bi bi-x-circle"></i> Отклонена
+                                </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

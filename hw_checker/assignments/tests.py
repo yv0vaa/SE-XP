@@ -6,7 +6,7 @@ Tests follow TDD principles covering models, views, forms, and decorators.
 import tempfile
 from datetime import timedelta
 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
@@ -14,6 +14,8 @@ from django.utils import timezone
 
 from .forms import GradeForm, HomeworkForm, RegisterForm, SubmissionForm
 from .models import Course, Homework, Submission, UserProfile
+
+User = get_user_model()
 
 # ============================================================================
 # MODEL TESTS

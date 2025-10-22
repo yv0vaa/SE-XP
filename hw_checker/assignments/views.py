@@ -8,15 +8,19 @@
 - Отправки и проверки работ
 """
 
+import os
+
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
 from .decorators import student_required, teacher_required
 from .forms import GradeForm, HomeworkForm, RegisterForm, SubmissionForm
-from .models import Course, Homework, Submission
+from .models import Course, CourseEnrollmentRequest, Homework, Submission
+
+User = get_user_model()
 
 # ============= Авторизация =============
 
@@ -53,8 +57,7 @@ def login_view(request):
             login(request, user)
             messages.success(request, f"Добро пожаловать, {user.first_name}!")
             return redirect("dashboard")
-        else:
-            messages.error(request, "Неверный логин или пароль")
+        messages.error(request, "Неверный логин или пароль")
 
     return render(request, "assignments/login.html")
 
@@ -75,10 +78,9 @@ def dashboard_view(request):
     """Главная страница - перенаправление в зависимости от роли"""
     if request.user.profile.is_student:
         return redirect("student_dashboard")
-    elif request.user.profile.is_teacher:
+    if request.user.profile.is_teacher:
         return redirect("teacher_dashboard")
-    else:
-        return redirect("login")
+    return redirect("login")
 
 
 # ============= Студент =============
@@ -92,14 +94,14 @@ def student_dashboard(request):
 
     # Статистика по всем курсам
     all_homeworks = Homework.objects.filter(course__in=courses)
-    my_submissions = Submission.objects.filter(student=request.user)
+    student_submissions = Submission.objects.filter(student=request.user)
 
     context = {
         "courses": courses,
         "total_courses": courses.count(),
         "total_homeworks": all_homeworks.count(),
-        "submitted_count": my_submissions.count(),
-        "graded_count": my_submissions.filter(grade__isnull=False).count(),
+        "submitted_count": student_submissions.count(),
+        "graded_count": student_submissions.filter(grade__isnull=False).count(),
     }
 
     return render(request, "assignments/student_dashboard.html", context)
@@ -117,12 +119,12 @@ def course_detail(request, pk):
         return redirect("student_dashboard")
 
     homeworks = course.homeworks.all().order_by("-created_at")
-    my_submissions = Submission.objects.filter(student=request.user, homework__course=course)
+    course_submissions = Submission.objects.filter(student=request.user, homework__course=course)
 
     # Добавляем информацию о том, сдал ли студент каждое ДЗ
     homework_status = []
     for hw in homeworks:
-        submission = my_submissions.filter(homework=hw).first()
+        submission = course_submissions.filter(homework=hw).first()
         homework_status.append(
             {
                 "homework": hw,
@@ -135,7 +137,7 @@ def course_detail(request, pk):
         "course": course,
         "homework_status": homework_status,
         "total_homeworks": homeworks.count(),
-        "submitted_count": my_submissions.count(),
+        "submitted_count": course_submissions.count(),
     }
 
     return render(request, "assignments/course_detail.html", context)
@@ -161,8 +163,6 @@ def homework_detail(request, pk):
             form = SubmissionForm(request.POST, request.FILES, instance=submission)
             if form.is_valid():
                 # Удаляем старый файл перед сохранением нового
-                import os
-
                 if submission.solution_file and os.path.isfile(submission.solution_file.path):
                     os.remove(submission.solution_file.path)
 
@@ -240,6 +240,99 @@ def my_grades(request):
     return render(request, "assignments/my_grades.html", context)
 
 
+@login_required
+@student_required
+def available_courses(request):
+    """Список всех доступных курсов для студента"""
+    # Курсы, на которые студент уже записан
+    enrolled_courses = request.user.enrolled_courses.all()
+
+    # Все курсы
+    all_courses = Course.objects.all()
+
+    # Заявки студента
+    student_requests = CourseEnrollmentRequest.objects.filter(student=request.user)
+    requests_dict = {req.course_id: req for req in student_requests}
+
+    # Подготавливаем информацию о каждом курсе
+    courses_info = []
+    for course in all_courses:
+        is_enrolled = course in enrolled_courses
+        request_status = None
+        enrollment_request = requests_dict.get(course.id)
+
+        if enrollment_request:
+            request_status = enrollment_request.status
+
+        courses_info.append(
+            {
+                "course": course,
+                "is_enrolled": is_enrolled,
+                "request_status": request_status,
+                "request_id": enrollment_request.id if enrollment_request else None,
+            }
+        )
+
+    context = {
+        "courses_info": courses_info,
+    }
+
+    return render(request, "assignments/available_courses.html", context)
+
+
+@login_required
+@student_required
+def request_enrollment(request, course_pk):
+    """Подать заявку на зачисление на курс"""
+    course = get_object_or_404(Course, pk=course_pk)
+
+    # Проверяем, не записан ли студент уже на курс
+    if request.user in course.students.all():
+        messages.warning(request, "Вы уже записаны на этот курс")
+        return redirect("available_courses")
+
+    # Проверяем, нет ли уже активной заявки
+    existing_request = CourseEnrollmentRequest.objects.filter(course=course, student=request.user, status="pending").first()
+
+    if existing_request:
+        messages.warning(request, "Вы уже подали заявку на этот курс")
+        return redirect("available_courses")
+
+    if request.method == "POST":
+        message = request.POST.get("message", "")
+        CourseEnrollmentRequest.objects.create(course=course, student=request.user, message=message)
+        messages.success(request, f'Заявка на курс "{course.title}" успешно подана!')
+        return redirect("available_courses")
+
+    context = {"course": course}
+    return render(request, "assignments/request_enrollment.html", context)
+
+
+@login_required
+@student_required
+def cancel_enrollment_request(request, request_pk):
+    """Отменить заявку на зачисление"""
+    enrollment_request = get_object_or_404(CourseEnrollmentRequest, pk=request_pk)
+
+    # Проверка доступа
+    if enrollment_request.student != request.user:
+        messages.error(request, "У вас нет доступа к этой заявке")
+        return redirect("available_courses")
+
+    # Можно отменить только заявки со статусом "pending"
+    if enrollment_request.status != "pending":
+        messages.error(request, "Эту заявку нельзя отменить")
+        return redirect("available_courses")
+
+    if request.method == "POST":
+        course_title = enrollment_request.course.title
+        enrollment_request.delete()
+        messages.success(request, f'Заявка на курс "{course_title}" отменена')
+        return redirect("available_courses")
+
+    return redirect("available_courses")
+
+
 # ============= Преподаватель =============
 
 
@@ -303,8 +396,7 @@ def create_course(request):
             course.teachers.add(request.user)
             messages.success(request, f'Курс "{course.title}" успешно создан!')
             return redirect("teacher_course_detail", pk=course.pk)
-        else:
-            messages.error(request, "Заполните все обязательные поля")
+        messages.error(request, "Заполните все обязательные поля")
 
     return render(request, "assignments/create_course.html")
 
@@ -334,7 +426,7 @@ def edit_course(request, pk):
 @login_required
 @teacher_required
 def manage_students(request, pk):
-    """Управление студентами курса"""
+    """Управление студентами курса - просмотр зачисленных студентов и заявок"""
     course = get_object_or_404(Course, pk=pk)
 
     # Проверка доступа
@@ -342,23 +434,112 @@ def manage_students(request, pk):
         messages.error(request, "У вас нет доступа к этому курсу")
         return redirect("teacher_dashboard")
 
-    from django.contrib.auth.models import User
-
-    all_students = User.objects.filter(profile__role="student")
+    # Текущие студенты
     current_students = course.students.all()
 
-    if request.method == "POST":
-        student_ids = request.POST.getlist("students")
-        course.students.set(User.objects.filter(id__in=student_ids))
-        messages.success(request, "Список студентов обновлен!")
-        return redirect("teacher_course_detail", pk=course.pk)
+    # Заявки на зачисление
+    pending_requests = CourseEnrollmentRequest.objects.filter(course=course, status="pending").order_by("-created_at")
+
+    # История заявок (одобренные и отклоненные)
+    processed_requests = CourseEnrollmentRequest.objects.filter(course=course, status__in=["approved", "rejected"]).order_by(
+        "-processed_at"
+    )[
+        :20
+    ]  # Показываем последние 20
 
     context = {
         "course": course,
-        "all_students": all_students,
         "current_students": current_students,
+        "pending_requests": pending_requests,
+        "processed_requests": processed_requests,
+        "pending_count": pending_requests.count(),
     }
     return render(request, "assignments/manage_students.html", context)
+
+
+@login_required
+@teacher_required
+def approve_enrollment_request(request, request_pk):
+    """Одобрить заявку на зачисление"""
+    enrollment_request = get_object_or_404(CourseEnrollmentRequest, pk=request_pk)
+
+    # Проверка доступа
+    if request.user not in enrollment_request.course.teachers.all():
+        messages.error(request, "У вас нет доступа к этой заявке")
+        return redirect("teacher_dashboard")
+
+    # Проверка статуса
+    if enrollment_request.status != "pending":
+        messages.warning(request, "Эта заявка уже обработана")
+        return redirect("manage_students", pk=enrollment_request.course.pk)
+
+    if request.method == "POST":
+        # Обновляем статус заявки
+        enrollment_request.status = "approved"
+        enrollment_request.processed_at = timezone.now()
+        enrollment_request.processed_by = request.user
+        enrollment_request.save()
+
+        # Добавляем студента на курс
+        enrollment_request.course.students.add(enrollment_request.student)
+
+        messages.success(
+            request,
+            f'Студент {enrollment_request.student.get_full_name()} зачислен на курс "{enrollment_request.course.title}"',
+        )
+        return redirect("manage_students", pk=enrollment_request.course.pk)
+
+    return redirect("manage_students", pk=enrollment_request.course.pk)
+
+
+@login_required
+@teacher_required
+def reject_enrollment_request(request, request_pk):
+    """Отклонить заявку на зачисление"""
+    enrollment_request = get_object_or_404(CourseEnrollmentRequest, pk=request_pk)
+
+    # Проверка доступа
+    if request.user not in enrollment_request.course.teachers.all():
+        messages.error(request, "У вас нет доступа к этой заявке")
+        return redirect("teacher_dashboard")
+
+    # Проверка статуса
+    if enrollment_request.status != "pending":
+        messages.warning(request, "Эта заявка уже обработана")
+        return redirect("manage_students", pk=enrollment_request.course.pk)
+
+    if request.method == "POST":
+        # Обновляем статус заявки
+        enrollment_request.status = "rejected"
+        enrollment_request.processed_at = timezone.now()
+        enrollment_request.processed_by = request.user
+        enrollment_request.save()
+
+        messages.info(request, f"Заявка от {enrollment_request.student.get_full_name()} отклонена")
+        return redirect("manage_students", pk=enrollment_request.course.pk)
+
+    return redirect("manage_students", pk=enrollment_request.course.pk)
+
+
+@login_required
+@teacher_required
+def remove_student_from_course(request, course_pk, student_pk):
+    """Удалить студента с курса"""
+    course = get_object_or_404(Course, pk=course_pk)
+
+    # Проверка доступа
+    if request.user not in course.teachers.all():
+        messages.error(request, "У вас нет доступа к этому курсу")
+        return redirect("teacher_dashboard")
+
+    student = get_object_or_404(User, pk=student_pk)
+
+    if request.method == "POST":
+        course.students.remove(student)
+        messages.success(request, f"Студент {student.get_full_name()} удален с курса")
+        return redirect("manage_students", pk=course.pk)
+
+    return redirect("manage_students", pk=course.pk)
 
 
 @login_required

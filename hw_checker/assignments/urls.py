@@ -21,7 +21,18 @@ urlpatterns = [
     path("dashboard/", views.dashboard_view, name="dashboard"),
     # Студент
     path("student/", views.student_dashboard, name="student_dashboard"),
+    path("student/courses/", views.available_courses, name="available_courses"),
     path("student/course/<int:pk>/", views.course_detail, name="course_detail"),
+    path(
+        "student/course/<int:course_pk>/request/",
+        views.request_enrollment,
+        name="request_enrollment",
+    ),
+    path(
+        "student/request/<int:request_pk>/cancel/",
+        views.cancel_enrollment_request,
+        name="cancel_enrollment_request",
+    ),
     path("student/homework/<int:pk>/", views.homework_detail, name="homework_detail"),
     path("student/submissions/", views.my_submissions, name="my_submissions"),
     path("student/grades/", views.my_grades, name="my_grades"),
@@ -38,6 +49,21 @@ urlpatterns = [
         "teacher/course/<int:pk>/students/",
         views.manage_students,
         name="manage_students",
+    ),
+    path(
+        "teacher/request/<int:request_pk>/approve/",
+        views.approve_enrollment_request,
+        name="approve_enrollment_request",
+    ),
+    path(
+        "teacher/request/<int:request_pk>/reject/",
+        views.reject_enrollment_request,
+        name="reject_enrollment_request",
+    ),
+    path(
+        "teacher/course/<int:course_pk>/student/<int:student_pk>/remove/",
+        views.remove_student_from_course,
+        name="remove_student_from_course",
     ),
     path(
         "teacher/course/<int:course_pk>/homework/create/",
