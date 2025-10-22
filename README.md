@@ -19,10 +19,11 @@
 
 ### 1. **Парное программирование (Pair Programming)**
 
-История коммитов показывает активное участие всех членов команды:
-- **Vladimir Zakharov** - базовая архитектура и функционал курсов
-- **Dmitrii Deruzhinskii** - тестирование и интеграция
-- **Aleksei Tokarev** - документация и CI/CD
+
+Все члены команды работали в парах
+- Тесты: Dmitrii, Vladimir
+- Документация: Aleksei, Dmitrii
+- Курсы: Vladimir, Aleksei
 
 Каждая фича разрабатывалась совместно через pull request'ы с code review.
 
@@ -88,10 +89,10 @@ c9fcd7f - fix: black and doc tests
 
 ### 6. **Коллективное владение кодом (Collective Code Ownership)**
 
-Все члены команды работали в парах
-- Тесты: Dmitrii, Vladimir
-- Документация: Aleksei, Dmitrii
-- Курсы: Vladimir, Dmitrii
+История коммитов показывает активное участие всех членов команды:
+- **Vladimir Zakharov** - базовая архитектура и функционал курсов
+- **Dmitrii Deruzhinskii** - тестирование и интеграция
+- **Aleksei Tokarev** - документация и CI/CD
 
 ### 7. **Тест-ориентированная разработка (TDD)**
 
