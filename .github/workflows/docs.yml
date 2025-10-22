@@ -10,6 +10,8 @@ jobs:
   build-docs:
     name: Build Documentation
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     
     steps:
     - name: Checkout code
@@ -30,6 +32,10 @@ jobs:
       working-directory: ./docs
       run: |
         make html
+    
+    - name: Add .nojekyll file
+      run: |
+        touch docs/_build/html/.nojekyll
     
     - name: Check for broken links
       working-directory: ./docs
