@@ -1,0 +1,412 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ru" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Представления (Views) &mdash; документация HW Checker 1.0.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=e35015f7"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/translations.js?v=5b699b7f"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Алфавитный указатель" href="../genindex.html" />
+    <link rel="search" title="Поиск" href="../search.html" />
+    <link rel="next" title="Формы (Forms)" href="forms.html" />
+    <link rel="prev" title="Модели (Models)" href="models.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            HW Checker
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Поиск в документации" aria-label="Поиск в документации" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Меню навигации">
+              <p class="caption" role="heading"><span class="caption-text">Общая информация:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Обзор проекта</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Установка</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Руководство пользователя</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Документация:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="models.html">Модели (Models)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Представления (Views)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.register_view"><code class="docutils literal notranslate"><span class="pre">register_view()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.login_view"><code class="docutils literal notranslate"><span class="pre">login_view()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.logout_view"><code class="docutils literal notranslate"><span class="pre">logout_view()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.dashboard_view"><code class="docutils literal notranslate"><span class="pre">dashboard_view()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.student_dashboard"><code class="docutils literal notranslate"><span class="pre">student_dashboard()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.homework_detail"><code class="docutils literal notranslate"><span class="pre">homework_detail()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.my_submissions"><code class="docutils literal notranslate"><span class="pre">my_submissions()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.teacher_dashboard"><code class="docutils literal notranslate"><span class="pre">teacher_dashboard()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.create_homework"><code class="docutils literal notranslate"><span class="pre">create_homework()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.edit_homework"><code class="docutils literal notranslate"><span class="pre">edit_homework()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.delete_homework"><code class="docutils literal notranslate"><span class="pre">delete_homework()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.homework_submissions"><code class="docutils literal notranslate"><span class="pre">homework_submissions()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.grade_submission"><code class="docutils literal notranslate"><span class="pre">grade_submission()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.all_submissions"><code class="docutils literal notranslate"><span class="pre">all_submissions()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.home_view"><code class="docutils literal notranslate"><span class="pre">home_view()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Авторизация</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dashboard">Dashboard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">Представления для студентов</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">Представления для преподавателей</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">Общие представления</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="forms.html">Формы (Forms)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="decorators.html">Декораторы (Decorators)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Дополнительно:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">История изменений</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html#id6">Планы на будущее</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Руководство для разработчиков</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Меню навигации для мобильных устройств" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">HW Checker</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Навигация по страницам">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Представления (Views)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/views.rst.txt" rel="nofollow"> Просмотреть исходный код страницы</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="views">
+<h1>Представления (Views)<a class="headerlink" href="#views" title="Ссылка на этот заголовок"></a></h1>
+<p>Модуль содержит все представления приложения, разделенные по функциональности.</p>
+<p id="module-assignments.views">Представления (views) для системы проверки домашних заданий.</p>
+<p>Содержит все представления для:
+- Авторизации и регистрации пользователей
+- Dashboard студента и преподавателя
+- Управления домашними заданиями
+- Отправки и проверки работ</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.register_view">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">register_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#register_view"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.register_view" title="Ссылка на это определение"></a></dt>
+<dd><p>Регистрация нового пользователя</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.login_view">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">login_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#login_view"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.login_view" title="Ссылка на это определение"></a></dt>
+<dd><p>Вход в систему</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.logout_view">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">logout_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#logout_view"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.logout_view" title="Ссылка на это определение"></a></dt>
+<dd><p>Выход из системы</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.dashboard_view">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">dashboard_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#dashboard_view"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.dashboard_view" title="Ссылка на это определение"></a></dt>
+<dd><p>Главная страница - перенаправление в зависимости от роли</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.student_dashboard">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">student_dashboard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#student_dashboard"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.student_dashboard" title="Ссылка на это определение"></a></dt>
+<dd><p>Dashboard студента</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.homework_detail">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">homework_detail</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#homework_detail"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.homework_detail" title="Ссылка на это определение"></a></dt>
+<dd><p>Детальная страница задания для студента</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.my_submissions">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">my_submissions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#my_submissions"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.my_submissions" title="Ссылка на это определение"></a></dt>
+<dd><p>Список всех отправленных работ студента</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.teacher_dashboard">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">teacher_dashboard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#teacher_dashboard"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.teacher_dashboard" title="Ссылка на это определение"></a></dt>
+<dd><p>Dashboard преподавателя</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.create_homework">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">create_homework</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#create_homework"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.create_homework" title="Ссылка на это определение"></a></dt>
+<dd><p>Создание нового домашнего задания</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.edit_homework">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">edit_homework</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#edit_homework"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.edit_homework" title="Ссылка на это определение"></a></dt>
+<dd><p>Редактирование домашнего задания</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.delete_homework">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">delete_homework</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#delete_homework"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.delete_homework" title="Ссылка на это определение"></a></dt>
+<dd><p>Удаление домашнего задания</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.homework_submissions">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">homework_submissions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#homework_submissions"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.homework_submissions" title="Ссылка на это определение"></a></dt>
+<dd><p>Список всех отправок по конкретному заданию</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.grade_submission">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">grade_submission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#grade_submission"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.grade_submission" title="Ссылка на это определение"></a></dt>
+<dd><p>Проверка и выставление оценки за работу</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.all_submissions">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">all_submissions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#all_submissions"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.all_submissions" title="Ссылка на это определение"></a></dt>
+<dd><p>Все отправленные работы (для преподавателя)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.home_view">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">home_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#home_view"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.home_view" title="Ссылка на это определение"></a></dt>
+<dd><p>Главная страница для неавторизованных пользователей</p>
+</dd></dl>
+
+<section id="id1">
+<h2>Авторизация<a class="headerlink" href="#id1" title="Ссылка на этот заголовок"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">register_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#register_view"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Регистрация нового пользователя</p>
+<p>Регистрация нового пользователя в системе.</p>
+<ul class="simple">
+<li><p><strong>GET</strong>: Отображает форму регистрации</p></li>
+<li><p><strong>POST</strong>: Обрабатывает отправку формы и создает нового пользователя</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">login_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#login_view"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Вход в систему</p>
+<p>Вход пользователя в систему.</p>
+<ul class="simple">
+<li><p><strong>GET</strong>: Отображает форму входа</p></li>
+<li><p><strong>POST</strong>: Аутентифицирует пользователя</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">logout_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#logout_view"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Выход из системы</p>
+<p>Выход пользователя из системы.</p>
+</dd></dl>
+
+</section>
+<section id="dashboard">
+<h2>Dashboard<a class="headerlink" href="#dashboard" title="Ссылка на этот заголовок"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">dashboard_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#dashboard_view"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Главная страница - перенаправление в зависимости от роли</p>
+<p>Главная страница - перенаправляет на соответствующий dashboard в зависимости от роли пользователя.</p>
+</dd></dl>
+
+</section>
+<section id="id2">
+<h2>Представления для студентов<a class="headerlink" href="#id2" title="Ссылка на этот заголовок"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">student_dashboard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#student_dashboard"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Dashboard студента</p>
+<p>Dashboard студента с списком всех домашних заданий и статусом их выполнения.</p>
+<p>Показывает:</p>
+<ul class="simple">
+<li><p>Все домашние задания</p></li>
+<li><p>Статус сдачи каждого задания</p></li>
+<li><p>Просроченные задания</p></li>
+<li><p>Полученные оценки</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">homework_detail</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#homework_detail"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Детальная страница задания для студента</p>
+<p>Детальная страница конкретного домашнего задания.</p>
+<ul class="simple">
+<li><p><strong>GET</strong>: Показывает описание задания и форму отправки</p></li>
+<li><p><strong>POST</strong>: Обрабатывает отправку решения студентом</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">my_submissions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#my_submissions"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Список всех отправленных работ студента</p>
+<p>Список всех отправленных работ текущего студента.</p>
+</dd></dl>
+
+</section>
+<section id="id3">
+<h2>Представления для преподавателей<a class="headerlink" href="#id3" title="Ссылка на этот заголовок"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">teacher_dashboard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#teacher_dashboard"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Dashboard преподавателя</p>
+<p>Dashboard преподавателя с общей статистикой и последними работами.</p>
+<p>Показывает:</p>
+<ul class="simple">
+<li><p>Все созданные задания</p></li>
+<li><p>Последние отправленные работы</p></li>
+<li><p>Количество непроверенных работ</p></li>
+<li><p>Общую статистику</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">create_homework</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#create_homework"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Создание нового домашнего задания</p>
+<p>Создание нового домашнего задания.</p>
+<ul class="simple">
+<li><p><strong>GET</strong>: Отображает форму создания</p></li>
+<li><p><strong>POST</strong>: Сохраняет новое задание</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">edit_homework</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#edit_homework"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Редактирование домашнего задания</p>
+<p>Редактирование существующего домашнего задания.</p>
+<ul class="simple">
+<li><p><strong>GET</strong>: Отображает форму редактирования</p></li>
+<li><p><strong>POST</strong>: Сохраняет изменения</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">delete_homework</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#delete_homework"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Удаление домашнего задания</p>
+<p>Удаление домашнего задания.</p>
+<ul class="simple">
+<li><p><strong>GET</strong>: Показывает страницу подтверждения</p></li>
+<li><p><strong>POST</strong>: Удаляет задание</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">homework_submissions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#homework_submissions"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Список всех отправок по конкретному заданию</p>
+<p>Список всех отправленных работ по конкретному заданию.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">grade_submission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#grade_submission"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Проверка и выставление оценки за работу</p>
+<p>Проверка и выставление оценки за работу студента.</p>
+<ul class="simple">
+<li><p><strong>GET</strong>: Отображает форму оценивания</p></li>
+<li><p><strong>POST</strong>: Сохраняет оценку и комментарий</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">all_submissions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#all_submissions"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Все отправленные работы (для преподавателя)</p>
+<p>Список всех отправленных работ с возможностью фильтрации.</p>
+<p>Поддерживает фильтры:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">all</span></code> - все работы</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pending</span></code> - непроверенные работы</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graded</span></code> - проверенные работы</p></li>
+</ul>
+</dd></dl>
+
+</section>
+<section id="id4">
+<h2>Общие представления<a class="headerlink" href="#id4" title="Ссылка на этот заголовок"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">home_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#home_view"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
+<dd><p>Главная страница для неавторизованных пользователей</p>
+<p>Главная страница для неавторизованных пользователей.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Нижняя область">
+        <a href="models.html" class="btn btn-neutral float-left" title="Модели (Models)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Предыдущая</a>
+        <a href="forms.html" class="btn btn-neutral float-right" title="Формы (Forms)" accesskey="n" rel="next">Следующая <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Авторские права 2025, SE-XP Team. </p>
+  </div>
+
+  Собрано при помощи <a href="https://www.sphinx-doc.org/">Sphinx</a> с использованием
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">темы,</a>
+    предоставленной <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

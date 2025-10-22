@@ -1,0 +1,281 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ru" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Руководство пользователя &mdash; документация HW Checker 1.0.0</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=e35015f7"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=5b699b7f"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Алфавитный указатель" href="genindex.html" />
+    <link rel="search" title="Поиск" href="search.html" />
+    <link rel="next" title="Модели (Models)" href="api/models.html" />
+    <link rel="prev" title="Установка" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            HW Checker
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Поиск в документации" aria-label="Поиск в документации" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Меню навигации">
+              <p class="caption" role="heading"><span class="caption-text">Общая информация:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Обзор проекта</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Установка</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Руководство пользователя</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">Регистрация и вход</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Регистрация нового пользователя</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Вход в систему</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">Работа для студентов</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id6">Просмотр заданий</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">Отправка решения</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">Просмотр результатов</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">Работа для преподавателей</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id10">Создание домашнего задания</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">Просмотр работ студентов</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">Проверка и выставление оценки</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">Редактирование задания</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">Удаление задания</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Документация:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/models.html">Модели (Models)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/views.html">Представления (Views)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/forms.html">Формы (Forms)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/decorators.html">Декораторы (Decorators)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Дополнительно:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">История изменений</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html#id6">Планы на будущее</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Руководство для разработчиков</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Меню навигации для мобильных устройств" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">HW Checker</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Навигация по страницам">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Руководство пользователя</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usage.rst.txt" rel="nofollow"> Просмотреть исходный код страницы</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>Руководство пользователя<a class="headerlink" href="#id1" title="Ссылка на этот заголовок"></a></h1>
+<section id="id2">
+<h2>Регистрация и вход<a class="headerlink" href="#id2" title="Ссылка на этот заголовок"></a></h2>
+<section id="id3">
+<h3>Регистрация нового пользователя<a class="headerlink" href="#id3" title="Ссылка на этот заголовок"></a></h3>
+<ol class="arabic simple">
+<li><p>Перейдите на страницу регистрации</p></li>
+<li><p>Заполните форму:</p>
+<ul class="simple">
+<li><p>Имя пользователя (username)</p></li>
+<li><p>Имя (first name)</p></li>
+<li><p>Фамилия (last name)</p></li>
+<li><p>Email</p></li>
+<li><p>Пароль</p></li>
+<li><p>Роль (студент или преподаватель)</p></li>
+</ul>
+</li>
+<li><p>Нажмите «Зарегистрироваться»</p></li>
+</ol>
+<p>После успешной регистрации вы будете автоматически авторизованы.</p>
+</section>
+<section id="id4">
+<h3>Вход в систему<a class="headerlink" href="#id4" title="Ссылка на этот заголовок"></a></h3>
+<ol class="arabic simple">
+<li><p>Перейдите на страницу входа</p></li>
+<li><p>Введите имя пользователя и пароль</p></li>
+<li><p>Нажмите «Войти»</p></li>
+</ol>
+</section>
+</section>
+<section id="id5">
+<h2>Работа для студентов<a class="headerlink" href="#id5" title="Ссылка на этот заголовок"></a></h2>
+<section id="id6">
+<h3>Просмотр заданий<a class="headerlink" href="#id6" title="Ссылка на этот заголовок"></a></h3>
+<p>На главной странице студента отображаются:</p>
+<ul class="simple">
+<li><p>Все доступные домашние задания</p></li>
+<li><p>Статус сдачи каждого задания</p></li>
+<li><p>Просроченные задания (отмечены красным)</p></li>
+<li><p>Оценки за проверенные работы</p></li>
+</ul>
+</section>
+<section id="id7">
+<h3>Отправка решения<a class="headerlink" href="#id7" title="Ссылка на этот заголовок"></a></h3>
+<ol class="arabic simple">
+<li><p>Выберите домашнее задание из списка</p></li>
+<li><p>Нажмите на название задания</p></li>
+<li><p>Прочитайте описание и требования</p></li>
+<li><p>Загрузите файл с решением</p></li>
+<li><p>Нажмите «Отправить»</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Примечание</p>
+<p>Каждое задание можно отправить только один раз!</p>
+</div>
+</section>
+<section id="id8">
+<h3>Просмотр результатов<a class="headerlink" href="#id8" title="Ссылка на этот заголовок"></a></h3>
+<p>В разделе «Мои работы» вы можете:</p>
+<ul class="simple">
+<li><p>Просмотреть все отправленные работы</p></li>
+<li><p>Увидеть полученные оценки</p></li>
+<li><p>Прочитать комментарии преподавателя</p></li>
+</ul>
+</section>
+</section>
+<section id="id9">
+<h2>Работа для преподавателей<a class="headerlink" href="#id9" title="Ссылка на этот заголовок"></a></h2>
+<section id="id10">
+<h3>Создание домашнего задания<a class="headerlink" href="#id10" title="Ссылка на этот заголовок"></a></h3>
+<ol class="arabic simple">
+<li><p>На главной странице нажмите «Создать задание»</p></li>
+<li><p>Заполните форму:</p>
+<ul class="simple">
+<li><p>Заголовок</p></li>
+<li><p>Описание задания</p></li>
+<li><p>Срок сдачи</p></li>
+</ul>
+</li>
+<li><p>Нажмите «Создать»</p></li>
+</ol>
+</section>
+<section id="id11">
+<h3>Просмотр работ студентов<a class="headerlink" href="#id11" title="Ссылка на этот заголовок"></a></h3>
+<p>Есть два способа просмотра работ:</p>
+<p><strong>По конкретному заданию:</strong></p>
+<ol class="arabic simple">
+<li><p>Выберите задание из списка</p></li>
+<li><p>Нажмите «Просмотреть работы»</p></li>
+<li><p>Увидите список всех отправленных работ по этому заданию</p></li>
+</ol>
+<p><strong>Все работы:</strong></p>
+<ol class="arabic simple">
+<li><p>Нажмите «Все работы» в меню</p></li>
+<li><p>Можно отфильтровать:</p>
+<ul class="simple">
+<li><p>Все работы</p></li>
+<li><p>Непроверенные</p></li>
+<li><p>Проверенные</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="id12">
+<h3>Проверка и выставление оценки<a class="headerlink" href="#id12" title="Ссылка на этот заголовок"></a></h3>
+<ol class="arabic simple">
+<li><p>Выберите работу студента</p></li>
+<li><p>Нажмите «Проверить»</p></li>
+<li><p>Скачайте и просмотрите файл с решением</p></li>
+<li><p>Введите оценку (число)</p></li>
+<li><p>Добавьте комментарий (опционально)</p></li>
+<li><p>Нажмите «Сохранить»</p></li>
+</ol>
+</section>
+<section id="id13">
+<h3>Редактирование задания<a class="headerlink" href="#id13" title="Ссылка на этот заголовок"></a></h3>
+<ol class="arabic simple">
+<li><p>Выберите задание</p></li>
+<li><p>Нажмите «Редактировать»</p></li>
+<li><p>Внесите изменения</p></li>
+<li><p>Нажмите «Сохранить»</p></li>
+</ol>
+</section>
+<section id="id14">
+<h3>Удаление задания<a class="headerlink" href="#id14" title="Ссылка на этот заголовок"></a></h3>
+<ol class="arabic simple">
+<li><p>Выберите задание</p></li>
+<li><p>Нажмите «Удалить»</p></li>
+<li><p>Подтвердите удаление</p></li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Предупреждение</p>
+<p>При удалении задания будут удалены все связанные с ним работы студентов!</p>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Нижняя область">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Установка" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Предыдущая</a>
+        <a href="api/models.html" class="btn btn-neutral float-right" title="Модели (Models)" accesskey="n" rel="next">Следующая <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Авторские права 2025, SE-XP Team. </p>
+  </div>
+
+  Собрано при помощи <a href="https://www.sphinx-doc.org/">Sphinx</a> с использованием
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">темы,</a>
+    предоставленной <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
