@@ -1,0 +1,92 @@
+{% extends 'assignments/base.html' %}
+
+{% block title %}{{ course.title }} - HW Checker{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="text-white">
+            <i class="bi bi-book"></i> {{ course.title }}
+        </h1>
+        <p class="text-white-50">{{ course.description }}</p>
+    </div>
+    <div class="col-auto">
+        <a href="{% url 'student_dashboard' %}" class="btn btn-outline-light">
+            <i class="bi bi-arrow-left"></i> К списку курсов
+        </a>
+    </div>
+</div>
+
+<!-- Статистика по курсу -->
+<div class="row mb-4">
+    <div class="col-md-6 mb-3">
+        <div class="stats-card">
+            <i class="bi bi-list-check"></i>
+            <h3>{{ total_homeworks }}</h3>
+            <p>Заданий в курсе</p>
+        </div>
+    </div>
+    <div class="col-md-6 mb-3">
+        <div class="stats-card">
+            <i class="bi bi-check-circle"></i>
+            <h3>{{ submitted_count }}</h3>
+            <p>Вы сдали</p>
+        </div>
+    </div>
+</div>
+
+<!-- Список заданий -->
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title mb-4">
+            <i class="bi bi-journal-text"></i> Домашние задания
+        </h4>
+        
+        {% if homework_status %}
+            <div class="list-group">
+                {% for item in homework_status %}
+                    <a href="{% url 'homework_detail' item.homework.pk %}" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-1">{{ item.homework.title }}</h5>
+                                <p class="mb-1 text-muted">{{ item.homework.description|truncatewords:20 }}</p>
+                                <small class="text-muted">
+                                    <i class="bi bi-calendar-event"></i> 
+                                    Срок сдачи: {{ item.homework.due_date|date:"d.m.Y H:i" }}
+                                </small>
+                            </div>
+                            <div class="text-end">
+                                {% if item.submission %}
+                                    {% if item.submission.grade %}
+                                        <span class="badge bg-success mb-2">
+                                            <i class="bi bi-check-circle"></i> Оценка: {{ item.submission.grade }}
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-info mb-2">
+                                            <i class="bi bi-clock-history"></i> На проверке
+                                        </span>
+                                    {% endif %}
+                                {% elif item.is_overdue %}
+                                    <span class="badge bg-danger mb-2">
+                                        <i class="bi bi-exclamation-triangle"></i> Просрочено
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-warning mb-2">
+                                        <i class="bi bi-hourglass-split"></i> Не сдано
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-5 text-muted">
+                <i class="bi bi-inbox display-1"></i>
+                <p class="mt-3">Заданий по этому курсу пока нет</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
