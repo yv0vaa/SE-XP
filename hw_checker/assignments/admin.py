@@ -94,9 +94,7 @@ class HomeworkAdmin(admin.ModelAdmin):
         if not request.user.is_superuser and request.user.is_staff:
             courses_count = Course.objects.filter(teachers=request.user).count()
             if courses_count == 0:
-                extra_context["courses_warning"] = (
-                    "У вас нет курсов. Создайте курс перед добавлением домашнего задания."
-                )
+                extra_context["courses_warning"] = "У вас нет курсов. Создайте курс перед добавлением домашнего задания."
         return super().changeform_view(request, object_id, form_url, extra_context)
 
 
@@ -117,14 +115,7 @@ class SubmissionAdmin(admin.ModelAdmin):
     readonly_fields = ["submitted_at"]
 
     fieldsets = (
-<<<<<<< HEAD
         ("Информация о работе", {"fields": ("homework", "student", "solution_file", "submitted_at")}),
-=======
-        (
-            "Информация о работе",
-            {"fields": ("homework", "student", "solution_file", "submitted_at")},
-        ),
->>>>>>> 16d70a7 (use black formatter)
         ("Проверка", {"fields": ("grade", "feedback")}),
     )
 

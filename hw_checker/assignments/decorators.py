@@ -12,6 +12,7 @@ from functools import wraps
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import redirect
 
+
 def student_required(function=None, redirect_url="/"):
     """
     Декоратор для ограничения доступа только для студентов
