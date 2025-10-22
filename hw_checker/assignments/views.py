@@ -13,11 +13,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
-from django.http import HttpResponseForbidden
 
 from .decorators import student_required, teacher_required
 from .forms import GradeForm, HomeworkForm, RegisterForm, SubmissionForm
-from .models import Homework, Submission, UserProfile, Course
+from .models import Course, Homework, Submission
 
 # ============= Авторизация =============
 

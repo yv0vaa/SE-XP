@@ -3,12 +3,12 @@
 Скрипт для создания суперпользователя
 """
 import os
+
 import django
+from django.contrib.auth.models import User
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hw_checker.settings")
 django.setup()
-
-from django.contrib.auth.models import User
 
 # Данные для администратора
 username = "admin"
@@ -28,12 +28,12 @@ else:
         first_name="Администратор",
         last_name="Системы",
     )
-    print(f"✅ Суперпользователь создан!")
+    print("✅ Суперпользователь создан!")
     print(f"   Логин: {username}")
     print(f"   Пароль: {password}")
     print(f"   Email: {email}")
 
-print(f"\n🔐 Для входа в админ-панель:")
-print(f"   URL: http://127.0.0.1:8000/admin/")
+print("\n🔐 Для входа в админ-панель:")
+print("   URL: http://127.0.0.1:8000/admin/")
 print(f"   Логин: {username}")
 print(f"   Пароль: {password}")
