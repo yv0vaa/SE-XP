@@ -15,6 +15,7 @@ RegisterForm
    :members:
    :undoc-members:
    :show-inheritance:
+   :no-index:
    
    Форма регистрации нового пользователя.
    
@@ -35,6 +36,7 @@ HomeworkForm
    :members:
    :undoc-members:
    :show-inheritance:
+   :no-index:
    
    Форма создания и редактирования домашнего задания.
    
@@ -51,6 +53,7 @@ SubmissionForm
    :members:
    :undoc-members:
    :show-inheritance:
+   :no-index:
    
    Форма отправки решения домашнего задания студентом.
    
@@ -65,6 +68,7 @@ GradeForm
    :members:
    :undoc-members:
    :show-inheritance:
+   :no-index:
    
    Форма выставления оценки и комментария к работе студента.
    

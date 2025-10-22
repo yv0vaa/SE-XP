@@ -10,7 +10,7 @@ from django.apps import AppConfig
 class AssignmentsConfig(AppConfig):
     """
     Конфигурация приложения для управления домашними заданиями.
-    
+
     Attributes:
         default_auto_field: Тип автоматического поля для первичных ключей.
         name: Имя приложения.

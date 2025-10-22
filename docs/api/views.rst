@@ -12,6 +12,7 @@
 -----------
 
 .. autofunction:: assignments.views.register_view
+   :no-index:
 
    Регистрация нового пользователя в системе.
    
@@ -19,6 +20,7 @@
    * **POST**: Обрабатывает отправку формы и создает нового пользователя
 
 .. autofunction:: assignments.views.login_view
+   :no-index:
 
    Вход пользователя в систему.
    
@@ -26,6 +28,7 @@
    * **POST**: Аутентифицирует пользователя
 
 .. autofunction:: assignments.views.logout_view
+   :no-index:
 
    Выход пользователя из системы.
 
@@ -33,6 +36,7 @@ Dashboard
 ---------
 
 .. autofunction:: assignments.views.dashboard_view
+   :no-index:
 
    Главная страница - перенаправляет на соответствующий dashboard в зависимости от роли пользователя.
 
@@ -40,6 +44,7 @@ Dashboard
 ---------------------------
 
 .. autofunction:: assignments.views.student_dashboard
+   :no-index:
 
    Dashboard студента с списком всех домашних заданий и статусом их выполнения.
    
@@ -51,6 +56,7 @@ Dashboard
    * Полученные оценки
 
 .. autofunction:: assignments.views.homework_detail
+   :no-index:
 
    Детальная страница конкретного домашнего задания.
    
@@ -58,6 +64,7 @@ Dashboard
    * **POST**: Обрабатывает отправку решения студентом
 
 .. autofunction:: assignments.views.my_submissions
+   :no-index:
 
    Список всех отправленных работ текущего студента.
 
@@ -65,6 +72,7 @@ Dashboard
 --------------------------------
 
 .. autofunction:: assignments.views.teacher_dashboard
+   :no-index:
 
    Dashboard преподавателя с общей статистикой и последними работами.
    
@@ -76,6 +84,7 @@ Dashboard
    * Общую статистику
 
 .. autofunction:: assignments.views.create_homework
+   :no-index:
 
    Создание нового домашнего задания.
    
@@ -83,6 +92,7 @@ Dashboard
    * **POST**: Сохраняет новое задание
 
 .. autofunction:: assignments.views.edit_homework
+   :no-index:
 
    Редактирование существующего домашнего задания.
    
@@ -90,6 +100,7 @@ Dashboard
    * **POST**: Сохраняет изменения
 
 .. autofunction:: assignments.views.delete_homework
+   :no-index:
 
    Удаление домашнего задания.
    
@@ -97,10 +108,12 @@ Dashboard
    * **POST**: Удаляет задание
 
 .. autofunction:: assignments.views.homework_submissions
+   :no-index:
 
    Список всех отправленных работ по конкретному заданию.
 
 .. autofunction:: assignments.views.grade_submission
+   :no-index:
 
    Проверка и выставление оценки за работу студента.
    
@@ -108,6 +121,7 @@ Dashboard
    * **POST**: Сохраняет оценку и комментарий
 
 .. autofunction:: assignments.views.all_submissions
+   :no-index:
 
    Список всех отправленных работ с возможностью фильтрации.
    
@@ -121,6 +135,7 @@ Dashboard
 -------------------
 
 .. autofunction:: assignments.views.home_view
+   :no-index:
 
    Главная страница для неавторизованных пользователей.
 

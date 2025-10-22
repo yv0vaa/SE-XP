@@ -12,6 +12,7 @@ student_required
 ----------------
 
 .. autofunction:: assignments.decorators.student_required
+   :no-index:
 
    Декоратор для проверки, что текущий пользователь является студентом.
    
@@ -34,6 +35,7 @@ teacher_required
 ----------------
 
 .. autofunction:: assignments.decorators.teacher_required
+   :no-index:
 
    Декоратор для проверки, что текущий пользователь является преподавателем.
    
@@ -53,7 +55,7 @@ teacher_required
    * Если пользователь не преподаватель - возвращается HttpResponseForbidden (403)
 
 Примеры использования
---------------------
+~~~~~~~~~~~~~~~~~~~~~~
 
 Представление только для студентов
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

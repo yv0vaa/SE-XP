@@ -15,6 +15,7 @@ UserProfile
    :members:
    :undoc-members:
    :show-inheritance:
+   :no-index:
    
    Модель профиля пользователя, содержащая информацию о роли (студент или преподаватель).
    
@@ -35,6 +36,7 @@ Homework
    :members:
    :undoc-members:
    :show-inheritance:
+   :no-index:
    
    Модель домашнего задания.
    
@@ -52,6 +54,7 @@ Submission
    :members:
    :undoc-members:
    :show-inheritance:
+   :no-index:
    
    Модель отправленной работы студента.
    
@@ -72,10 +75,12 @@ Submission
 -------
 
 .. autofunction:: assignments.models.create_user_profile
+   :no-index:
 
    Автоматически создает профиль пользователя при создании нового User.
 
 .. autofunction:: assignments.models.save_user_profile
+   :no-index:
 
    Автоматически сохраняет профиль пользователя при сохранении User.
 
