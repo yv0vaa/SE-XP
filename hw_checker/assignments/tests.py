@@ -2,9 +2,9 @@
 Comprehensive test suite for the Homework Checker application.
 Tests follow TDD principles covering models, views, forms, and decorators.
 """
+
 import tempfile
 from datetime import timedelta
-from io import BytesIO
 
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -12,10 +12,8 @@ from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
 
-from .decorators import role_required, student_required, teacher_required
 from .forms import GradeForm, HomeworkForm, RegisterForm, SubmissionForm
 from .models import Homework, Submission, UserProfile
-
 
 # ============================================================================
 # MODEL TESTS
@@ -327,9 +325,7 @@ class GradeFormTest(TestCase):
     def test_grade_form_saves_correctly(self):
         """Test form updates submission grade"""
         student = User.objects.create_user(username="student", password="test123")
-        homework = Homework.objects.create(
-            title="Test", description="Test", due_date=timezone.now() + timedelta(days=7)
-        )
+        homework = Homework.objects.create(title="Test", description="Test", due_date=timezone.now() + timedelta(days=7))
         file = SimpleUploadedFile("test.txt", b"content", content_type="text/plain")
         submission = Submission.objects.create(homework=homework, student=student, solution_file=file)
 
@@ -519,9 +515,7 @@ class StudentViewsTest(TestCase):
         """Test student can submit homework"""
         self.client.login(username="student", password="test123")
         file = SimpleUploadedFile("solution.txt", b"my solution", content_type="text/plain")
-        response = self.client.post(
-            reverse("homework_detail", kwargs={"pk": self.homework.pk}), {"solution_file": file}
-        )
+        response = self.client.post(reverse("homework_detail", kwargs={"pk": self.homework.pk}), {"solution_file": file})
         self.assertEqual(response.status_code, 302)
         self.assertTrue(Submission.objects.filter(homework=self.homework, student=self.student).exists())
 
@@ -532,10 +526,9 @@ class StudentViewsTest(TestCase):
         Submission.objects.create(homework=self.homework, student=self.student, solution_file=file1)
 
         file2 = SimpleUploadedFile("solution2.txt", b"another solution", content_type="text/plain")
-        response = self.client.post(
-            reverse("homework_detail", kwargs={"pk": self.homework.pk}), {"solution_file": file2}
-        )
+        response = self.client.post(reverse("homework_detail", kwargs={"pk": self.homework.pk}), {"solution_file": file2})
         self.assertEqual(Submission.objects.filter(homework=self.homework, student=self.student).count(), 1)
+        self.assertEqual(response.status_code, 200)
 
     def test_my_submissions_view(self):
         """Test my submissions view shows student's submissions"""
@@ -781,12 +774,8 @@ class HomeworkWorkflowIntegrationTest(TestCase):
     def setUp(self):
         """Set up test data"""
         self.client = Client()
-        self.student = User.objects.create_user(
-            username="student", password="test123", first_name="John", last_name="Doe"
-        )
-        self.teacher = User.objects.create_user(
-            username="teacher", password="test123", first_name="Jane", last_name="Smith"
-        )
+        self.student = User.objects.create_user(username="student", password="test123", first_name="John", last_name="Doe")
+        self.teacher = User.objects.create_user(username="teacher", password="test123", first_name="Jane", last_name="Smith")
         self.teacher.profile.role = "teacher"
         self.teacher.profile.save()
 
