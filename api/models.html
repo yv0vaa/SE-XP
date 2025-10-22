@@ -92,6 +92,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#assignments.models.Course.created_at"><code class="docutils literal notranslate"><span class="pre">Course.created_at</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#assignments.models.Course.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Course.DoesNotExist</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#assignments.models.Course.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Course.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#assignments.models.Course.enrollment_requests"><code class="docutils literal notranslate"><span class="pre">Course.enrollment_requests</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#assignments.models.Course.get_next_by_created_at"><code class="docutils literal notranslate"><span class="pre">Course.get_next_by_created_at()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#assignments.models.Course.get_previous_by_created_at"><code class="docutils literal notranslate"><span class="pre">Course.get_previous_by_created_at()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#assignments.models.Course.homeworks"><code class="docutils literal notranslate"><span class="pre">Course.homeworks</span></code></a></li>
@@ -132,6 +133,27 @@
 <li class="toctree-l3"><a class="reference internal" href="#assignments.models.Submission.id"><code class="docutils literal notranslate"><span class="pre">Submission.id</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#assignments.models.Submission.objects"><code class="docutils literal notranslate"><span class="pre">Submission.objects</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#assignments.models.Submission.student_id"><code class="docutils literal notranslate"><span class="pre">Submission.student_id</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.models.CourseEnrollmentRequest"><code class="docutils literal notranslate"><span class="pre">CourseEnrollmentRequest</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#assignments.models.CourseEnrollmentRequest.STATUS_CHOICES"><code class="docutils literal notranslate"><span class="pre">CourseEnrollmentRequest.STATUS_CHOICES</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#assignments.models.CourseEnrollmentRequest.course"><code class="docutils literal notranslate"><span class="pre">CourseEnrollmentRequest.course</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#assignments.models.CourseEnrollmentRequest.student"><code class="docutils literal notranslate"><span class="pre">CourseEnrollmentRequest.student</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#assignments.models.CourseEnrollmentRequest.status"><code class="docutils literal notranslate"><span class="pre">CourseEnrollmentRequest.status</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#assignments.models.CourseEnrollmentRequest.message"><code class="docutils literal notranslate"><span class="pre">CourseEnrollmentRequest.message</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#assignments.models.CourseEnrollmentRequest.created_at"><code class="docutils literal notranslate"><span class="pre">CourseEnrollmentRequest.created_at</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#assignments.models.CourseEnrollmentRequest.processed_at"><code class="docutils literal notranslate"><span class="pre">CourseEnrollmentRequest.processed_at</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#assignments.models.CourseEnrollmentRequest.processed_by"><code class="docutils literal notranslate"><span class="pre">CourseEnrollmentRequest.processed_by</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#assignments.models.CourseEnrollmentRequest.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">CourseEnrollmentRequest.DoesNotExist</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#assignments.models.CourseEnrollmentRequest.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">CourseEnrollmentRequest.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#assignments.models.CourseEnrollmentRequest.course_id"><code class="docutils literal notranslate"><span class="pre">CourseEnrollmentRequest.course_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#assignments.models.CourseEnrollmentRequest.get_next_by_created_at"><code class="docutils literal notranslate"><span class="pre">CourseEnrollmentRequest.get_next_by_created_at()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#assignments.models.CourseEnrollmentRequest.get_previous_by_created_at"><code class="docutils literal notranslate"><span class="pre">CourseEnrollmentRequest.get_previous_by_created_at()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#assignments.models.CourseEnrollmentRequest.get_status_display"><code class="docutils literal notranslate"><span class="pre">CourseEnrollmentRequest.get_status_display()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#assignments.models.CourseEnrollmentRequest.id"><code class="docutils literal notranslate"><span class="pre">CourseEnrollmentRequest.id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#assignments.models.CourseEnrollmentRequest.objects"><code class="docutils literal notranslate"><span class="pre">CourseEnrollmentRequest.objects</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#assignments.models.CourseEnrollmentRequest.processed_by_id"><code class="docutils literal notranslate"><span class="pre">CourseEnrollmentRequest.processed_by_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#assignments.models.CourseEnrollmentRequest.student_id"><code class="docutils literal notranslate"><span class="pre">CourseEnrollmentRequest.student_id</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#userprofile">UserProfile</a></li>
@@ -366,6 +388,21 @@ object the first time, the query is executed.</p>
 <dt class="sig sig-object py" id="assignments.models.Course.MultipleObjectsReturned">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#assignments.models.Course.MultipleObjectsReturned" title="Ссылка на это определение"></a></dt>
 <dd><p>Базовые классы: <a class="reference external" href="https://docs.djangoproject.com/en/5.0/ref/exceptions/#django.core.exceptions.MultipleObjectsReturned" title="(в Django v5.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="assignments.models.Course.enrollment_requests">
+<span class="sig-name descname"><span class="pre">enrollment_requests</span></span><a class="headerlink" href="#assignments.models.Course.enrollment_requests" title="Ссылка на это определение"></a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -634,6 +671,139 @@ object the first time, the query is executed.</p>
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="assignments.models.CourseEnrollmentRequest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">assignments.models.</span></span><span class="sig-name descname"><span class="pre">CourseEnrollmentRequest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/models.html#CourseEnrollmentRequest"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.models.CourseEnrollmentRequest" title="Ссылка на это определение"></a></dt>
+<dd><p>Базовые классы: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Модель заявки студента на зачисление на курс</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="assignments.models.CourseEnrollmentRequest.STATUS_CHOICES">
+<span class="sig-name descname"><span class="pre">STATUS_CHOICES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('pending',</span> <span class="pre">'На</span> <span class="pre">рассмотрении'),</span> <span class="pre">('approved',</span> <span class="pre">'Одобрена'),</span> <span class="pre">('rejected',</span> <span class="pre">'Отклонена')]</span></em><a class="headerlink" href="#assignments.models.CourseEnrollmentRequest.STATUS_CHOICES" title="Ссылка на это определение"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="assignments.models.CourseEnrollmentRequest.course">
+<span class="sig-name descname"><span class="pre">course</span></span><a class="headerlink" href="#assignments.models.CourseEnrollmentRequest.course" title="Ссылка на это определение"></a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="assignments.models.CourseEnrollmentRequest.student">
+<span class="sig-name descname"><span class="pre">student</span></span><a class="headerlink" href="#assignments.models.CourseEnrollmentRequest.student" title="Ссылка на это определение"></a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="assignments.models.CourseEnrollmentRequest.status">
+<span class="sig-name descname"><span class="pre">status</span></span><a class="headerlink" href="#assignments.models.CourseEnrollmentRequest.status" title="Ссылка на это определение"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="assignments.models.CourseEnrollmentRequest.message">
+<span class="sig-name descname"><span class="pre">message</span></span><a class="headerlink" href="#assignments.models.CourseEnrollmentRequest.message" title="Ссылка на это определение"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="assignments.models.CourseEnrollmentRequest.created_at">
+<span class="sig-name descname"><span class="pre">created_at</span></span><a class="headerlink" href="#assignments.models.CourseEnrollmentRequest.created_at" title="Ссылка на это определение"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="assignments.models.CourseEnrollmentRequest.processed_at">
+<span class="sig-name descname"><span class="pre">processed_at</span></span><a class="headerlink" href="#assignments.models.CourseEnrollmentRequest.processed_at" title="Ссылка на это определение"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="assignments.models.CourseEnrollmentRequest.processed_by">
+<span class="sig-name descname"><span class="pre">processed_by</span></span><a class="headerlink" href="#assignments.models.CourseEnrollmentRequest.processed_by" title="Ссылка на это определение"></a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="assignments.models.CourseEnrollmentRequest.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#assignments.models.CourseEnrollmentRequest.DoesNotExist" title="Ссылка на это определение"></a></dt>
+<dd><p>Базовые классы: <a class="reference external" href="https://docs.djangoproject.com/en/5.0/ref/exceptions/#django.core.exceptions.ObjectDoesNotExist" title="(в Django v5.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="assignments.models.CourseEnrollmentRequest.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#assignments.models.CourseEnrollmentRequest.MultipleObjectsReturned" title="Ссылка на это определение"></a></dt>
+<dd><p>Базовые классы: <a class="reference external" href="https://docs.djangoproject.com/en/5.0/ref/exceptions/#django.core.exceptions.MultipleObjectsReturned" title="(в Django v5.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="assignments.models.CourseEnrollmentRequest.course_id">
+<span class="sig-name descname"><span class="pre">course_id</span></span><a class="headerlink" href="#assignments.models.CourseEnrollmentRequest.course_id" title="Ссылка на это определение"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="assignments.models.CourseEnrollmentRequest.get_next_by_created_at">
+<span class="sig-name descname"><span class="pre">get_next_by_created_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#assignments.models.CourseEnrollmentRequest.get_next_by_created_at" title="Ссылка на это определение"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="assignments.models.CourseEnrollmentRequest.get_previous_by_created_at">
+<span class="sig-name descname"><span class="pre">get_previous_by_created_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#assignments.models.CourseEnrollmentRequest.get_previous_by_created_at" title="Ссылка на это определение"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="assignments.models.CourseEnrollmentRequest.get_status_display">
+<span class="sig-name descname"><span class="pre">get_status_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.CharField:</span> <span class="pre">status&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#assignments.models.CourseEnrollmentRequest.get_status_display" title="Ссылка на это определение"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="assignments.models.CourseEnrollmentRequest.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#assignments.models.CourseEnrollmentRequest.id" title="Ссылка на это определение"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="assignments.models.CourseEnrollmentRequest.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#assignments.models.CourseEnrollmentRequest.objects" title="Ссылка на это определение"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="assignments.models.CourseEnrollmentRequest.processed_by_id">
+<span class="sig-name descname"><span class="pre">processed_by_id</span></span><a class="headerlink" href="#assignments.models.CourseEnrollmentRequest.processed_by_id" title="Ссылка на это определение"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="assignments.models.CourseEnrollmentRequest.student_id">
+<span class="sig-name descname"><span class="pre">student_id</span></span><a class="headerlink" href="#assignments.models.CourseEnrollmentRequest.student_id" title="Ссылка на это определение"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <section id="userprofile">
 <h2>UserProfile<a class="headerlink" href="#userprofile" title="Ссылка на этот заголовок"></a></h2>
 <dl class="py class">
@@ -808,6 +978,21 @@ object the first time, the query is executed.</p>
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span></dt>
 <dd><p>Базовые классы: <a class="reference external" href="https://docs.djangoproject.com/en/5.0/ref/exceptions/#django.core.exceptions.MultipleObjectsReturned" title="(в Django v5.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">enrollment_requests</span></span></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
 </dd></dl>
 
 <dl class="py method">

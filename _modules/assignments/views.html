@@ -108,15 +108,19 @@
 <span class="sd">- Отправки и проверки работ</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib</span><span class="w"> </span><span class="kn">import</span> <span class="n">messages</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.auth</span><span class="w"> </span><span class="kn">import</span> <span class="n">authenticate</span><span class="p">,</span> <span class="n">login</span><span class="p">,</span> <span class="n">logout</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.auth</span><span class="w"> </span><span class="kn">import</span> <span class="n">authenticate</span><span class="p">,</span> <span class="n">get_user_model</span><span class="p">,</span> <span class="n">login</span><span class="p">,</span> <span class="n">logout</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.auth.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">login_required</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">django.shortcuts</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_object_or_404</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">render</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">django.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">timezone</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">student_required</span><span class="p">,</span> <span class="n">teacher_required</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.forms</span><span class="w"> </span><span class="kn">import</span> <span class="n">GradeForm</span><span class="p">,</span> <span class="n">HomeworkForm</span><span class="p">,</span> <span class="n">RegisterForm</span><span class="p">,</span> <span class="n">SubmissionForm</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Course</span><span class="p">,</span> <span class="n">Homework</span><span class="p">,</span> <span class="n">Submission</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Course</span><span class="p">,</span> <span class="n">CourseEnrollmentRequest</span><span class="p">,</span> <span class="n">Homework</span><span class="p">,</span> <span class="n">Submission</span>
+
+<span class="n">User</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span>
 
 <span class="c1"># ============= Авторизация =============</span>
 
@@ -158,8 +162,7 @@
             <span class="n">login</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
             <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Добро пожаловать, </span><span class="si">{</span><span class="n">user</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;dashboard&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Неверный логин или пароль&quot;</span><span class="p">)</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Неверный логин или пароль&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/login.html&quot;</span><span class="p">)</span></div>
 
@@ -186,10 +189,9 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Главная страница - перенаправление в зависимости от роли&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">is_student</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;student_dashboard&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">is_teacher</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">is_teacher</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;teacher_dashboard&quot;</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;login&quot;</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;login&quot;</span><span class="p">)</span></div>
 
 
 
@@ -206,14 +208,14 @@
 
     <span class="c1"># Статистика по всем курсам</span>
     <span class="n">all_homeworks</span> <span class="o">=</span> <span class="n">Homework</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">course__in</span><span class="o">=</span><span class="n">courses</span><span class="p">)</span>
-    <span class="n">my_submissions</span> <span class="o">=</span> <span class="n">Submission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">student</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="n">student_submissions</span> <span class="o">=</span> <span class="n">Submission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">student</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
 
     <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;courses&quot;</span><span class="p">:</span> <span class="n">courses</span><span class="p">,</span>
         <span class="s2">&quot;total_courses&quot;</span><span class="p">:</span> <span class="n">courses</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
         <span class="s2">&quot;total_homeworks&quot;</span><span class="p">:</span> <span class="n">all_homeworks</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
-        <span class="s2">&quot;submitted_count&quot;</span><span class="p">:</span> <span class="n">my_submissions</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
-        <span class="s2">&quot;graded_count&quot;</span><span class="p">:</span> <span class="n">my_submissions</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">grade__isnull</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
+        <span class="s2">&quot;submitted_count&quot;</span><span class="p">:</span> <span class="n">student_submissions</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
+        <span class="s2">&quot;graded_count&quot;</span><span class="p">:</span> <span class="n">student_submissions</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">grade__isnull</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
     <span class="p">}</span>
 
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/student_dashboard.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
@@ -234,12 +236,12 @@
         <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;student_dashboard&quot;</span><span class="p">)</span>
 
     <span class="n">homeworks</span> <span class="o">=</span> <span class="n">course</span><span class="o">.</span><span class="n">homeworks</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-created_at&quot;</span><span class="p">)</span>
-    <span class="n">my_submissions</span> <span class="o">=</span> <span class="n">Submission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">student</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">homework__course</span><span class="o">=</span><span class="n">course</span><span class="p">)</span>
+    <span class="n">course_submissions</span> <span class="o">=</span> <span class="n">Submission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">student</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">homework__course</span><span class="o">=</span><span class="n">course</span><span class="p">)</span>
 
     <span class="c1"># Добавляем информацию о том, сдал ли студент каждое ДЗ</span>
     <span class="n">homework_status</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">hw</span> <span class="ow">in</span> <span class="n">homeworks</span><span class="p">:</span>
-        <span class="n">submission</span> <span class="o">=</span> <span class="n">my_submissions</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">homework</span><span class="o">=</span><span class="n">hw</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="n">submission</span> <span class="o">=</span> <span class="n">course_submissions</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">homework</span><span class="o">=</span><span class="n">hw</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
         <span class="n">homework_status</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="p">{</span>
                 <span class="s2">&quot;homework&quot;</span><span class="p">:</span> <span class="n">hw</span><span class="p">,</span>
@@ -252,7 +254,7 @@
         <span class="s2">&quot;course&quot;</span><span class="p">:</span> <span class="n">course</span><span class="p">,</span>
         <span class="s2">&quot;homework_status&quot;</span><span class="p">:</span> <span class="n">homework_status</span><span class="p">,</span>
         <span class="s2">&quot;total_homeworks&quot;</span><span class="p">:</span> <span class="n">homeworks</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
-        <span class="s2">&quot;submitted_count&quot;</span><span class="p">:</span> <span class="n">my_submissions</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
+        <span class="s2">&quot;submitted_count&quot;</span><span class="p">:</span> <span class="n">course_submissions</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
     <span class="p">}</span>
 
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/course_detail.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
@@ -281,8 +283,6 @@
             <span class="n">form</span> <span class="o">=</span> <span class="n">SubmissionForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">submission</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
                 <span class="c1"># Удаляем старый файл перед сохранением нового</span>
-                <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-
                 <span class="k">if</span> <span class="n">submission</span><span class="o">.</span><span class="n">solution_file</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">submission</span><span class="o">.</span><span class="n">solution_file</span><span class="o">.</span><span class="n">path</span><span class="p">):</span>
                     <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">submission</span><span class="o">.</span><span class="n">solution_file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
 
@@ -367,6 +367,108 @@
 
 
 
+<div class="viewcode-block" id="available_courses">
+<a class="viewcode-back" href="../../api/views.html#assignments.views.available_courses">[документация]</a>
+<span class="nd">@login_required</span>
+<span class="nd">@student_required</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">available_courses</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Список всех доступных курсов для студента&quot;&quot;&quot;</span>
+    <span class="c1"># Курсы, на которые студент уже записан</span>
+    <span class="n">enrolled_courses</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">enrolled_courses</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+    <span class="c1"># Все курсы</span>
+    <span class="n">all_courses</span> <span class="o">=</span> <span class="n">Course</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+    <span class="c1"># Заявки студента</span>
+    <span class="n">student_requests</span> <span class="o">=</span> <span class="n">CourseEnrollmentRequest</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">student</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="n">requests_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">req</span><span class="o">.</span><span class="n">course_id</span><span class="p">:</span> <span class="n">req</span> <span class="k">for</span> <span class="n">req</span> <span class="ow">in</span> <span class="n">student_requests</span><span class="p">}</span>
+
+    <span class="c1"># Подготавливаем информацию о каждом курсе</span>
+    <span class="n">courses_info</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">course</span> <span class="ow">in</span> <span class="n">all_courses</span><span class="p">:</span>
+        <span class="n">is_enrolled</span> <span class="o">=</span> <span class="n">course</span> <span class="ow">in</span> <span class="n">enrolled_courses</span>
+        <span class="n">request_status</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">enrollment_request</span> <span class="o">=</span> <span class="n">requests_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">course</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">enrollment_request</span><span class="p">:</span>
+            <span class="n">request_status</span> <span class="o">=</span> <span class="n">enrollment_request</span><span class="o">.</span><span class="n">status</span>
+
+        <span class="n">courses_info</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;course&quot;</span><span class="p">:</span> <span class="n">course</span><span class="p">,</span>
+                <span class="s2">&quot;is_enrolled&quot;</span><span class="p">:</span> <span class="n">is_enrolled</span><span class="p">,</span>
+                <span class="s2">&quot;request_status&quot;</span><span class="p">:</span> <span class="n">request_status</span><span class="p">,</span>
+                <span class="s2">&quot;request_id&quot;</span><span class="p">:</span> <span class="n">enrollment_request</span><span class="o">.</span><span class="n">id</span> <span class="k">if</span> <span class="n">enrollment_request</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;courses_info&quot;</span><span class="p">:</span> <span class="n">courses_info</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/available_courses.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="request_enrollment">
+<a class="viewcode-back" href="../../api/views.html#assignments.views.request_enrollment">[документация]</a>
+<span class="nd">@login_required</span>
+<span class="nd">@student_required</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">request_enrollment</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">course_pk</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Подать заявку на зачисление на курс&quot;&quot;&quot;</span>
+    <span class="n">course</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Course</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">course_pk</span><span class="p">)</span>
+
+    <span class="c1"># Проверяем, не записан ли студент уже на курс</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="ow">in</span> <span class="n">course</span><span class="o">.</span><span class="n">students</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Вы уже записаны на этот курс&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;available_courses&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Проверяем, нет ли уже активной заявки</span>
+    <span class="n">existing_request</span> <span class="o">=</span> <span class="n">CourseEnrollmentRequest</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">course</span><span class="o">=</span><span class="n">course</span><span class="p">,</span> <span class="n">student</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s2">&quot;pending&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">existing_request</span><span class="p">:</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Вы уже подали заявку на этот курс&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;available_courses&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">CourseEnrollmentRequest</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">course</span><span class="o">=</span><span class="n">course</span><span class="p">,</span> <span class="n">student</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Заявка на курс &quot;</span><span class="si">{</span><span class="n">course</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s1">&quot; успешно подана!&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;available_courses&quot;</span><span class="p">)</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;course&quot;</span><span class="p">:</span> <span class="n">course</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/request_enrollment.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="cancel_enrollment_request">
+<a class="viewcode-back" href="../../api/views.html#assignments.views.cancel_enrollment_request">[документация]</a>
+<span class="nd">@login_required</span>
+<span class="nd">@student_required</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cancel_enrollment_request</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">request_pk</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Отменить заявку на зачисление&quot;&quot;&quot;</span>
+    <span class="n">enrollment_request</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">CourseEnrollmentRequest</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">request_pk</span><span class="p">)</span>
+
+    <span class="c1"># Проверка доступа</span>
+    <span class="k">if</span> <span class="n">enrollment_request</span><span class="o">.</span><span class="n">student</span> <span class="o">!=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">:</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;У вас нет доступа к этой заявке&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;available_courses&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Можно отменить только заявки со статусом &quot;pending&quot;</span>
+    <span class="k">if</span> <span class="n">enrollment_request</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="s2">&quot;pending&quot;</span><span class="p">:</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Эту заявку нельзя отменить&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;available_courses&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">course_title</span> <span class="o">=</span> <span class="n">enrollment_request</span><span class="o">.</span><span class="n">course</span><span class="o">.</span><span class="n">title</span>
+        <span class="n">enrollment_request</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Заявка на курс &quot;</span><span class="si">{</span><span class="n">course_title</span><span class="si">}</span><span class="s1">&quot; отменена&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;available_courses&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;available_courses&quot;</span><span class="p">)</span></div>
+
+
+
 <span class="c1"># ============= Преподаватель =============</span>
 
 
@@ -438,8 +540,7 @@
             <span class="n">course</span><span class="o">.</span><span class="n">teachers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
             <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Курс &quot;</span><span class="si">{</span><span class="n">course</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s1">&quot; успешно создан!&#39;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;teacher_course_detail&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">course</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Заполните все обязательные поля&quot;</span><span class="p">)</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Заполните все обязательные поля&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/create_course.html&quot;</span><span class="p">)</span></div>
 
@@ -475,7 +576,7 @@
 <span class="nd">@login_required</span>
 <span class="nd">@teacher_required</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">manage_students</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Управление студентами курса&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Управление студентами курса - просмотр зачисленных студентов и заявок&quot;&quot;&quot;</span>
     <span class="n">course</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Course</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
 
     <span class="c1"># Проверка доступа</span>
@@ -483,23 +584,121 @@
         <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;У вас нет доступа к этому курсу&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;teacher_dashboard&quot;</span><span class="p">)</span>
 
-    <span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.auth.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">User</span>
-
-    <span class="n">all_students</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">profile__role</span><span class="o">=</span><span class="s2">&quot;student&quot;</span><span class="p">)</span>
+    <span class="c1"># Текущие студенты</span>
     <span class="n">current_students</span> <span class="o">=</span> <span class="n">course</span><span class="o">.</span><span class="n">students</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
-        <span class="n">student_ids</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s2">&quot;students&quot;</span><span class="p">)</span>
-        <span class="n">course</span><span class="o">.</span><span class="n">students</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">id__in</span><span class="o">=</span><span class="n">student_ids</span><span class="p">))</span>
-        <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Список студентов обновлен!&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;teacher_course_detail&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">course</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+    <span class="c1"># Заявки на зачисление</span>
+    <span class="n">pending_requests</span> <span class="o">=</span> <span class="n">CourseEnrollmentRequest</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">course</span><span class="o">=</span><span class="n">course</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s2">&quot;pending&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-created_at&quot;</span><span class="p">)</span>
+
+    <span class="c1"># История заявок (одобренные и отклоненные)</span>
+    <span class="n">processed_requests</span> <span class="o">=</span> <span class="n">CourseEnrollmentRequest</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">course</span><span class="o">=</span><span class="n">course</span><span class="p">,</span> <span class="n">status__in</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;approved&quot;</span><span class="p">,</span> <span class="s2">&quot;rejected&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span>
+        <span class="s2">&quot;-processed_at&quot;</span>
+    <span class="p">)[</span>
+        <span class="p">:</span><span class="mi">20</span>
+    <span class="p">]</span>  <span class="c1"># Показываем последние 20</span>
 
     <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;course&quot;</span><span class="p">:</span> <span class="n">course</span><span class="p">,</span>
-        <span class="s2">&quot;all_students&quot;</span><span class="p">:</span> <span class="n">all_students</span><span class="p">,</span>
         <span class="s2">&quot;current_students&quot;</span><span class="p">:</span> <span class="n">current_students</span><span class="p">,</span>
+        <span class="s2">&quot;pending_requests&quot;</span><span class="p">:</span> <span class="n">pending_requests</span><span class="p">,</span>
+        <span class="s2">&quot;processed_requests&quot;</span><span class="p">:</span> <span class="n">processed_requests</span><span class="p">,</span>
+        <span class="s2">&quot;pending_count&quot;</span><span class="p">:</span> <span class="n">pending_requests</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;assignments/manage_students.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="approve_enrollment_request">
+<a class="viewcode-back" href="../../api/views.html#assignments.views.approve_enrollment_request">[документация]</a>
+<span class="nd">@login_required</span>
+<span class="nd">@teacher_required</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">approve_enrollment_request</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">request_pk</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Одобрить заявку на зачисление&quot;&quot;&quot;</span>
+    <span class="n">enrollment_request</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">CourseEnrollmentRequest</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">request_pk</span><span class="p">)</span>
+
+    <span class="c1"># Проверка доступа</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">enrollment_request</span><span class="o">.</span><span class="n">course</span><span class="o">.</span><span class="n">teachers</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;У вас нет доступа к этой заявке&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;teacher_dashboard&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Проверка статуса</span>
+    <span class="k">if</span> <span class="n">enrollment_request</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="s2">&quot;pending&quot;</span><span class="p">:</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Эта заявка уже обработана&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;manage_students&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">enrollment_request</span><span class="o">.</span><span class="n">course</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="c1"># Обновляем статус заявки</span>
+        <span class="n">enrollment_request</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;approved&quot;</span>
+        <span class="n">enrollment_request</span><span class="o">.</span><span class="n">processed_at</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">enrollment_request</span><span class="o">.</span><span class="n">processed_by</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+        <span class="n">enrollment_request</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="c1"># Добавляем студента на курс</span>
+        <span class="n">enrollment_request</span><span class="o">.</span><span class="n">course</span><span class="o">.</span><span class="n">students</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">enrollment_request</span><span class="o">.</span><span class="n">student</span><span class="p">)</span>
+
+        <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;Студент </span><span class="si">{</span><span class="n">enrollment_request</span><span class="o">.</span><span class="n">student</span><span class="o">.</span><span class="n">get_full_name</span><span class="p">()</span><span class="si">}</span><span class="s1"> зачислен на курс &quot;</span><span class="si">{</span><span class="n">enrollment_request</span><span class="o">.</span><span class="n">course</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;manage_students&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">enrollment_request</span><span class="o">.</span><span class="n">course</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;manage_students&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">enrollment_request</span><span class="o">.</span><span class="n">course</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="reject_enrollment_request">
+<a class="viewcode-back" href="../../api/views.html#assignments.views.reject_enrollment_request">[документация]</a>
+<span class="nd">@login_required</span>
+<span class="nd">@teacher_required</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">reject_enrollment_request</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">request_pk</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Отклонить заявку на зачисление&quot;&quot;&quot;</span>
+    <span class="n">enrollment_request</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">CourseEnrollmentRequest</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">request_pk</span><span class="p">)</span>
+
+    <span class="c1"># Проверка доступа</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">enrollment_request</span><span class="o">.</span><span class="n">course</span><span class="o">.</span><span class="n">teachers</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;У вас нет доступа к этой заявке&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;teacher_dashboard&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Проверка статуса</span>
+    <span class="k">if</span> <span class="n">enrollment_request</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="s2">&quot;pending&quot;</span><span class="p">:</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Эта заявка уже обработана&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;manage_students&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">enrollment_request</span><span class="o">.</span><span class="n">course</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="c1"># Обновляем статус заявки</span>
+        <span class="n">enrollment_request</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;rejected&quot;</span>
+        <span class="n">enrollment_request</span><span class="o">.</span><span class="n">processed_at</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">enrollment_request</span><span class="o">.</span><span class="n">processed_by</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+        <span class="n">enrollment_request</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="n">messages</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Заявка от </span><span class="si">{</span><span class="n">enrollment_request</span><span class="o">.</span><span class="n">student</span><span class="o">.</span><span class="n">get_full_name</span><span class="p">()</span><span class="si">}</span><span class="s2"> отклонена&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;manage_students&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">enrollment_request</span><span class="o">.</span><span class="n">course</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;manage_students&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">enrollment_request</span><span class="o">.</span><span class="n">course</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="remove_student_from_course">
+<a class="viewcode-back" href="../../api/views.html#assignments.views.remove_student_from_course">[документация]</a>
+<span class="nd">@login_required</span>
+<span class="nd">@teacher_required</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">remove_student_from_course</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">course_pk</span><span class="p">,</span> <span class="n">student_pk</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Удалить студента с курса&quot;&quot;&quot;</span>
+    <span class="n">course</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Course</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">course_pk</span><span class="p">)</span>
+
+    <span class="c1"># Проверка доступа</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">course</span><span class="o">.</span><span class="n">teachers</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;У вас нет доступа к этому курсу&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;teacher_dashboard&quot;</span><span class="p">)</span>
+
+    <span class="n">student</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">student_pk</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">course</span><span class="o">.</span><span class="n">students</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">student</span><span class="p">)</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Студент </span><span class="si">{</span><span class="n">student</span><span class="o">.</span><span class="n">get_full_name</span><span class="p">()</span><span class="si">}</span><span class="s2"> удален с курса&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;manage_students&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">course</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;manage_students&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">course</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span></div>
 
 
 

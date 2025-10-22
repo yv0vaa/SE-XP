@@ -76,11 +76,17 @@
 <li class="toctree-l2"><a class="reference internal" href="#assignments.views.homework_detail"><code class="docutils literal notranslate"><span class="pre">homework_detail()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#assignments.views.my_submissions"><code class="docutils literal notranslate"><span class="pre">my_submissions()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#assignments.views.my_grades"><code class="docutils literal notranslate"><span class="pre">my_grades()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.available_courses"><code class="docutils literal notranslate"><span class="pre">available_courses()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.request_enrollment"><code class="docutils literal notranslate"><span class="pre">request_enrollment()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.cancel_enrollment_request"><code class="docutils literal notranslate"><span class="pre">cancel_enrollment_request()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#assignments.views.teacher_dashboard"><code class="docutils literal notranslate"><span class="pre">teacher_dashboard()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#assignments.views.teacher_course_detail"><code class="docutils literal notranslate"><span class="pre">teacher_course_detail()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#assignments.views.create_course"><code class="docutils literal notranslate"><span class="pre">create_course()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#assignments.views.edit_course"><code class="docutils literal notranslate"><span class="pre">edit_course()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#assignments.views.manage_students"><code class="docutils literal notranslate"><span class="pre">manage_students()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.approve_enrollment_request"><code class="docutils literal notranslate"><span class="pre">approve_enrollment_request()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.reject_enrollment_request"><code class="docutils literal notranslate"><span class="pre">reject_enrollment_request()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assignments.views.remove_student_from_course"><code class="docutils literal notranslate"><span class="pre">remove_student_from_course()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#assignments.views.teacher_create_homework"><code class="docutils literal notranslate"><span class="pre">teacher_create_homework()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#assignments.views.teacher_edit_homework"><code class="docutils literal notranslate"><span class="pre">teacher_edit_homework()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#assignments.views.teacher_homework_submissions"><code class="docutils literal notranslate"><span class="pre">teacher_homework_submissions()</span></code></a></li>
@@ -194,6 +200,24 @@
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.available_courses">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">available_courses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#available_courses"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.available_courses" title="Ссылка на это определение"></a></dt>
+<dd><p>Список всех доступных курсов для студента</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.request_enrollment">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">request_enrollment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">course_pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#request_enrollment"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.request_enrollment" title="Ссылка на это определение"></a></dt>
+<dd><p>Подать заявку на зачисление на курс</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.cancel_enrollment_request">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">cancel_enrollment_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#cancel_enrollment_request"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.cancel_enrollment_request" title="Ссылка на это определение"></a></dt>
+<dd><p>Отменить заявку на зачисление</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="assignments.views.teacher_dashboard">
 <span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">teacher_dashboard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#teacher_dashboard"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.teacher_dashboard" title="Ссылка на это определение"></a></dt>
 <dd><p>Dashboard преподавателя - список его курсов</p>
@@ -220,7 +244,25 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="assignments.views.manage_students">
 <span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">manage_students</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#manage_students"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.manage_students" title="Ссылка на это определение"></a></dt>
-<dd><p>Управление студентами курса</p>
+<dd><p>Управление студентами курса - просмотр зачисленных студентов и заявок</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.approve_enrollment_request">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">approve_enrollment_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#approve_enrollment_request"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.approve_enrollment_request" title="Ссылка на это определение"></a></dt>
+<dd><p>Одобрить заявку на зачисление</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.reject_enrollment_request">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">reject_enrollment_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#reject_enrollment_request"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.reject_enrollment_request" title="Ссылка на это определение"></a></dt>
+<dd><p>Отклонить заявку на зачисление</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="assignments.views.remove_student_from_course">
+<span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">remove_student_from_course</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">course_pk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">student_pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#remove_student_from_course"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#assignments.views.remove_student_from_course" title="Ссылка на это определение"></a></dt>
+<dd><p>Удалить студента с курса</p>
 </dd></dl>
 
 <dl class="py function">
@@ -422,7 +464,7 @@
 <dl class="py function">
 <dt class="sig sig-object py">
 <span class="sig-prename descclassname"><span class="pre">assignments.views.</span></span><span class="sig-name descname"><span class="pre">manage_students</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/assignments/views.html#manage_students"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a></dt>
-<dd><p>Управление студентами курса</p>
+<dd><p>Управление студентами курса - просмотр зачисленных студентов и заявок</p>
 <p>Управление студентами курса.</p>
 <ul class="simple">
 <li><p><strong>GET</strong>: Отображает список всех студентов с возможностью выбора</p></li>

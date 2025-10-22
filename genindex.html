@@ -113,6 +113,7 @@
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
@@ -132,6 +133,8 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/views.html#assignments.views.approve_enrollment_request">approve_enrollment_request() (в модуле assignments.views)</a>
+</li>
       <li>
     assignments.decorators
 
@@ -162,6 +165,8 @@
         <li><a href="api/views.html#module-assignments.views">module</a>
 </li>
       </ul></li>
+      <li><a href="api/views.html#assignments.views.available_courses">available_courses() (в модуле assignments.views)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -184,8 +189,14 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/models.html#assignments.models.Homework.course">course (атрибут assignments.models.Homework)</a>
+      <li><a href="api/views.html#assignments.views.cancel_enrollment_request">cancel_enrollment_request() (в модуле assignments.views)</a>
 </li>
+      <li><a href="api/models.html#assignments.models.CourseEnrollmentRequest.course">course (атрибут assignments.models.CourseEnrollmentRequest)</a>
+
+      <ul>
+        <li><a href="api/models.html#assignments.models.Homework.course">(атрибут assignments.models.Homework)</a>
+</li>
+      </ul></li>
       <li><a href="api/models.html#assignments.models.Course">Course (класс в assignments.models)</a>
 </li>
       <li><a href="api/models.html#assignments.models.Course.DoesNotExist">Course.DoesNotExist</a>
@@ -194,9 +205,19 @@
 </li>
       <li><a href="api/views.html#assignments.views.course_detail">course_detail() (в модуле assignments.views)</a>
 </li>
+      <li><a href="api/models.html#assignments.models.CourseEnrollmentRequest.course_id">course_id (атрибут assignments.models.CourseEnrollmentRequest)</a>
+
+      <ul>
+        <li><a href="api/models.html#assignments.models.Homework.course_id">(атрибут assignments.models.Homework)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/models.html#assignments.models.Homework.course_id">course_id (атрибут assignments.models.Homework)</a>
+      <li><a href="api/models.html#assignments.models.CourseEnrollmentRequest">CourseEnrollmentRequest (класс в assignments.models)</a>
+</li>
+      <li><a href="api/models.html#assignments.models.CourseEnrollmentRequest.DoesNotExist">CourseEnrollmentRequest.DoesNotExist</a>
+</li>
+      <li><a href="api/models.html#assignments.models.CourseEnrollmentRequest.MultipleObjectsReturned">CourseEnrollmentRequest.MultipleObjectsReturned</a>
 </li>
       <li><a href="api/views.html#assignments.views.create_course">create_course() (в модуле assignments.views)</a>
 </li>
@@ -205,6 +226,8 @@
       <li><a href="api/models.html#assignments.models.Course.created_at">created_at (атрибут assignments.models.Course)</a>
 
       <ul>
+        <li><a href="api/models.html#assignments.models.CourseEnrollmentRequest.created_at">(атрибут assignments.models.CourseEnrollmentRequest)</a>
+</li>
         <li><a href="api/models.html#assignments.models.Homework.created_at">(атрибут assignments.models.Homework)</a>
 </li>
       </ul></li>
@@ -249,6 +272,10 @@
       <li><a href="api/views.html#assignments.views.edit_course">edit_course() (в модуле assignments.views)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/models.html#assignments.models.Course.enrollment_requests">enrollment_requests (атрибут assignments.models.Course)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="F">F</h2>
@@ -275,6 +302,8 @@
       <li><a href="api/models.html#assignments.models.Course.get_next_by_created_at">get_next_by_created_at() (метод assignments.models.Course)</a>
 
       <ul>
+        <li><a href="api/models.html#assignments.models.CourseEnrollmentRequest.get_next_by_created_at">(метод assignments.models.CourseEnrollmentRequest)</a>
+</li>
         <li><a href="api/models.html#assignments.models.Homework.get_next_by_created_at">(метод assignments.models.Homework)</a>
 </li>
       </ul></li>
@@ -285,6 +314,8 @@
       <li><a href="api/models.html#assignments.models.Course.get_previous_by_created_at">get_previous_by_created_at() (метод assignments.models.Course)</a>
 
       <ul>
+        <li><a href="api/models.html#assignments.models.CourseEnrollmentRequest.get_previous_by_created_at">(метод assignments.models.CourseEnrollmentRequest)</a>
+</li>
         <li><a href="api/models.html#assignments.models.Homework.get_previous_by_created_at">(метод assignments.models.Homework)</a>
 </li>
       </ul></li>
@@ -295,6 +326,8 @@
       <li><a href="api/models.html#assignments.models.Submission.get_previous_by_submitted_at">get_previous_by_submitted_at() (метод assignments.models.Submission)</a>
 </li>
       <li><a href="api/models.html#assignments.models.UserProfile.get_role_display">get_role_display() (метод assignments.models.UserProfile)</a>
+</li>
+      <li><a href="api/models.html#assignments.models.CourseEnrollmentRequest.get_status_display">get_status_display() (метод assignments.models.CourseEnrollmentRequest)</a>
 </li>
       <li><a href="api/models.html#assignments.models.Submission.grade">grade (атрибут assignments.models.Submission)</a>
 </li>
@@ -341,6 +374,8 @@
       <li><a href="api/models.html#assignments.models.Course.id">id (атрибут assignments.models.Course)</a>
 
       <ul>
+        <li><a href="api/models.html#assignments.models.CourseEnrollmentRequest.id">(атрибут assignments.models.CourseEnrollmentRequest)</a>
+</li>
         <li><a href="api/models.html#assignments.models.Homework.id">(атрибут assignments.models.Homework)</a>
 </li>
         <li><a href="api/models.html#assignments.models.Submission.id">(атрибут assignments.models.Submission)</a>
@@ -392,6 +427,8 @@
         <li><a href="api/forms.html#assignments.forms.SubmissionForm.media">(свойство assignments.forms.SubmissionForm)</a>
 </li>
       </ul></li>
+      <li><a href="api/models.html#assignments.models.CourseEnrollmentRequest.message">message (атрибут assignments.models.CourseEnrollmentRequest)</a>
+</li>
       <li><a href="api/forms.html#assignments.forms.GradeForm.Meta.model">model (атрибут assignments.forms.GradeForm.Meta)</a>
 
       <ul>
@@ -430,6 +467,8 @@
       <li><a href="api/models.html#assignments.models.Course.objects">objects (атрибут assignments.models.Course)</a>
 
       <ul>
+        <li><a href="api/models.html#assignments.models.CourseEnrollmentRequest.objects">(атрибут assignments.models.CourseEnrollmentRequest)</a>
+</li>
         <li><a href="api/models.html#assignments.models.Homework.objects">(атрибут assignments.models.Homework)</a>
 </li>
         <li><a href="api/models.html#assignments.models.Submission.objects">(атрибут assignments.models.Submission)</a>
@@ -437,6 +476,20 @@
         <li><a href="api/models.html#assignments.models.UserProfile.objects">(атрибут assignments.models.UserProfile)</a>
 </li>
       </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/models.html#assignments.models.CourseEnrollmentRequest.processed_at">processed_at (атрибут assignments.models.CourseEnrollmentRequest)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/models.html#assignments.models.CourseEnrollmentRequest.processed_by">processed_by (атрибут assignments.models.CourseEnrollmentRequest)</a>
+</li>
+      <li><a href="api/models.html#assignments.models.CourseEnrollmentRequest.processed_by_id">processed_by_id (атрибут assignments.models.CourseEnrollmentRequest)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -449,8 +502,14 @@
 </li>
       <li><a href="api/forms.html#assignments.forms.RegisterForm.Meta">RegisterForm.Meta (класс в assignments.forms)</a>
 </li>
+      <li><a href="api/views.html#assignments.views.reject_enrollment_request">reject_enrollment_request() (в модуле assignments.views)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/views.html#assignments.views.remove_student_from_course">remove_student_from_course() (в модуле assignments.views)</a>
+</li>
+      <li><a href="api/views.html#assignments.views.request_enrollment">request_enrollment() (в модуле assignments.views)</a>
+</li>
       <li><a href="api/models.html#assignments.models.UserProfile.role">role (атрибут assignments.models.UserProfile)</a>
 </li>
       <li><a href="api/models.html#assignments.models.UserProfile.ROLE_CHOICES">ROLE_CHOICES (атрибут assignments.models.UserProfile)</a>
@@ -469,16 +528,28 @@
 </li>
       <li><a href="api/models.html#assignments.models.Submission.solution_file">solution_file (атрибут assignments.models.Submission)</a>
 </li>
-      <li><a href="api/models.html#assignments.models.Submission.student">student (атрибут assignments.models.Submission)</a>
+      <li><a href="api/models.html#assignments.models.CourseEnrollmentRequest.status">status (атрибут assignments.models.CourseEnrollmentRequest)</a>
 </li>
+      <li><a href="api/models.html#assignments.models.CourseEnrollmentRequest.STATUS_CHOICES">STATUS_CHOICES (атрибут assignments.models.CourseEnrollmentRequest)</a>
+</li>
+      <li><a href="api/models.html#assignments.models.CourseEnrollmentRequest.student">student (атрибут assignments.models.CourseEnrollmentRequest)</a>
+
+      <ul>
+        <li><a href="api/models.html#assignments.models.Submission.student">(атрибут assignments.models.Submission)</a>
+</li>
+      </ul></li>
       <li><a href="api/views.html#assignments.views.student_dashboard">student_dashboard() (в модуле assignments.views)</a>
 </li>
-      <li><a href="api/models.html#assignments.models.Submission.student_id">student_id (атрибут assignments.models.Submission)</a>
+      <li><a href="api/models.html#assignments.models.CourseEnrollmentRequest.student_id">student_id (атрибут assignments.models.CourseEnrollmentRequest)</a>
+
+      <ul>
+        <li><a href="api/models.html#assignments.models.Submission.student_id">(атрибут assignments.models.Submission)</a>
 </li>
-      <li><a href="api/decorators.html#assignments.decorators.student_required">student_required() (в модуле assignments.decorators)</a>
-</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/decorators.html#assignments.decorators.student_required">student_required() (в модуле assignments.decorators)</a>
+</li>
       <li><a href="api/models.html#assignments.models.Course.students">students (атрибут assignments.models.Course)</a>
 </li>
       <li><a href="api/models.html#assignments.models.Submission">Submission (класс в assignments.models)</a>
