@@ -1,3 +1,12 @@
+"""
+Модели данных для системы проверки домашних заданий.
+
+Содержит модели для:
+- Профилей пользователей (студенты и преподаватели)
+- Домашних заданий
+- Отправленных работ студентов
+"""
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save

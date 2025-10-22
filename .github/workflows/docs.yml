@@ -1,0 +1,85 @@
+name: Documentation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-docs:
+    name: Build Documentation
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Build Sphinx documentation
+      working-directory: ./docs
+      run: |
+        make html
+    
+    - name: Check for broken links
+      working-directory: ./docs
+      run: |
+        make linkcheck
+      continue-on-error: true
+    
+    - name: Upload documentation artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: documentation
+        path: docs/_build/html/
+        retention-days: 30
+    
+    - name: Deploy to GitHub Pages
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/_build/html
+        cname: false
+
+  test-docs:
+    name: Test Documentation
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Check docstring coverage
+      run: |
+        pip install interrogate
+        interrogate hw_checker/assignments/ -v -i -e "__init__.py" -e "migrations" || true
+    
+    - name: Validate documentation can be built
+      working-directory: ./docs
+      run: |
+        make clean
+        sphinx-build -W --keep-going -b html . _build/html
+
+

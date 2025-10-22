@@ -1,3 +1,9 @@
+"""
+Модуль административной панели Django для приложения assignments.
+
+Содержит конфигурацию отображения моделей в админ-панели Django.
+"""
+
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
@@ -6,12 +12,16 @@ from .models import Homework, Submission, UserProfile
 
 
 class UserProfileInline(admin.StackedInline):
+    """Встроенная форма профиля пользователя для админ-панели."""
+
     model = UserProfile
     can_delete = False
     verbose_name_plural = "Профиль"
 
 
 class UserAdmin(BaseUserAdmin):
+    """Расширенная админ-панель пользователя с профилем."""
+
     inlines = (UserProfileInline,)
 
 

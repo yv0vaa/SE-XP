@@ -1,3 +1,13 @@
+"""
+Формы Django для системы проверки домашних заданий.
+
+Содержит формы для:
+- Регистрации пользователей с выбором роли
+- Создания и редактирования домашних заданий
+- Отправки работ студентами
+- Выставления оценок преподавателями
+"""
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User

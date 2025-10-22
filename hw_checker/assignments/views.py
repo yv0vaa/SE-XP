@@ -1,3 +1,13 @@
+"""
+Представления (views) для системы проверки домашних заданий.
+
+Содержит все представления для:
+- Авторизации и регистрации пользователей
+- Dashboard студента и преподавателя
+- Управления домашними заданиями
+- Отправки и проверки работ
+"""
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
