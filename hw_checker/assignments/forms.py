@@ -83,10 +83,18 @@ class SubmissionForm(forms.ModelForm):
         model = Submission
         fields = ["solution_file"]
         widgets = {
-            "solution_file": forms.FileInput(attrs={"class": "form-control", "accept": ".pdf,.doc,.docx,.txt,.py,.zip"}),
+            "solution_file": forms.FileInput(
+                attrs={
+                    "class": "form-control",
+                    "accept": ".pdf,.doc,.docx,.txt,.py,.zip,.jpg,.jpeg,.png",
+                }
+            ),
         }
         labels = {
-            "solution_file": "Файл с решением",
+            "solution_file": "Файл с решением (макс. 10МБ)",
+        }
+        help_texts = {
+            "solution_file": "Разрешенные форматы: PDF, DOC, DOCX, TXT, PY, ZIP, JPG, JPEG, PNG. Максимальный размер: 10МБ",
         }
 
 

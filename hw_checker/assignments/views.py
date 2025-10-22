@@ -155,20 +155,35 @@ def homework_detail(request, pk):
     submission = Submission.objects.filter(homework=homework, student=request.user).first()
 
     if request.method == "POST":
+        # Разрешаем переотправку работы (замену файла)
         if submission:
-            messages.warning(request, "Вы уже отправили работу по этому заданию")
-            return redirect("homework_detail", pk=pk)
-
-        form = SubmissionForm(request.POST, request.FILES)
-        if form.is_valid():
-            submission = form.save(commit=False)
-            submission.homework = homework
-            submission.student = request.user
-            submission.save()
-            messages.success(request, "Работа успешно отправлена!")
-            return redirect("course_detail", pk=homework.course.pk)
+            # Обновляем существующую отправку
+            form = SubmissionForm(request.POST, request.FILES, instance=submission)
+            if form.is_valid():
+                # Удаляем старый файл перед сохранением нового
+                import os
+                if submission.solution_file and os.path.isfile(submission.solution_file.path):
+                    os.remove(submission.solution_file.path)
+                
+                submission = form.save(commit=False)
+                # Сбрасываем оценку при переотправке
+                submission.grade = None
+                submission.feedback = ""
+                submission.save()
+                messages.success(request, "Работа успешно переотправлена! Оценка сброшена.")
+                return redirect("course_detail", pk=homework.course.pk)
+        else:
+            # Создаём новую отправку
+            form = SubmissionForm(request.POST, request.FILES)
+            if form.is_valid():
+                submission = form.save(commit=False)
+                submission.homework = homework
+                submission.student = request.user
+                submission.save()
+                messages.success(request, "Работа успешно отправлена!")
+                return redirect("course_detail", pk=homework.course.pk)
     else:
-        form = SubmissionForm()
+        form = SubmissionForm(instance=submission) if submission else SubmissionForm()
 
     context = {
         "homework": homework,
@@ -456,17 +471,126 @@ def teacher_all_submissions(request):
 
     # Фильтрация
     status_filter = request.GET.get("status", "all")
+    course_filter = request.GET.get("course", "all")
+    
     if status_filter == "pending":
         submissions = submissions.filter(grade__isnull=True)
     elif status_filter == "graded":
         submissions = submissions.filter(grade__isnull=False)
+    
+    if course_filter != "all":
+        submissions = submissions.filter(homework__course_id=course_filter)
 
     context = {
         "submissions": submissions,
         "status_filter": status_filter,
+        "course_filter": course_filter,
+        "courses": courses,
     }
 
     return render(request, "assignments/teacher_all_submissions.html", context)
+
+
+@login_required
+@teacher_required
+def delete_course(request, pk):
+    """Удаление курса"""
+    course = get_object_or_404(Course, pk=pk)
+
+    # Проверка доступа
+    if request.user not in course.teachers.all():
+        messages.error(request, "У вас нет доступа к этому курсу")
+        return redirect("teacher_dashboard")
+
+    if request.method == "POST":
+        course_title = course.title
+        course.delete()
+        messages.success(request, f'Курс "{course_title}" успешно удалён!')
+        return redirect("teacher_dashboard")
+
+    return redirect("teacher_course_detail", pk=pk)
+
+
+@login_required
+@teacher_required
+def delete_homework(request, pk):
+    """Удаление домашнего задания"""
+    homework = get_object_or_404(Homework, pk=pk)
+
+    # Проверка доступа
+    if request.user not in homework.course.teachers.all():
+        messages.error(request, "У вас нет доступа к этому заданию")
+        return redirect("teacher_dashboard")
+
+    if request.method == "POST":
+        course_pk = homework.course.pk
+        homework_title = homework.title
+        homework.delete()
+        messages.success(request, f'Задание "{homework_title}" успешно удалено!')
+        return redirect("teacher_course_detail", pk=course_pk)
+
+    return redirect("teacher_course_detail", pk=homework.course.pk)
+
+
+@login_required
+@teacher_required
+def teacher_grades_table(request, course_pk):
+    """Сводная таблица оценок студентов по курсу"""
+    course = get_object_or_404(Course, pk=course_pk)
+
+    # Проверка доступа
+    if request.user not in course.teachers.all():
+        messages.error(request, "У вас нет доступа к этому курсу")
+        return redirect("teacher_dashboard")
+
+    # Получаем всех студентов курса и все задания
+    students = course.students.all().order_by("last_name", "first_name")
+    homeworks = course.homeworks.all().order_by("due_date")
+
+    # Формируем таблицу оценок
+    grades_table = []
+    for student in students:
+        student_row = {
+            "student": student,
+            "grades": [],
+            "total": 0,
+            "average": 0,
+            "completed": 0,
+        }
+        
+        total_grade = 0
+        graded_count = 0
+        
+        for hw in homeworks:
+            submission = Submission.objects.filter(homework=hw, student=student).first()
+            grade_info = {
+                "homework": hw,
+                "submission": submission,
+                "grade": submission.grade if submission else None,
+                "status": "graded" if submission and submission.grade is not None else "submitted" if submission else "missing",
+            }
+            student_row["grades"].append(grade_info)
+            
+            if submission and submission.grade is not None:
+                total_grade += submission.grade
+                graded_count += 1
+        
+        if graded_count > 0:
+            student_row["average"] = round(total_grade / graded_count, 1)
+        student_row["completed"] = graded_count
+        student_row["total"] = total_grade
+        
+        grades_table.append(student_row)
+
+    context = {
+        "course": course,
+        "homeworks": homeworks,
+        "grades_table": grades_table,
+        "students_count": students.count(),
+        "homeworks_count": homeworks.count(),
+    }
+
+    return render(request, "assignments/teacher_grades_table.html", context)
 
 
 # ============= Общие =============

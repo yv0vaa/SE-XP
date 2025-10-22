@@ -71,6 +71,42 @@
                             <i class="bi bi-hourglass-split"></i> Работа ожидает проверки
                         </div>
                     {% endif %}
+                    
+                    <hr>
+                    <details>
+                        <summary class="btn btn-sm btn-outline-warning w-100 mb-2" style="cursor: pointer;">
+                            <i class="bi bi-arrow-repeat"></i> Переотправить работу
+                        </summary>
+                        <div class="mt-3">
+                            <div class="alert alert-warning small">
+                                <i class="bi bi-exclamation-triangle"></i> 
+                                <strong>Внимание!</strong> При переотправке:
+                                <ul class="mb-0 mt-2">
+                                    <li>Старый файл будет удалён</li>
+                                    <li>Оценка будет сброшена</li>
+                                    <li>Работа отправится на повторную проверку</li>
+                                </ul>
+                            </div>
+                            <form method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                
+                                <div class="mb-3">
+                                    {{ form.solution_file.label_tag }}
+                                    {{ form.solution_file }}
+                                    {% if form.solution_file.errors %}
+                                        <div class="text-danger small">{{ form.solution_file.errors }}</div>
+                                    {% endif %}
+                                    <small class="text-muted d-block mt-1">
+                                        Форматы: PDF, DOC, DOCX, TXT, PY, ZIP
+                                    </small>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-warning w-100">
+                                    <i class="bi bi-arrow-repeat"></i> Переотправить работу
+                                </button>
+                            </form>
+                        </div>
+                    </details>
                 {% else %}
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}

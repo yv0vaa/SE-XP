@@ -16,15 +16,37 @@
     <div class="card-body">
         <!-- Фильтры -->
         <div class="mb-4">
-            <a href="{% url 'teacher_all_submissions' %}" class="btn btn-sm {% if status_filter == 'all' %}btn-primary{% else %}btn-outline-primary{% endif %}">
-                Все
-            </a>
-            <a href="{% url 'teacher_all_submissions' %}?status=pending" class="btn btn-sm {% if status_filter == 'pending' %}btn-warning{% else %}btn-outline-warning{% endif %}">
-                На проверке
-            </a>
-            <a href="{% url 'teacher_all_submissions' %}?status=graded" class="btn btn-sm {% if status_filter == 'graded' %}btn-success{% else %}btn-outline-success{% endif %}">
-                Проверенные
-            </a>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">
+                        <i class="bi bi-funnel"></i> Статус работы:
+                    </label>
+                    <div>
+                        <a href="{% url 'teacher_all_submissions' %}?course={{ course_filter }}" class="btn btn-sm {% if status_filter == 'all' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                            Все
+                        </a>
+                        <a href="{% url 'teacher_all_submissions' %}?status=pending&course={{ course_filter }}" class="btn btn-sm {% if status_filter == 'pending' %}btn-warning{% else %}btn-outline-warning{% endif %}">
+                            На проверке
+                        </a>
+                        <a href="{% url 'teacher_all_submissions' %}?status=graded&course={{ course_filter }}" class="btn btn-sm {% if status_filter == 'graded' %}btn-success{% else %}btn-outline-success{% endif %}">
+                            Проверенные
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="courseFilter" class="form-label fw-bold">
+                        <i class="bi bi-book"></i> Курс:
+                    </label>
+                    <select id="courseFilter" class="form-select" onchange="filterByCourse(this.value)">
+                        <option value="all" {% if course_filter == 'all' %}selected{% endif %}>Все курсы</option>
+                        {% for course in courses %}
+                            <option value="{{ course.pk }}" {% if course_filter == course.pk|stringformat:'s' %}selected{% endif %}>
+                                {{ course.title }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
         </div>
         
         {% if submissions %}
@@ -78,5 +100,18 @@
         {% endif %}
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function filterByCourse(courseId) {
+        const status = '{{ status_filter }}';
+        let url = '{% url "teacher_all_submissions" %}?course=' + courseId;
+        if (status !== 'all') {
+            url += '&status=' + status;
+        }
+        window.location.href = url;
+    }
+</script>
 {% endblock %}
 

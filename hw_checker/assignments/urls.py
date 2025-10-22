@@ -64,4 +64,19 @@ urlpatterns = [
         views.teacher_all_submissions,
         name="teacher_all_submissions",
     ),
+    path(
+        "teacher/course/<int:course_pk>/grades/",
+        views.teacher_grades_table,
+        name="teacher_grades_table",
+    ),
+    path(
+        "teacher/course/<int:pk>/delete/",
+        views.delete_course,
+        name="delete_course",
+    ),
+    path(
+        "teacher/homework/<int:pk>/delete/",
+        views.delete_homework,
+        name="delete_homework",
+    ),
 ]

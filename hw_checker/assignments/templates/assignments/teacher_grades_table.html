@@ -1,0 +1,279 @@
+{% extends 'assignments/base.html' %}
+
+{% block title %}Таблица оценок - {{ course.title }} - HW Checker{% endblock %}
+
+{% block extra_css %}
+<style>
+    .grades-table {
+        overflow-x: auto;
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+    
+    .grades-table table {
+        font-size: 0.9rem;
+    }
+    
+    .grades-table th {
+        background: linear-gradient(135deg, #4f46e5 0%, #8b5cf6 100%);
+        color: white;
+        font-weight: 600;
+        text-align: center;
+        vertical-align: middle;
+        white-space: nowrap;
+        padding: 12px 8px;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    
+    .grades-table td {
+        text-align: center;
+        vertical-align: middle;
+        padding: 10px 8px;
+        border: 1px solid #e5e7eb;
+    }
+    
+    .student-name {
+        text-align: left !important;
+        font-weight: 600;
+        background: #f9fafb;
+        white-space: nowrap;
+        position: sticky;
+        left: 0;
+        z-index: 5;
+    }
+    
+    .grade-cell {
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .grade-cell:hover {
+        background: #f3f4f6;
+    }
+    
+    .grade-graded {
+        background: #d1fae5;
+        color: #065f46;
+        font-weight: 600;
+    }
+    
+    .grade-submitted {
+        background: #fef3c7;
+        color: #92400e;
+    }
+    
+    .grade-missing {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+    
+    .summary-cell {
+        background: #f9fafb;
+        font-weight: 700;
+        color: #4f46e5;
+    }
+    
+    .homework-header {
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        padding: 8px 4px !important;
+        max-width: 40px;
+        min-width: 40px;
+    }
+    
+    .table-responsive {
+        max-height: 70vh;
+        overflow: auto;
+    }
+    
+    .legend {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin: 20px 0;
+        flex-wrap: wrap;
+    }
+    
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.85rem;
+    }
+    
+    .legend-badge {
+        width: 25px;
+        height: 25px;
+        border-radius: 4px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'teacher_dashboard' %}" class="text-white">Мои курсы</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'teacher_course_detail' course.pk %}" class="text-white">{{ course.title }}</a></li>
+                <li class="breadcrumb-item active text-white-50">Таблица оценок</li>
+            </ol>
+        </nav>
+        <h1 class="text-white">
+            <i class="bi bi-table"></i> Таблица оценок
+        </h1>
+        <p class="text-white-50">{{ course.title }}</p>
+    </div>
+    <div class="col-auto">
+        <a href="{% url 'teacher_course_detail' course.pk %}" class="btn btn-light">
+            <i class="bi bi-arrow-left"></i> Назад к курсу
+        </a>
+    </div>
+</div>
+
+<!-- Статистика -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="stats-card">
+            <i class="bi bi-people"></i>
+            <h3>{{ students_count }}</h3>
+            <p>Студентов</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stats-card">
+            <i class="bi bi-journal-text"></i>
+            <h3>{{ homeworks_count }}</h3>
+            <p>Заданий</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stats-card">
+            <i class="bi bi-calculator"></i>
+            <h3>{{ students_count|mul:homeworks_count }}</h3>
+            <p>Всего работ</p>
+        </div>
+    </div>
+</div>
+
+<!-- Легенда -->
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-badge grade-graded"></div>
+                <span>Оценено</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-badge grade-submitted"></div>
+                <span>Сдано, на проверке</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-badge grade-missing"></div>
+                <span>Не сдано</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Таблица оценок -->
+<div class="grades-table">
+    <div class="table-responsive">
+        <table class="table table-bordered mb-0">
+            <thead>
+                <tr>
+                    <th style="min-width: 200px;">Студент</th>
+                    {% for hw in homeworks %}
+                        <th class="homework-header" title="{{ hw.title }}">
+                            {{ hw.title|truncatewords:3 }}
+                        </th>
+                    {% endfor %}
+                    <th style="min-width: 80px;">Сдано</th>
+                    <th style="min-width: 80px;">Средняя</th>
+                    <th style="min-width: 80px;">Сумма</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if grades_table %}
+                    {% for row in grades_table %}
+                        <tr>
+                            <td class="student-name">
+                                <i class="bi bi-person-circle"></i>
+                                {{ row.student.last_name }} {{ row.student.first_name }}
+                            </td>
+                            {% for grade_info in row.grades %}
+                                <td class="grade-cell grade-{{ grade_info.status }}"
+                                    {% if grade_info.submission %}
+                                        onclick="window.location.href='{% url 'teacher_grade_submission' grade_info.submission.pk %}'"
+                                        title="Нажмите для просмотра"
+                                    {% endif %}>
+                                    {% if grade_info.grade is not None %}
+                                        {{ grade_info.grade }}
+                                    {% elif grade_info.submission %}
+                                        <i class="bi bi-hourglass-split"></i>
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                            <td class="summary-cell">{{ row.completed }}/{{ homeworks_count }}</td>
+                            <td class="summary-cell">
+                                {% if row.average > 0 %}
+                                    {{ row.average }}
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </td>
+                            <td class="summary-cell">
+                                {% if row.total > 0 %}
+                                    {{ row.total }}
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="{{ homeworks_count|add:4 }}" class="text-center text-muted py-5">
+                            <i class="bi bi-inbox display-4"></i>
+                            <p class="mt-3">Нет студентов в курсе</p>
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="mt-4 text-center">
+    <p class="text-white-50">
+        <i class="bi bi-info-circle"></i> Нажмите на ячейку с оценкой для просмотра работы
+    </p>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Подсветка столбца при наведении
+    document.querySelectorAll('.grades-table td').forEach(cell => {
+        cell.addEventListener('mouseenter', function() {
+            const index = Array.from(this.parentElement.children).indexOf(this);
+            document.querySelectorAll(`tr td:nth-child(${index + 1})`).forEach(c => {
+                c.style.opacity = '0.8';
+            });
+        });
+        cell.addEventListener('mouseleave', function() {
+            const index = Array.from(this.parentElement.children).indexOf(this);
+            document.querySelectorAll(`tr td:nth-child(${index + 1})`).forEach(c => {
+                c.style.opacity = '1';
+            });
+        });
+    });
+</script>
+{% endblock %}
+

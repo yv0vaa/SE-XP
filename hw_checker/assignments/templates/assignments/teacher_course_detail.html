@@ -12,6 +12,9 @@
     </div>
     <div class="col-auto">
         <div class="btn-group">
+            <a href="{% url 'teacher_grades_table' course.pk %}" class="btn btn-primary">
+                <i class="bi bi-table"></i> Таблица оценок
+            </a>
             <a href="{% url 'teacher_create_homework' course.pk %}" class="btn btn-success">
                 <i class="bi bi-plus-circle"></i> Создать задание
             </a>
@@ -21,6 +24,9 @@
             <a href="{% url 'edit_course' course.pk %}" class="btn btn-warning">
                 <i class="bi bi-pencil"></i> Редактировать
             </a>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCourseModal">
+                <i class="bi bi-trash"></i> Удалить
+            </button>
             <a href="{% url 'teacher_dashboard' %}" class="btn btn-outline-light">
                 <i class="bi bi-arrow-left"></i> Назад
             </a>
@@ -83,6 +89,37 @@
                                 <a href="{% url 'teacher_edit_homework' hw.pk %}" class="btn btn-sm btn-outline-secondary">
                                     <i class="bi bi-pencil"></i>
                                 </a>
+                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteHomeworkModal{{ hw.pk }}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Modal для удаления задания -->
+                            <div class="modal fade" id="deleteHomeworkModal{{ hw.pk }}" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Подтверждение удаления</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Вы уверены, что хотите удалить задание <strong>"{{ hw.title }}"</strong>?</p>
+                                            <div class="alert alert-warning">
+                                                <i class="bi bi-exclamation-triangle"></i>
+                                                Это действие удалит все отправленные работы студентов и их оценки!
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                                            <form method="post" action="{% url 'delete_homework' hw.pk %}" style="display: inline;">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger">
+                                                    <i class="bi bi-trash"></i> Удалить
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -97,6 +134,42 @@
                 </a>
             </div>
         {% endif %}
+    </div>
+</div>
+
+<!-- Modal для удаления курса -->
+<div class="modal fade" id="deleteCourseModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <i class="bi bi-exclamation-triangle"></i> Удаление курса
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Вы уверены, что хотите удалить курс <strong>"{{ course.title }}"</strong>?</p>
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <strong>ВНИМАНИЕ!</strong> Это действие необратимо и приведет к удалению:
+                    <ul class="mt-2 mb-0">
+                        <li>Всех домашних заданий курса</li>
+                        <li>Всех отправленных работ студентов</li>
+                        <li>Всех оценок и отзывов</li>
+                    </ul>
+                </div>
+                <p class="mb-0">Студенты и преподаватели НЕ будут удалены.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <form method="post" action="{% url 'delete_course' course.pk %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Да, удалить курс
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

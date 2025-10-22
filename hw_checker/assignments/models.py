@@ -8,9 +8,42 @@
 """
 
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
+
+def validate_file_size(file):
+    """
+    Валидатор размера файла (максимум 10 МБ).
+    
+    Args:
+        file: Загружаемый файл
+        
+    Raises:
+        ValidationError: Если размер файла превышает лимит
+    """
+    max_size_mb = 10
+    if file.size > max_size_mb * 1024 * 1024:
+        raise ValidationError(f"Максимальный размер файла {max_size_mb}МБ. Ваш файл: {file.size / (1024 * 1024):.2f}МБ")
+
+
+def validate_file_extension(file):
+    """
+    Валидатор расширения файла.
+    
+    Args:
+        file: Загружаемый файл
+        
+    Raises:
+        ValidationError: Если расширение файла не разрешено
+    """
+    import os
+    ext = os.path.splitext(file.name)[1].lower()
+    valid_extensions = ['.pdf', '.doc', '.docx', '.txt', '.py', '.zip', '.jpg', '.jpeg', '.png']
+    if ext not in valid_extensions:
+        raise ValidationError(f"Неподдерживаемый формат файла. Разрешены: {', '.join(valid_extensions)}")
 
 
 class UserProfile(models.Model):
@@ -108,7 +141,11 @@ class Submission(models.Model):
         Homework, on_delete=models.CASCADE, related_name="submissions", verbose_name="Домашнее задание"
     )
     student = models.ForeignKey(User, on_delete=models.CASCADE, related_name="submissions", verbose_name="Студент")
-    solution_file = models.FileField(upload_to="submissions/", verbose_name="Файл с решением")
+    solution_file = models.FileField(
+        upload_to="submissions/",
+        verbose_name="Файл с решением",
+        validators=[validate_file_size, validate_file_extension],
+    )
     submitted_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата отправки")
     grade = models.IntegerField(null=True, blank=True, verbose_name="Оценка")
     feedback = models.TextField(blank=True, verbose_name="Отзыв преподавателя")
