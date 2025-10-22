@@ -145,9 +145,10 @@ SE-XP/
 
 **CI Pipeline** - запускается при каждом push и PR:
 1. ✅ Тестирование на Python 3.10, 3.11, 3.12
-2. ✅ Линтинг (flake8, black, isort, pylint)
-3. ✅ Запуск тестов
-4. ✅ Проверка миграций
+2. ✅ Review - Codacy
+3. ✅ Линтинг (flake8, black, isort, pylint)
+4. ✅ Запуск тестов
+5. ✅ Проверка миграций
 
 **Documentation Pipeline** - автоматическая публикация документации на GitHub Pages
 
