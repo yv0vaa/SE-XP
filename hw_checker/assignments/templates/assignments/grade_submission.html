@@ -1,0 +1,76 @@
+{% extends 'assignments/base.html' %}
+
+{% block title %}Проверка работы - HW Checker{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title mb-4">
+                    <i class="bi bi-file-earmark-check"></i> {{ submission.homework.title }}
+                </h2>
+                
+                <div class="mb-3">
+                    <strong>Студент:</strong> {{ submission.student.get_full_name }} ({{ submission.student.username }})<br>
+                    <strong>Email:</strong> {{ submission.student.email }}<br>
+                    <strong>Дата отправки:</strong> {{ submission.submitted_at|date:"d.m.Y H:i" }}
+                </div>
+                
+                <hr>
+                
+                <h5>Описание задания:</h5>
+                <p style="white-space: pre-wrap;">{{ submission.homework.description }}</p>
+                
+                <hr>
+                
+                <div class="alert alert-info">
+                    <strong><i class="bi bi-file-earmark"></i> Файл работы:</strong><br>
+                    <a href="{{ submission.solution_file.url }}" target="_blank" class="btn btn-primary mt-2">
+                        <i class="bi bi-download"></i> Скачать и просмотреть файл
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="bi bi-star"></i> Выставить оценку
+                </h5>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        {{ form.grade.label_tag }}
+                        {{ form.grade }}
+                        {% if form.grade.errors %}
+                            <div class="text-danger small">{{ form.grade.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-4">
+                        {{ form.feedback.label_tag }}
+                        {{ form.feedback }}
+                        {% if form.feedback.errors %}
+                            <div class="text-danger small">{{ form.feedback.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success w-100 mb-2">
+                        <i class="bi bi-check-circle"></i> Сохранить оценку
+                    </button>
+                </form>
+                
+                <a href="{% url 'homework_submissions' submission.homework.pk %}" class="btn btn-outline-secondary w-100">
+                    <i class="bi bi-arrow-left"></i> Назад к списку
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

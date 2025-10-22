@@ -1,0 +1,54 @@
+{% extends 'assignments/base.html' %}
+
+{% block title %}Главная - HW Checker{% endblock %}
+
+{% block content %}
+<div class="text-center text-white" style="margin-top: 50px;">
+    <h1 class="display-3 fw-bold mb-4">
+        <i class="bi bi-journal-check"></i> HW Checker
+    </h1>
+    <p class="lead mb-5">Современная система для управления домашними заданиями</p>
+    
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-4 mb-4">
+            <div class="card text-dark">
+                <div class="card-body">
+                    <i class="bi bi-people display-4 text-primary"></i>
+                    <h5 class="card-title mt-3">Для студентов</h5>
+                    <p class="card-text">Просматривайте задания, загружайте работы и отслеживайте оценки</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card text-dark">
+                <div class="card-body">
+                    <i class="bi bi-person-badge display-4 text-success"></i>
+                    <h5 class="card-title mt-3">Для преподавателей</h5>
+                    <p class="card-text">Создавайте задания, проверяйте работы и выставляйте оценки</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card text-dark">
+                <div class="card-body">
+                    <i class="bi bi-lightning-charge display-4 text-warning"></i>
+                    <h5 class="card-title mt-3">Быстро и удобно</h5>
+                    <p class="card-text">Интуитивный интерфейс и простота использования</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div>
+        <a href="{% url 'register' %}" class="btn btn-primary btn-lg me-3">
+            <i class="bi bi-person-plus"></i> Регистрация
+        </a>
+        <a href="{% url 'login' %}" class="btn btn-light btn-lg">
+            <i class="bi bi-box-arrow-in-right"></i> Вход
+        </a>
+    </div>
+</div>
+{% endblock %}
+
