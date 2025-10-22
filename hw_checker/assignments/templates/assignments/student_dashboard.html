@@ -1,6 +1,6 @@
 {% extends 'assignments/base.html' %}
 
-{% block title %}Мои задания - HW Checker{% endblock %}
+{% block title %}Мои курсы - HW Checker{% endblock %}
 
 {% block content %}
 <div class="row mb-4">
@@ -8,27 +8,34 @@
         <h1 class="text-white">
             <i class="bi bi-person-circle"></i> Привет, {{ user.first_name }}!
         </h1>
-        <p class="text-white-50">Вот ваши домашние задания</p>
+        <p class="text-white-50">Ваши курсы и задания</p>
     </div>
 </div>
 
 <!-- Статистика -->
 <div class="row mb-4">
-    <div class="col-md-4 mb-3">
+    <div class="col-md-3 mb-3">
+        <div class="stats-card">
+            <i class="bi bi-book"></i>
+            <h3>{{ total_courses }}</h3>
+            <p>Курсов</p>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
         <div class="stats-card">
             <i class="bi bi-list-check"></i>
             <h3>{{ total_homeworks }}</h3>
             <p>Всего заданий</p>
         </div>
     </div>
-    <div class="col-md-4 mb-3">
+    <div class="col-md-3 mb-3">
         <div class="stats-card">
             <i class="bi bi-check-circle"></i>
             <h3>{{ submitted_count }}</h3>
             <p>Сдано работ</p>
         </div>
     </div>
-    <div class="col-md-4 mb-3">
+    <div class="col-md-3 mb-3">
         <div class="stats-card">
             <i class="bi bi-star"></i>
             <h3>{{ graded_count }}</h3>
@@ -37,57 +44,52 @@
     </div>
 </div>
 
-<!-- Список заданий -->
+<!-- Список курсов -->
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title mb-4">
-                    <i class="bi bi-journal-text"></i> Домашние задания
+                    <i class="bi bi-journal-text"></i> Мои курсы
                 </h4>
                 
-                {% if homework_status %}
-                    <div class="list-group">
-                        {% for item in homework_status %}
-                            <a href="{% url 'homework_detail' item.homework.pk %}" class="list-group-item list-group-item-action">
-                                <div class="d-flex w-100 justify-content-between align-items-center">
-                                    <div>
-                                        <h5 class="mb-1">{{ item.homework.title }}</h5>
-                                        <p class="mb-1 text-muted">{{ item.homework.description|truncatewords:20 }}</p>
-                                        <small class="text-muted">
-                                            <i class="bi bi-calendar-event"></i> 
-                                            Срок сдачи: {{ item.homework.due_date|date:"d.m.Y H:i" }}
-                                        </small>
-                                    </div>
-                                    <div class="text-end">
-                                        {% if item.submission %}
-                                            {% if item.submission.grade %}
-                                                <span class="badge bg-success mb-2">
-                                                    <i class="bi bi-check-circle"></i> Оценка: {{ item.submission.grade }}
-                                                </span>
-                                            {% else %}
-                                                <span class="badge bg-info mb-2">
-                                                    <i class="bi bi-clock-history"></i> На проверке
-                                                </span>
-                                            {% endif %}
-                                        {% elif item.is_overdue %}
-                                            <span class="badge bg-danger mb-2">
-                                                <i class="bi bi-exclamation-triangle"></i> Просрочено
+                {% if courses %}
+                    <div class="row">
+                        {% for course in courses %}
+                            <div class="col-md-6 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ course.title }}</h5>
+                                        <p class="card-text text-muted">{{ course.description|truncatewords:20 }}</p>
+                                        
+                                        <div class="mb-3">
+                                            <small class="text-muted">
+                                                <i class="bi bi-person-badge"></i> 
+                                                Преподаватели: 
+                                                {% for teacher in course.teachers.all %}
+                                                    {{ teacher.get_full_name|default:teacher.username }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </small>
+                                        </div>
+                                        
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="badge bg-primary">
+                                                {{ course.homeworks.count }} заданий
                                             </span>
-                                        {% else %}
-                                            <span class="badge bg-warning mb-2">
-                                                <i class="bi bi-hourglass-split"></i> Не сдано
-                                            </span>
-                                        {% endif %}
+                                            <a href="{% url 'course_detail' course.pk %}" class="btn btn-sm btn-primary">
+                                                <i class="bi bi-arrow-right"></i> Открыть курс
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                            </a>
+                            </div>
                         {% endfor %}
                     </div>
                 {% else %}
                     <div class="text-center py-5 text-muted">
                         <i class="bi bi-inbox display-1"></i>
-                        <p class="mt-3">Домашних заданий пока нет</p>
+                        <p class="mt-3">Вы пока не записаны ни на один курс</p>
+                        <p class="small">Обратитесь к преподавателю для записи на курс</p>
                     </div>
                 {% endif %}
             </div>
@@ -95,4 +97,3 @@
     </div>
 </div>
 {% endblock %}
-

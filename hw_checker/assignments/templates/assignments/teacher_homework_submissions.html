@@ -7,15 +7,12 @@
     <div class="col">
         <h1 class="text-white">{{ homework.title }}</h1>
         <p class="text-white-50">
-            <i class="bi bi-calendar-event"></i> Срок сдачи: {{ homework.due_date|date:"d.m.Y H:i" }}
+            Курс: {{ homework.course.title }} | Срок: {{ homework.due_date|date:"d.m.Y H:i" }}
         </p>
     </div>
     <div class="col-auto">
-        <a href="{% url 'edit_homework' homework.pk %}" class="btn btn-light me-2">
-            <i class="bi bi-pencil"></i> Редактировать
-        </a>
-        <a href="{% url 'teacher_dashboard' %}" class="btn btn-outline-light">
-            <i class="bi bi-arrow-left"></i> Назад
+        <a href="{% url 'teacher_course_detail' homework.course.pk %}" class="btn btn-outline-light">
+            <i class="bi bi-arrow-left"></i> Назад к курсу
         </a>
     </div>
 </div>
@@ -25,7 +22,7 @@
     <div class="col-md-4 mb-3">
         <div class="stats-card">
             <i class="bi bi-file-earmark-text"></i>
-            <h3>{{ total_submissions }}</h3>
+            <h3>{{ total_count }}</h3>
             <p>Всего работ</p>
         </div>
     </div>
@@ -48,9 +45,7 @@
 <!-- Список работ -->
 <div class="card">
     <div class="card-body">
-        <h4 class="card-title mb-4">
-            <i class="bi bi-clipboard-check"></i> Отправленные работы
-        </h4>
+        <h4 class="card-title mb-4">Отправленные работы</h4>
         
         {% if submissions %}
             <div class="table-responsive">
@@ -85,7 +80,7 @@
                                     {% endif %}
                                 </td>
                                 <td>
-                                    <a href="{% url 'grade_submission' submission.pk %}" class="btn btn-sm btn-primary">
+                                    <a href="{% url 'teacher_grade_submission' submission.pk %}" class="btn btn-sm btn-primary">
                                         <i class="bi bi-pencil-square"></i> 
                                         {% if submission.grade %}Изменить{% else %}Проверить{% endif %}
                                     </a>
