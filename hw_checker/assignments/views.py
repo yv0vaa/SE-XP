@@ -90,20 +90,20 @@ def dashboard_view(request):
 def student_dashboard(request):
     """Dashboard студента - список курсов"""
     courses = request.user.enrolled_courses.all()
-    
+
     # Статистика по всем курсам
     all_homeworks = Homework.objects.filter(course__in=courses)
     my_submissions = Submission.objects.filter(student=request.user)
-    
+
     context = {
-        'courses': courses,
-        'total_courses': courses.count(),
-        'total_homeworks': all_homeworks.count(),
-        'submitted_count': my_submissions.count(),
-        'graded_count': my_submissions.filter(grade__isnull=False).count(),
+        "courses": courses,
+        "total_courses": courses.count(),
+        "total_homeworks": all_homeworks.count(),
+        "submitted_count": my_submissions.count(),
+        "graded_count": my_submissions.filter(grade__isnull=False).count(),
     }
-    
-    return render(request, 'assignments/student_dashboard.html', context)
+
+    return render(request, "assignments/student_dashboard.html", context)
 
 
 @login_required
@@ -111,15 +111,17 @@ def student_dashboard(request):
 def course_detail(request, pk):
     """Детальная страница курса для студента"""
     course = get_object_or_404(Course, pk=pk)
-    
+
     # Проверка доступа - студент должен быть записан на курс
     if request.user not in course.students.all():
-        messages.error(request, 'У вас нет доступа к этому курсу')
-        return redirect('student_dashboard')
-    
-    homeworks = course.homeworks.all().order_by('-created_at')
-    my_submissions = Submission.objects.filter(student=request.user, homework__course=course)
-    
+        messages.error(request, "У вас нет доступа к этому курсу")
+        return redirect("student_dashboard")
+
+    homeworks = course.homeworks.all().order_by("-created_at")
+    my_submissions = Submission.objects.filter(
+        student=request.user, homework__course=course
+    )
+
     # Добавляем информацию о том, сдал ли студент каждое ДЗ
     homework_status = []
     for hw in homeworks:
@@ -133,13 +135,13 @@ def course_detail(request, pk):
         )
 
     context = {
-        'course': course,
-        'homework_status': homework_status,
-        'total_homeworks': homeworks.count(),
-        'submitted_count': my_submissions.count(),
+        "course": course,
+        "homework_status": homework_status,
+        "total_homeworks": homeworks.count(),
+        "submitted_count": my_submissions.count(),
     }
-    
-    return render(request, 'assignments/course_detail.html', context)
+
+    return render(request, "assignments/course_detail.html", context)
 
 
 @login_required
@@ -147,7 +149,7 @@ def course_detail(request, pk):
 def homework_detail(request, pk):
     """Детальная страница задания для студента"""
     homework = get_object_or_404(Homework, pk=pk)
-    
+
     # Проверка доступа - студент должен быть записан на курс
     if request.user not in homework.course.students.all():
         messages.error(request, 'У вас нет доступа к этому заданию')
@@ -166,8 +168,8 @@ def homework_detail(request, pk):
             submission.homework = homework
             submission.student = request.user
             submission.save()
-            messages.success(request, 'Работа успешно отправлена!')
-            return redirect('course_detail', pk=homework.course.pk)
+            messages.success(request, "Работа успешно отправлена!")
+            return redirect("course_detail", pk=homework.course.pk)
     else:
         form = SubmissionForm()
 
@@ -199,31 +201,36 @@ def my_submissions(request):
 def my_grades(request):
     """Таблица оценок студента по всем курсам"""
     courses = request.user.enrolled_courses.all()
-    
+
     grades_data = []
     for course in courses:
-        homeworks = course.homeworks.all().order_by('due_date')
-        course_grades = {
-            'course': course,
-            'homeworks': []
-        }
-        
+        homeworks = course.homeworks.all().order_by("due_date")
+        course_grades = {"course": course, "homeworks": []}
+
         for hw in homeworks:
-            submission = Submission.objects.filter(homework=hw, student=request.user).first()
-            course_grades['homeworks'].append({
-                'homework': hw,
-                'submission': submission,
-                'grade': submission.grade if submission else None,
-                'status': 'Оценено' if submission and submission.grade else 'На проверке' if submission else 'Не сдано'
-            })
-        
+            submission = Submission.objects.filter(
+                homework=hw, student=request.user
+            ).first()
+            course_grades["homeworks"].append(
+                {
+                    "homework": hw,
+                    "submission": submission,
+                    "grade": submission.grade if submission else None,
+                    "status": (
+                        "Оценено"
+                        if submission and submission.grade
+                        else "На проверке" if submission else "Не сдано"
+                    ),
+                }
+            )
+
         grades_data.append(course_grades)
-    
+
     context = {
-        'grades_data': grades_data,
+        "grades_data": grades_data,
     }
-    
-    return render(request, 'assignments/my_grades.html', context)
+
+    return render(request, "assignments/my_grades.html", context)
 
 
 # ============= Преподаватель =============
@@ -234,18 +241,18 @@ def my_grades(request):
 def teacher_dashboard(request):
     """Dashboard преподавателя - список его курсов"""
     courses = request.user.teaching_courses.all()
-    
+
     # Статистика
     all_homeworks = Homework.objects.filter(course__in=courses)
     all_submissions = Submission.objects.filter(homework__in=all_homeworks)
     pending_submissions = all_submissions.filter(grade__isnull=True)
 
     context = {
-        'courses': courses,
-        'total_courses': courses.count(),
-        'total_homeworks': all_homeworks.count(),
-        'total_submissions': all_submissions.count(),
-        'pending_count': pending_submissions.count(),
+        "courses": courses,
+        "total_courses": courses.count(),
+        "total_homeworks": all_homeworks.count(),
+        "total_submissions": all_submissions.count(),
+        "pending_count": pending_submissions.count(),
     }
 
     return render(request, "assignments/teacher_dashboard.html", context)
@@ -256,46 +263,43 @@ def teacher_dashboard(request):
 def teacher_course_detail(request, pk):
     """Детальная страница курса для преподавателя"""
     course = get_object_or_404(Course, pk=pk)
-    
+
     # Проверка доступа
     if request.user not in course.teachers.all():
-        messages.error(request, 'У вас нет доступа к этому курсу')
-        return redirect('teacher_dashboard')
-    
-    homeworks = course.homeworks.all().order_by('-created_at')
+        messages.error(request, "У вас нет доступа к этому курсу")
+        return redirect("teacher_dashboard")
+
+    homeworks = course.homeworks.all().order_by("-created_at")
     all_submissions = Submission.objects.filter(homework__course=course)
-    
+
     context = {
-        'course': course,
-        'homeworks': homeworks,
-        'students_count': course.students.count(),
-        'total_submissions': all_submissions.count(),
-        'pending_count': all_submissions.filter(grade__isnull=True).count(),
+        "course": course,
+        "homeworks": homeworks,
+        "students_count": course.students.count(),
+        "total_submissions": all_submissions.count(),
+        "pending_count": all_submissions.filter(grade__isnull=True).count(),
     }
-    
-    return render(request, 'assignments/teacher_course_detail.html', context)
+
+    return render(request, "assignments/teacher_course_detail.html", context)
 
 
 @login_required
 @teacher_required
 def create_course(request):
     """Создание нового курса"""
-    if request.method == 'POST':
-        title = request.POST.get('title')
-        description = request.POST.get('description')
-        
+    if request.method == "POST":
+        title = request.POST.get("title")
+        description = request.POST.get("description")
+
         if title and description:
-            course = Course.objects.create(
-                title=title,
-                description=description
-            )
+            course = Course.objects.create(title=title, description=description)
             course.teachers.add(request.user)
             messages.success(request, f'Курс "{course.title}" успешно создан!')
-            return redirect('teacher_course_detail', pk=course.pk)
+            return redirect("teacher_course_detail", pk=course.pk)
         else:
-            messages.error(request, 'Заполните все обязательные поля')
-    
-    return render(request, 'assignments/create_course.html')
+            messages.error(request, "Заполните все обязательные поля")
+
+    return render(request, "assignments/create_course.html")
 
 
 @login_required
@@ -303,21 +307,21 @@ def create_course(request):
 def edit_course(request, pk):
     """Редактирование курса"""
     course = get_object_or_404(Course, pk=pk)
-    
+
     # Проверка доступа
     if request.user not in course.teachers.all():
-        messages.error(request, 'У вас нет доступа к этому курсу')
-        return redirect('teacher_dashboard')
-    
-    if request.method == 'POST':
-        course.title = request.POST.get('title', course.title)
-        course.description = request.POST.get('description', course.description)
+        messages.error(request, "У вас нет доступа к этому курсу")
+        return redirect("teacher_dashboard")
+
+    if request.method == "POST":
+        course.title = request.POST.get("title", course.title)
+        course.description = request.POST.get("description", course.description)
         course.save()
-        messages.success(request, 'Курс успешно обновлен!')
-        return redirect('teacher_course_detail', pk=course.pk)
-    
-    context = {'course': course}
-    return render(request, 'assignments/edit_course.html', context)
+        messages.success(request, "Курс успешно обновлен!")
+        return redirect("teacher_course_detail", pk=course.pk)
+
+    context = {"course": course}
+    return render(request, "assignments/edit_course.html", context)
 
 
 @login_required
@@ -325,28 +329,29 @@ def edit_course(request, pk):
 def manage_students(request, pk):
     """Управление студентами курса"""
     course = get_object_or_404(Course, pk=pk)
-    
+
     # Проверка доступа
     if request.user not in course.teachers.all():
-        messages.error(request, 'У вас нет доступа к этому курсу')
-        return redirect('teacher_dashboard')
-    
+        messages.error(request, "У вас нет доступа к этому курсу")
+        return redirect("teacher_dashboard")
+
     from django.contrib.auth.models import User
-    all_students = User.objects.filter(profile__role='student')
+
+    all_students = User.objects.filter(profile__role="student")
     current_students = course.students.all()
-    
-    if request.method == 'POST':
-        student_ids = request.POST.getlist('students')
+
+    if request.method == "POST":
+        student_ids = request.POST.getlist("students")
         course.students.set(User.objects.filter(id__in=student_ids))
-        messages.success(request, 'Список студентов обновлен!')
-        return redirect('teacher_course_detail', pk=course.pk)
-    
+        messages.success(request, "Список студентов обновлен!")
+        return redirect("teacher_course_detail", pk=course.pk)
+
     context = {
-        'course': course,
-        'all_students': all_students,
-        'current_students': current_students,
+        "course": course,
+        "all_students": all_students,
+        "current_students": current_students,
     }
-    return render(request, 'assignments/manage_students.html', context)
+    return render(request, "assignments/manage_students.html", context)
 
 
 @login_required
@@ -354,25 +359,25 @@ def manage_students(request, pk):
 def teacher_create_homework(request, course_pk):
     """Создание домашнего задания"""
     course = get_object_or_404(Course, pk=course_pk)
-    
+
     # Проверка доступа
     if request.user not in course.teachers.all():
-        messages.error(request, 'У вас нет доступа к этому курсу')
-        return redirect('teacher_dashboard')
-    
-    if request.method == 'POST':
+        messages.error(request, "У вас нет доступа к этому курсу")
+        return redirect("teacher_dashboard")
+
+    if request.method == "POST":
         form = HomeworkForm(request.POST)
         if form.is_valid():
             homework = form.save(commit=False)
             homework.course = course
             homework.save()
             messages.success(request, f'Задание "{homework.title}" создано!')
-            return redirect('teacher_course_detail', pk=course.pk)
+            return redirect("teacher_course_detail", pk=course.pk)
     else:
         form = HomeworkForm()
-    
-    context = {'form': form, 'course': course}
-    return render(request, 'assignments/teacher_create_homework.html', context)
+
+    context = {"form": form, "course": course}
+    return render(request, "assignments/teacher_create_homework.html", context)
 
 
 @login_required
@@ -380,23 +385,23 @@ def teacher_create_homework(request, course_pk):
 def teacher_edit_homework(request, pk):
     """Редактирование домашнего задания"""
     homework = get_object_or_404(Homework, pk=pk)
-    
+
     # Проверка доступа
     if request.user not in homework.course.teachers.all():
-        messages.error(request, 'У вас нет доступа к этому заданию')
-        return redirect('teacher_dashboard')
-    
-    if request.method == 'POST':
+        messages.error(request, "У вас нет доступа к этому заданию")
+        return redirect("teacher_dashboard")
+
+    if request.method == "POST":
         form = HomeworkForm(request.POST, instance=homework)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Задание успешно обновлено!')
-            return redirect('teacher_course_detail', pk=homework.course.pk)
+            messages.success(request, "Задание успешно обновлено!")
+            return redirect("teacher_course_detail", pk=homework.course.pk)
     else:
         form = HomeworkForm(instance=homework)
-    
-    context = {'form': form, 'homework': homework}
-    return render(request, 'assignments/teacher_edit_homework.html', context)
+
+    context = {"form": form, "homework": homework}
+    return render(request, "assignments/teacher_edit_homework.html", context)
 
 
 @login_required
@@ -404,23 +409,23 @@ def teacher_edit_homework(request, pk):
 def teacher_homework_submissions(request, pk):
     """Список отправок по домашнему заданию"""
     homework = get_object_or_404(Homework, pk=pk)
-    
+
     # Проверка доступа
     if request.user not in homework.course.teachers.all():
-        messages.error(request, 'У вас нет доступа к этому заданию')
-        return redirect('teacher_dashboard')
-    
-    submissions = homework.submissions.all().order_by('-submitted_at')
-    
+        messages.error(request, "У вас нет доступа к этому заданию")
+        return redirect("teacher_dashboard")
+
+    submissions = homework.submissions.all().order_by("-submitted_at")
+
     context = {
-        'homework': homework,
-        'submissions': submissions,
-        'total_count': submissions.count(),
-        'graded_count': submissions.filter(grade__isnull=False).count(),
-        'pending_count': submissions.filter(grade__isnull=True).count(),
+        "homework": homework,
+        "submissions": submissions,
+        "total_count": submissions.count(),
+        "graded_count": submissions.filter(grade__isnull=False).count(),
+        "pending_count": submissions.filter(grade__isnull=True).count(),
     }
-    
-    return render(request, 'assignments/teacher_homework_submissions.html', context)
+
+    return render(request, "assignments/teacher_homework_submissions.html", context)
 
 
 @login_required
@@ -428,18 +433,20 @@ def teacher_homework_submissions(request, pk):
 def teacher_grade_submission(request, pk):
     """Проверка и выставление оценки"""
     submission = get_object_or_404(Submission, pk=pk)
-    
+
     # Проверка доступа
     if request.user not in submission.homework.course.teachers.all():
-        messages.error(request, 'У вас нет доступа к этой работе')
-        return redirect('teacher_dashboard')
-    
-    if request.method == 'POST':
+        messages.error(request, "У вас нет доступа к этой работе")
+        return redirect("teacher_dashboard")
+
+    if request.method == "POST":
         form = GradeForm(request.POST, instance=submission)
         if form.is_valid():
             form.save()
-            messages.success(request, f'Оценка для {submission.student.get_full_name()} выставлена!')
-            return redirect('teacher_homework_submissions', pk=submission.homework.pk)
+            messages.success(
+                request, f"Оценка для {submission.student.get_full_name()} выставлена!"
+            )
+            return redirect("teacher_homework_submissions", pk=submission.homework.pk)
     else:
         form = GradeForm(instance=submission)
 
@@ -447,8 +454,8 @@ def teacher_grade_submission(request, pk):
         "submission": submission,
         "form": form,
     }
-    
-    return render(request, 'assignments/teacher_grade_submission.html', context)
+
+    return render(request, "assignments/teacher_grade_submission.html", context)
 
 
 @login_required
@@ -456,8 +463,10 @@ def teacher_grade_submission(request, pk):
 def teacher_all_submissions(request):
     """Все отправки преподавателя"""
     courses = request.user.teaching_courses.all()
-    submissions = Submission.objects.filter(homework__course__in=courses).order_by('-submitted_at')
-    
+    submissions = Submission.objects.filter(homework__course__in=courses).order_by(
+        "-submitted_at"
+    )
+
     # Фильтрация
     status_filter = request.GET.get("status", "all")
     if status_filter == "pending":
@@ -469,8 +478,8 @@ def teacher_all_submissions(request):
         "submissions": submissions,
         "status_filter": status_filter,
     }
-    
-    return render(request, 'assignments/teacher_all_submissions.html', context)
+
+    return render(request, "assignments/teacher_all_submissions.html", context)
 
 
 # ============= Общие =============
