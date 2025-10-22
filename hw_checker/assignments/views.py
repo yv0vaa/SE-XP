@@ -1,76 +1,82 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.http import HttpResponseForbidden
 from .models import Homework, Submission, UserProfile, Course
 from .forms import RegisterForm, HomeworkForm, SubmissionForm, GradeForm
 from .decorators import student_required, teacher_required
 
+from .decorators import student_required, teacher_required
+from .forms import GradeForm, HomeworkForm, RegisterForm, SubmissionForm
+from .models import Homework, Submission
 
 # ============= Авторизация =============
+
 
 def register_view(request):
     """Регистрация нового пользователя"""
     if request.user.is_authenticated:
-        return redirect('dashboard')
-    
-    if request.method == 'POST':
+        return redirect("dashboard")
+
+    if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            messages.success(request, f'Добро пожаловать, {user.first_name}!')
-            return redirect('dashboard')
+            messages.success(request, f"Добро пожаловать, {user.first_name}!")
+            return redirect("dashboard")
     else:
         form = RegisterForm()
-    
-    return render(request, 'assignments/register.html', {'form': form})
+
+    return render(request, "assignments/register.html", {"form": form})
 
 
 def login_view(request):
     """Вход в систему"""
     if request.user.is_authenticated:
-        return redirect('dashboard')
-    
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        return redirect("dashboard")
+
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
         user = authenticate(request, username=username, password=password)
-        
+
         if user is not None:
             login(request, user)
-            messages.success(request, f'Добро пожаловать, {user.first_name}!')
-            return redirect('dashboard')
+            messages.success(request, f"Добро пожаловать, {user.first_name}!")
+            return redirect("dashboard")
         else:
-            messages.error(request, 'Неверный логин или пароль')
-    
-    return render(request, 'assignments/login.html')
+            messages.error(request, "Неверный логин или пароль")
+
+    return render(request, "assignments/login.html")
 
 
 @login_required
 def logout_view(request):
     """Выход из системы"""
     logout(request)
-    messages.info(request, 'Вы вышли из системы')
-    return redirect('login')
+    messages.info(request, "Вы вышли из системы")
+    return redirect("login")
 
 
 # ============= Dashboard =============
+
 
 @login_required
 def dashboard_view(request):
     """Главная страница - перенаправление в зависимости от роли"""
     if request.user.profile.is_student:
-        return redirect('student_dashboard')
+        return redirect("student_dashboard")
     elif request.user.profile.is_teacher:
-        return redirect('teacher_dashboard')
+        return redirect("teacher_dashboard")
     else:
-        return redirect('login')
+        return redirect("login")
 
 
 # ============= Студент =============
+
 
 @login_required
 @student_required
@@ -111,12 +117,14 @@ def course_detail(request, pk):
     homework_status = []
     for hw in homeworks:
         submission = my_submissions.filter(homework=hw).first()
-        homework_status.append({
-            'homework': hw,
-            'submission': submission,
-            'is_overdue': hw.due_date < timezone.now(),
-        })
-    
+        homework_status.append(
+            {
+                "homework": hw,
+                "submission": submission,
+                "is_overdue": hw.due_date < timezone.now(),
+            }
+        )
+
     context = {
         'course': course,
         'homework_status': homework_status,
@@ -139,12 +147,12 @@ def homework_detail(request, pk):
         return redirect('student_dashboard')
     
     submission = Submission.objects.filter(homework=homework, student=request.user).first()
-    
-    if request.method == 'POST':
+
+    if request.method == "POST":
         if submission:
-            messages.warning(request, 'Вы уже отправили работу по этому заданию')
-            return redirect('homework_detail', pk=pk)
-        
+            messages.warning(request, "Вы уже отправили работу по этому заданию")
+            return redirect("homework_detail", pk=pk)
+
         form = SubmissionForm(request.POST, request.FILES)
         if form.is_valid():
             submission = form.save(commit=False)
@@ -155,28 +163,28 @@ def homework_detail(request, pk):
             return redirect('course_detail', pk=homework.course.pk)
     else:
         form = SubmissionForm()
-    
+
     context = {
-        'homework': homework,
-        'submission': submission,
-        'form': form,
-        'is_overdue': homework.due_date < timezone.now(),
+        "homework": homework,
+        "submission": submission,
+        "form": form,
+        "is_overdue": homework.due_date < timezone.now(),
     }
-    
-    return render(request, 'assignments/homework_detail.html', context)
+
+    return render(request, "assignments/homework_detail.html", context)
 
 
 @login_required
 @student_required
 def my_submissions(request):
     """Список всех отправленных работ студента"""
-    submissions = Submission.objects.filter(student=request.user).order_by('-submitted_at')
-    
+    submissions = Submission.objects.filter(student=request.user).order_by("-submitted_at")
+
     context = {
-        'submissions': submissions,
+        "submissions": submissions,
     }
-    
-    return render(request, 'assignments/my_submissions.html', context)
+
+    return render(request, "assignments/my_submissions.html", context)
 
 
 @login_required
@@ -213,6 +221,7 @@ def my_grades(request):
 
 # ============= Преподаватель =============
 
+
 @login_required
 @teacher_required
 def teacher_dashboard(request):
@@ -223,7 +232,7 @@ def teacher_dashboard(request):
     all_homeworks = Homework.objects.filter(course__in=courses)
     all_submissions = Submission.objects.filter(homework__in=all_homeworks)
     pending_submissions = all_submissions.filter(grade__isnull=True)
-    
+
     context = {
         'courses': courses,
         'total_courses': courses.count(),
@@ -231,8 +240,8 @@ def teacher_dashboard(request):
         'total_submissions': all_submissions.count(),
         'pending_count': pending_submissions.count(),
     }
-    
-    return render(request, 'assignments/teacher_dashboard.html', context)
+
+    return render(request, "assignments/teacher_dashboard.html", context)
 
 
 @login_required
@@ -426,10 +435,10 @@ def teacher_grade_submission(request, pk):
             return redirect('teacher_homework_submissions', pk=submission.homework.pk)
     else:
         form = GradeForm(instance=submission)
-    
+
     context = {
-        'submission': submission,
-        'form': form,
+        "submission": submission,
+        "form": form,
     }
     
     return render(request, 'assignments/teacher_grade_submission.html', context)
@@ -443,15 +452,15 @@ def teacher_all_submissions(request):
     submissions = Submission.objects.filter(homework__course__in=courses).order_by('-submitted_at')
     
     # Фильтрация
-    status_filter = request.GET.get('status', 'all')
-    if status_filter == 'pending':
+    status_filter = request.GET.get("status", "all")
+    if status_filter == "pending":
         submissions = submissions.filter(grade__isnull=True)
-    elif status_filter == 'graded':
+    elif status_filter == "graded":
         submissions = submissions.filter(grade__isnull=False)
-    
+
     context = {
-        'submissions': submissions,
-        'status_filter': status_filter,
+        "submissions": submissions,
+        "status_filter": status_filter,
     }
     
     return render(request, 'assignments/teacher_all_submissions.html', context)
@@ -459,8 +468,9 @@ def teacher_all_submissions(request):
 
 # ============= Общие =============
 
+
 def home_view(request):
     """Главная страница для неавторизованных пользователей"""
     if request.user.is_authenticated:
-        return redirect('dashboard')
-    return render(request, 'assignments/home.html')
+        return redirect("dashboard")
+    return render(request, "assignments/home.html")

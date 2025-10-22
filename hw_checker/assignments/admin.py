@@ -7,7 +7,7 @@ from .models import Homework, Submission, UserProfile, Course
 class UserProfileInline(admin.StackedInline):
     model = UserProfile
     can_delete = False
-    verbose_name_plural = 'Профиль'
+    verbose_name_plural = "Профиль"
 
 
 class UserAdmin(BaseUserAdmin):
@@ -93,12 +93,8 @@ class SubmissionAdmin(admin.ModelAdmin):
     readonly_fields = ['submitted_at']
     
     fieldsets = (
-        ('Информация о работе', {
-            'fields': ('homework', 'student', 'solution_file', 'submitted_at')
-        }),
-        ('Проверка', {
-            'fields': ('grade', 'feedback')
-        }),
+        ("Информация о работе", {"fields": ("homework", "student", "solution_file", "submitted_at")}),
+        ("Проверка", {"fields": ("grade", "feedback")}),
     )
     
     def get_course(self, obj):
