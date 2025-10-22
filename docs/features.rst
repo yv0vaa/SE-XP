@@ -107,7 +107,7 @@
 
 .. list-table::
    :header-rows: 1
-   :widths: 40 15 15 15 15
+   :widths: 40 20 20 20
 
    * - Действие
      - Студент
