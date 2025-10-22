@@ -80,13 +80,10 @@ class HomeworkModelTest(TestCase):
         self.teacher = User.objects.create_user(username="teacher", password="test123")
         self.teacher.profile.role = "teacher"
         self.teacher.profile.save()
-        
-        self.course = Course.objects.create(
-            title="Test Course",
-            description="Test course description"
-        )
+
+        self.course = Course.objects.create(title="Test Course", description="Test course description")
         self.course.teachers.add(self.teacher)
-        
+
         self.homework = Homework.objects.create(
             course=self.course,
             title="Test Assignment",
@@ -106,16 +103,10 @@ class HomeworkModelTest(TestCase):
     def test_homework_ordering(self):
         """Test homeworks are ordered by created_at descending"""
         hw1 = Homework.objects.create(
-            course=self.course,
-            title="First", 
-            description="First assignment", 
-            due_date=timezone.now() + timedelta(days=1)
+            course=self.course, title="First", description="First assignment", due_date=timezone.now() + timedelta(days=1)
         )
         hw2 = Homework.objects.create(
-            course=self.course,
-            title="Second", 
-            description="Second assignment", 
-            due_date=timezone.now() + timedelta(days=2)
+            course=self.course, title="Second", description="Second assignment", due_date=timezone.now() + timedelta(days=2)
         )
         homeworks = list(Homework.objects.all())
         self.assertEqual(homeworks[0], hw2)
@@ -133,23 +124,17 @@ class SubmissionModelTest(TestCase):
     def setUp(self):
         """Set up test data"""
         self.student = User.objects.create_user(username="student", password="test123")
-        
+
         # Create teacher and course
         self.teacher = User.objects.create_user(username="teacher", password="test123")
         self.teacher.profile.role = "teacher"
         self.teacher.profile.save()
-        
-        self.course = Course.objects.create(
-            title="Test Course",
-            description="Test course description"
-        )
+
+        self.course = Course.objects.create(title="Test Course", description="Test course description")
         self.course.teachers.add(self.teacher)
-        
+
         self.homework = Homework.objects.create(
-            course=self.course,
-            title="Test HW", 
-            description="Test", 
-            due_date=timezone.now() + timedelta(days=7)
+            course=self.course, title="Test HW", description="Test", due_date=timezone.now() + timedelta(days=7)
         )
         self.file = SimpleUploadedFile("test.txt", b"file content", content_type="text/plain")
 
@@ -318,13 +303,10 @@ class HomeworkFormTest(TestCase):
         teacher = User.objects.create_user(username="teacher", password="test123")
         teacher.profile.role = "teacher"
         teacher.profile.save()
-        
-        course = Course.objects.create(
-            title="Test Course",
-            description="Test course description"
-        )
+
+        course = Course.objects.create(title="Test Course", description="Test course description")
         course.teachers.add(teacher)
-        
+
         form_data = {
             "title": "New Assignment",
             "description": "This is a new assignment",
@@ -371,23 +353,17 @@ class GradeFormTest(TestCase):
     def test_grade_form_saves_correctly(self):
         """Test form updates submission grade"""
         student = User.objects.create_user(username="student", password="test123")
-        
+
         # Create teacher and course
         teacher = User.objects.create_user(username="teacher", password="test123")
         teacher.profile.role = "teacher"
         teacher.profile.save()
-        
-        course = Course.objects.create(
-            title="Test Course",
-            description="Test course description"
-        )
+
+        course = Course.objects.create(title="Test Course", description="Test course description")
         course.teachers.add(teacher)
-        
+
         homework = Homework.objects.create(
-            course=course,
-            title="Test", 
-            description="Test", 
-            due_date=timezone.now() + timedelta(days=7)
+            course=course, title="Test", description="Test", due_date=timezone.now() + timedelta(days=7)
         )
         file = SimpleUploadedFile("test.txt", b"content", content_type="text/plain")
         submission = Submission.objects.create(homework=homework, student=student, solution_file=file)
@@ -538,18 +514,12 @@ class StudentViewsTest(TestCase):
         self.teacher.profile.save()
 
         # Create course
-        self.course = Course.objects.create(
-            title="Test Course",
-            description="Test course description"
-        )
+        self.course = Course.objects.create(title="Test Course", description="Test course description")
         self.course.teachers.add(self.teacher)
         self.course.students.add(self.student)
 
         self.homework = Homework.objects.create(
-            course=self.course,
-            title="Test Assignment", 
-            description="Description", 
-            due_date=timezone.now() + timedelta(days=7)
+            course=self.course, title="Test Assignment", description="Description", due_date=timezone.now() + timedelta(days=7)
         )
 
     def test_student_dashboard_requires_login(self):
@@ -638,18 +608,12 @@ class TeacherViewsTest(TestCase):
         self.teacher.profile.save()
 
         # Create course
-        self.course = Course.objects.create(
-            title="Test Course",
-            description="Test course description"
-        )
+        self.course = Course.objects.create(title="Test Course", description="Test course description")
         self.course.teachers.add(self.teacher)
         self.course.students.add(self.student)
 
         self.homework = Homework.objects.create(
-            course=self.course,
-            title="Test Assignment", 
-            description="Description", 
-            due_date=timezone.now() + timedelta(days=7)
+            course=self.course, title="Test Assignment", description="Description", due_date=timezone.now() + timedelta(days=7)
         )
 
     def test_teacher_dashboard_requires_login(self):
@@ -872,15 +836,12 @@ class HomeworkWorkflowIntegrationTest(TestCase):
         """Test complete workflow: create homework, submit, grade"""
         # Teacher creates homework
         self.client.login(username="teacher", password="test123")
-        
+
         # Create course first
-        course = Course.objects.create(
-            title="Integration Test Course",
-            description="Test course"
-        )
+        course = Course.objects.create(title="Integration Test Course", description="Test course")
         course.teachers.add(self.teacher)
         course.students.add(self.student)
-        
+
         form_data = {
             "title": "Integration Test Homework",
             "description": "This is an integration test",
