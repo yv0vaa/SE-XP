@@ -77,9 +77,7 @@ class Course(models.Model):
 class Homework(models.Model):
     """Модель домашнего задания"""
 
-    course = models.ForeignKey(
-        Course, on_delete=models.CASCADE, related_name="homeworks", verbose_name="Курс"
-    )
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="homeworks", verbose_name="Курс")
     title = models.CharField(max_length=200, verbose_name="Заголовок")
     description = models.TextField(verbose_name="Описание")
     due_date = models.DateTimeField(verbose_name="Срок сдачи")

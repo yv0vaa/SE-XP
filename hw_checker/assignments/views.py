@@ -111,9 +111,7 @@ def course_detail(request, pk):
         return redirect("student_dashboard")
 
     homeworks = course.homeworks.all().order_by("-created_at")
-    my_submissions = Submission.objects.filter(
-        student=request.user, homework__course=course
-    )
+    my_submissions = Submission.objects.filter(student=request.user, homework__course=course)
 
     # Добавляем информацию о том, сдал ли студент каждое ДЗ
     homework_status = []
@@ -145,9 +143,9 @@ def homework_detail(request, pk):
 
     # Проверка доступа - студент должен быть записан на курс
     if request.user not in homework.course.students.all():
-        messages.error(request, 'У вас нет доступа к этому заданию')
-        return redirect('student_dashboard')
-    
+        messages.error(request, "У вас нет доступа к этому заданию")
+        return redirect("student_dashboard")
+
     submission = Submission.objects.filter(homework=homework, student=request.user).first()
 
     if request.method == "POST":
@@ -201,19 +199,13 @@ def my_grades(request):
         course_grades = {"course": course, "homeworks": []}
 
         for hw in homeworks:
-            submission = Submission.objects.filter(
-                homework=hw, student=request.user
-            ).first()
+            submission = Submission.objects.filter(homework=hw, student=request.user).first()
             course_grades["homeworks"].append(
                 {
                     "homework": hw,
                     "submission": submission,
                     "grade": submission.grade if submission else None,
-                    "status": (
-                        "Оценено"
-                        if submission and submission.grade
-                        else "На проверке" if submission else "Не сдано"
-                    ),
+                    "status": ("Оценено" if submission and submission.grade else "На проверке" if submission else "Не сдано"),
                 }
             )
 
@@ -436,9 +428,7 @@ def teacher_grade_submission(request, pk):
         form = GradeForm(request.POST, instance=submission)
         if form.is_valid():
             form.save()
-            messages.success(
-                request, f"Оценка для {submission.student.get_full_name()} выставлена!"
-            )
+            messages.success(request, f"Оценка для {submission.student.get_full_name()} выставлена!")
             return redirect("teacher_homework_submissions", pk=submission.homework.pk)
     else:
         form = GradeForm(instance=submission)
@@ -456,9 +446,7 @@ def teacher_grade_submission(request, pk):
 def teacher_all_submissions(request):
     """Все отправки преподавателя"""
     courses = request.user.teaching_courses.all()
-    submissions = Submission.objects.filter(homework__course__in=courses).order_by(
-        "-submitted_at"
-    )
+    submissions = Submission.objects.filter(homework__course__in=courses).order_by("-submitted_at")
 
     # Фильтрация
     status_filter = request.GET.get("status", "all")
