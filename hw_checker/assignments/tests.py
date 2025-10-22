@@ -528,7 +528,8 @@ class StudentViewsTest(TestCase):
         file2 = SimpleUploadedFile("solution2.txt", b"another solution", content_type="text/plain")
         response = self.client.post(reverse("homework_detail", kwargs={"pk": self.homework.pk}), {"solution_file": file2})
         self.assertEqual(Submission.objects.filter(homework=self.homework, student=self.student).count(), 1)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse("homework_detail", kwargs={"pk": self.homework.pk}))
 
     def test_my_submissions_view(self):
         """Test my submissions view shows student's submissions"""
